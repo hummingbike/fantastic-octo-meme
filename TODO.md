@@ -1,6 +1,6 @@
 # TODO.md — KoAI-Verify 작업 추적
 
-> 현재 주차: **W8** (2026-06-07 기준, W7 완료)
+> 현재 주차: **W9** (2026-06-07 기준, W8 완료)
 > 업데이트 규칙: 완료 즉시 체크. 주차 시작 시 다음 주 항목 활성화.
 
 ---
@@ -94,11 +94,20 @@
 
 ---
 
-## 현재 진행 중 — W8 (2026.7.20–7.26) — 한국법 룰 엔진
+## 완료 — W8 (2026.7.20–7.26) — 한국법 룰 엔진
 
-- [ ] `koai_verify/rules/engine.py` 확장 — 4개 탐지기 결과 집계 → 룰 평가
-- [ ] R-01~R-07 전체 룰 연동 (C2PA + EXIF + OCR + Watermark 입력)
-- [ ] 각 룰 단위 테스트 (양성/음성/UNKNOWN 케이스)
+- [x] `koai_verify/rules/engine.py` 확장 — 4개 탐지기 결과 집계 → 룰 평가 (2026-06-07)
+- [x] R-01~R-07 전체 룰 연동 (C2PA + EXIF + OCR + Watermark 입력) (2026-06-07)
+- [x] 각 룰 단위 테스트 47개 (양성/음성/UNKNOWN 케이스), 전체 611개 통과 (2026-06-07)
+
+---
+
+## 현재 진행 중 — W9 (2026.7.27–8.2) — 강건성 하니스
+
+- [ ] `koai_verify/robustness/harness.py` — 변형 배터리 실행기
+- [ ] `transform(image, spec) → transformed_image` 구현 (W3 설계 기반)
+- [ ] `run_battery(image_path, detector) → SurvivalReport` 구현
+- [ ] 강건성 하니스 단위 테스트
 
 ---
 
@@ -108,7 +117,7 @@
 - [x] **W6** EXIF 탐지 엔진
 - [x] **W7** OCR 탐지 엔진 (가시 라벨)
 - [x] **W7** 오픈 워터마크 탐지 모듈
-- [ ] **W8** 한국법 룰 엔진
+- [x] **W8** 한국법 룰 엔진
 - [ ] **W9** 강건성 하니스 (변형 배터리 실행)
 - [ ] **W10** 판정 리포트 포맷 확정 (JSON + 요약)
 - [ ] **W11** CLI v0 (`koai-verify <image>`)
@@ -173,3 +182,4 @@
 - [x] **W5 검증기 코어 인프라 완료** (2026-06-07) — `detectors/` 기반 타입, `pipeline.py` 입력 파이프라인, `rules/` 룰 엔진(R-01~R-07), CI(GitHub Actions), 단위 테스트 114개(W5) 통과
 - [x] **W6 탐지 엔진 ① C2PA + EXIF 완료** (2026-06-07) — `c2pa_detector.py`(FOUND/NOT_FOUND/UNKNOWN), `exif_detector.py`(5개 필드 검사), c2pa-python 공식 서명 픽스처, 단위 테스트 75개(W6) 통과 / 전체 474개
 - [x] **W7 탐지 엔진 ② OCR + 워터마크 완료** (2026-06-07) — `ocr_detector.py`(한/영 패턴 18종, easyocr/pytesseract 폴백), `watermark_detector.py`(항상 UNKNOWN·heuristic 점수), OCR 픽스처 5종, 단위 테스트 96개(W7) 통과 / 전체 564개
+- [x] **W8 한국법 룰 엔진 완료** (2026-06-07) — `aggregate_detections()`(4개 탐지기 출력 집계, FOUND>UNKNOWN>NOT_FOUND 우선순위), `RuleEngine.evaluate_outputs()`(DetectorOutput 리스트 직접 수용), 단위 테스트 47개(W8) 통과 / 전체 611개
