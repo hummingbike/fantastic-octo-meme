@@ -1,12 +1,14 @@
-"""W5 — 한국법 룰 엔진 (R-01~R-07).
+"""한국법 룰 엔진 (R-01~R-07).
 
-입력: 탐지기 결과 dict + 검증 컨텍스트
+입력: 탐지기 결과 dict 또는 DetectorOutput 리스트 + 검증 컨텍스트
 출력: RuleVerdict (판정 + 트리거 규칙 + 권고문)
 
 룰 평가 우선순위:
   R-05 → R-04 → R-01/R-02 → R-03 → R-07 → R-06
 """
 from __future__ import annotations
+
+from koai_verify.detectors.result import DetectorOutput
 
 from .models import RuleVerdict, VerificationContext, Verdict
 
@@ -16,6 +18,25 @@ DetectionsDict = dict[str, str]
 """탐지 결과 dict: {"c2pa": "FOUND", "exif": "NOT_FOUND", "ocr": "FOUND", "watermark": "UNKNOWN"}"""
 
 
+def _priority(result_str: str) -> int:
+    return {"FOUND": 2, "UNKNOWN": 1, "NOT_FOUND": 0}.get(result_str, 0)
+
+
+def aggregate_detections(outputs: list[DetectorOutput]) -> DetectionsDict:
+    """DetectorOutput 리스트를 DetectionsDict 로 변환한다.
+
+    같은 detector_name 이 여러 번 나올 경우 FOUND > UNKNOWN > NOT_FOUND 우선순위 적용.
+    """
+    result: DetectionsDict = {}
+    for output in outputs:
+        name = output.detector_name
+        value = output.result.value
+        existing = result.get(name)
+        if existing is None or _priority(value) > _priority(existing):
+            result[name] = value
+    return result
+
+
 class RuleEngine:
     """한국 AI 기본법 제31조 룰 엔진."""
 
@@ -23,6 +44,19 @@ class RuleEngine:
 
     def __init__(self, robustness_threshold: float = _ROBUSTNESS_THRESHOLD) -> None:
         self.robustness_threshold = robustness_threshold
+
+    def evaluate_outputs(
+        self,
+        outputs: list[DetectorOutput],
+        context: VerificationContext | None = None,
+        robustness: dict[str, float] | None = None,
+    ) -> RuleVerdict:
+        """DetectorOutput 리스트를 집계해 룰을 평가한다.
+
+        4개 탐지기(C2PA/EXIF/OCR/Watermark) 출력을 받아
+        R-01~R-07 룰 평가 → RuleVerdict 를 반환한다.
+        """
+        return self.evaluate(aggregate_detections(outputs), context, robustness)
 
     def evaluate(
         self,
