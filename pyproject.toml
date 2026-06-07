@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "koai-verify"
+version = "0.1.0"
+description = "KoAI-Verify: 한국 AI 기본법 제31조 표시 의무 검증 SDK"
+authors = ["seokwoo han <h9379203@gmail.com>"]
+license = "Apache-2.0"
+readme = "README.md"
+python = "^3.10"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Pillow = "^10.0"
+piexif = "^1.1"
+c2pa-python = "^0.32"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0"
+ruff = "^0.4"
+black = "^24.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
