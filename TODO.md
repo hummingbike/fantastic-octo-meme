@@ -1,6 +1,6 @@
 # TODO.md — KoAI-Verify 작업 추적
 
-> 현재 주차: **W6** (2026-06-07 기준, W5 완료)
+> 현재 주차: **W7** (2026-06-07 기준, W6 완료)
 > 업데이트 규칙: 완료 즉시 체크. 주차 시작 시 다음 주 항목 활성화.
 
 ---
@@ -77,18 +77,27 @@
 
 ---
 
-## 현재 진행 중 — W6 (2026.7.6–7.12) — 탐지 엔진 ① C2PA + EXIF
+## 완료 — W6 (2026.7.6–7.12) — 탐지 엔진 ① C2PA + EXIF
 
-- [ ] `koai_verify/detectors/c2pa_detector.py` — C2PA 탐지 엔진
-- [ ] `koai_verify/detectors/exif_detector.py` — EXIF AI 탐지 엔진
+- [x] `koai_verify/detectors/c2pa_detector.py` — C2PA 탐지 엔진 (2026-06-07)
+- [x] `koai_verify/detectors/exif_detector.py` — EXIF AI 탐지 엔진 (2026-06-07)
+- [x] 각 탐지기 단위 테스트 — C2PA 29개 + EXIF 46개, 전체 474개 통과 (2026-06-07)
+- [x] tests/fixtures/c2pa/c2pa_test_C.jpg — c2pa-python 공식 서명 픽스처 추가 (2026-06-07)
+
+---
+
+## 현재 진행 중 — W7 (2026.7.13–7.19) — 탐지 엔진 ② OCR + 워터마크
+
+- [ ] `koai_verify/detectors/ocr_detector.py` — OCR 탐지 엔진 (가시 라벨 "AI 생성" 패턴)
+- [ ] `koai_verify/detectors/watermark_detector.py` — 오픈 워터마크 탐지 모듈
 - [ ] 각 탐지기 단위 테스트 (실제 픽스처 사용)
 
 ---
 
-## W7–W13 (Phase 1: 검증기 코어)
+## W8–W13 (Phase 1: 검증기 코어)
 
-- [ ] **W6** C2PA 탐지 엔진
-- [ ] **W6** EXIF 탐지 엔진
+- [x] **W6** C2PA 탐지 엔진
+- [x] **W6** EXIF 탐지 엔진
 - [ ] **W7** OCR 탐지 엔진 (가시 라벨)
 - [ ] **W7** 오픈 워터마크 탐지 모듈
 - [ ] **W8** 한국법 룰 엔진
@@ -154,3 +163,4 @@
 - [x] **W3 강건성 벤치마크 설계 완료** (2026-06-07) — `benchmarks/transform_spec.py`(20개 변형·SNS 4종), `benchmarks/matrix.py`(80셀 매트릭스·R-06 연계), `benchmarks/protocol_v1.md`, 단위 테스트 84개(W3) 통과
 - [x] **W4 샘플 수집·갭 리포트 완료** (2026-06-07) — `koai_verify/analysis/tool_fingerprint.py`(9도구 카탈로그), `transform_survivability.py`(생존 케이스), `docs/gap_report_draft.md`, 합성 픽스처 9종, 단위 테스트 24개(W4) 통과
 - [x] **W5 검증기 코어 인프라 완료** (2026-06-07) — `detectors/` 기반 타입, `pipeline.py` 입력 파이프라인, `rules/` 룰 엔진(R-01~R-07), CI(GitHub Actions), 단위 테스트 114개(W5) 통과
+- [x] **W6 탐지 엔진 ① C2PA + EXIF 완료** (2026-06-07) — `c2pa_detector.py`(FOUND/NOT_FOUND/UNKNOWN), `exif_detector.py`(5개 필드 검사), c2pa-python 공식 서명 픽스처, 단위 테스트 75개(W6) 통과 / 전체 474개
