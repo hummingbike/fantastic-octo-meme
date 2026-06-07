@@ -1,0 +1,184 @@
+"""합성 샘플 픽스처 생성 스크립트.
+
+각 AI 도구의 공개 문서 기반 메타데이터 패턴을 시뮬레이션하는 JPEG 파일을 생성한다.
+실제 샘플 수집(W4) 전에 분석 파이프라인 검증에 사용한다.
+
+실행: python tests/fixtures/make_synthetic_samples.py
+"""
+import io
+import json
+from pathlib import Path
+
+import piexif
+from PIL import Image
+
+SAMPLES_DIR = Path(__file__).parent / "samples"
+
+
+def _gradient_img(width: int = 256, height: int = 256, seed: int = 0) -> Image.Image:
+    """픽셀마다 다른 색상의 그라디언트 이미지 (메타데이터 비교 테스트용)."""
+    import random
+    rng = random.Random(seed)
+    pixels = [(rng.randint(0, 255), rng.randint(0, 255), rng.randint(0, 255)) for _ in range(width * height)]
+    img = Image.new("RGB", (width, height))
+    img.putdata(pixels)
+    return img
+
+
+def _save_with_exif(img: Image.Image, path: Path, exif_dict: dict, quality: int = 92) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    exif_bytes = piexif.dump(exif_dict)
+    buf = io.BytesIO()
+    img.save(buf, format="JPEG", quality=quality, exif=exif_bytes)
+    path.write_bytes(buf.getvalue())
+
+
+def _save_plain(img: Image.Image, path: Path, quality: int = 92) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    buf = io.BytesIO()
+    img.save(buf, format="JPEG", quality=quality)
+    path.write_bytes(buf.getvalue())
+
+
+# ---------------------------------------------------------------------------
+# Stable Diffusion (AUTOMATIC1111)
+# ---------------------------------------------------------------------------
+def make_stable_diffusion(out_dir: Path = SAMPLES_DIR / "stable_diffusion") -> list[Path]:
+    """Software=Stable Diffusion, UserComment에 프롬프트 포함."""
+    paths = []
+    for i in range(1, 4):
+        img = _gradient_img(seed=i * 10)
+        exif = {
+            "0th": {
+                piexif.ImageIFD.Software: b"Stable Diffusion 2.1",
+                piexif.ImageIFD.ImageDescription: b"AI Generated Image",
+            },
+            "Exif": {
+                piexif.ExifIFD.UserComment: (
+                    b"ASCII\x00\x00\x00"
+                    + f"Steps: 20, Sampler: DDIM, Model: sd-v1-5, Prompt: test prompt {i}".encode()
+                ),
+            },
+            "GPS": {},
+            "1st": {},
+        }
+        path = out_dir / f"stable_diffusion_{i:02d}.jpg"
+        _save_with_exif(img, path, exif)
+        paths.append(path)
+    return paths
+
+
+# ---------------------------------------------------------------------------
+# ComfyUI
+# ---------------------------------------------------------------------------
+def make_comfyui(out_dir: Path = SAMPLES_DIR / "comfyui") -> list[Path]:
+    """UserComment에 workflow JSON 스니펫 포함."""
+    paths = []
+    for i in range(1, 3):
+        img = _gradient_img(seed=i * 20)
+        workflow_snippet = json.dumps({"nodes": [{"type": "KSampler", "steps": 25}]})
+        exif = {
+            "0th": {piexif.ImageIFD.Software: b"ComfyUI"},
+            "Exif": {
+                piexif.ExifIFD.UserComment: (
+                    b"ASCII\x00\x00\x00" + workflow_snippet.encode()
+                ),
+            },
+            "GPS": {},
+            "1st": {},
+        }
+        path = out_dir / f"comfyui_{i:02d}.jpg"
+        _save_with_exif(img, path, exif)
+        paths.append(path)
+    return paths
+
+
+# ---------------------------------------------------------------------------
+# Midjourney (마킹 없음)
+# ---------------------------------------------------------------------------
+def make_midjourney(out_dir: Path = SAMPLES_DIR / "midjourney") -> list[Path]:
+    """메타데이터 일체 없음 — Midjourney는 AI 마킹 미삽입."""
+    paths = []
+    for i in range(1, 4):
+        img = _gradient_img(seed=i * 30)
+        path = out_dir / f"midjourney_{i:02d}.jpg"
+        _save_plain(img, path)
+        paths.append(path)
+    return paths
+
+
+# ---------------------------------------------------------------------------
+# DALL-E 3 (마킹 없음)
+# ---------------------------------------------------------------------------
+def make_dalle3(out_dir: Path = SAMPLES_DIR / "dalle3") -> list[Path]:
+    """DALL-E 3도 EXIF AI 마킹 없음 (2026 기준 C2PA 미채택)."""
+    paths = []
+    for i in range(1, 3):
+        img = _gradient_img(seed=i * 40)
+        path = out_dir / f"dalle3_{i:02d}.jpg"
+        _save_plain(img, path)
+        paths.append(path)
+    return paths
+
+
+# ---------------------------------------------------------------------------
+# Adobe Firefly (C2PA 시뮬 — 서명 없는 메타 표시)
+# ---------------------------------------------------------------------------
+def make_firefly(out_dir: Path = SAMPLES_DIR / "firefly") -> list[Path]:
+    """Firefly는 C2PA 삽입. 서명 없는 시뮬 픽스처이므로 c2pa-python Reader는 오류.
+
+    실제 C2PA 테스트는 c2pa-python Builder로 생성한 이미지 사용 (W6 예정).
+    여기서는 Firefly 패턴임을 EXIF로 마킹한 플레이스홀더를 생성한다.
+    """
+    paths = []
+    for i in range(1, 3):
+        img = _gradient_img(seed=i * 50)
+        exif = {
+            "0th": {
+                piexif.ImageIFD.Software: b"Adobe Firefly",
+                piexif.ImageIFD.Copyright: b"Generated by Adobe Firefly. C2PA manifest present.",
+            },
+            "Exif": {},
+            "GPS": {},
+            "1st": {},
+        }
+        path = out_dir / f"firefly_{i:02d}.jpg"
+        _save_with_exif(img, path, exif)
+        paths.append(path)
+    return paths
+
+
+# ---------------------------------------------------------------------------
+# 한국 도구 플레이스홀더 (실제 샘플 미수집)
+# ---------------------------------------------------------------------------
+def make_korean_tool_placeholder(tool_name: str, seed_base: int) -> list[Path]:
+    """한국 AI 도구 플레이스홀더 — 실제 샘플 수집 전 분석 파이프라인 검증용."""
+    out_dir = SAMPLES_DIR / tool_name
+    paths = []
+    for i in range(1, 3):
+        img = _gradient_img(seed=seed_base + i)
+        # 실제 메타데이터 미확인 → 마킹 없는 plain JPEG로 표현
+        path = out_dir / f"{tool_name}_{i:02d}_placeholder.jpg"
+        _save_plain(img, path)
+        paths.append(path)
+    return paths
+
+
+def generate_all() -> dict[str, list[Path]]:
+    results = {}
+    results["stable_diffusion"] = make_stable_diffusion()
+    results["comfyui"] = make_comfyui()
+    results["midjourney"] = make_midjourney()
+    results["dalle3"] = make_dalle3()
+    results["firefly"] = make_firefly()
+    results["drapart"] = make_korean_tool_placeholder("drapart", seed_base=100)
+    results["genape"] = make_korean_tool_placeholder("genape", seed_base=200)
+    results["vela"] = make_korean_tool_placeholder("vela", seed_base=300)
+    results["jeditor"] = make_korean_tool_placeholder("jeditor", seed_base=400)
+    return results
+
+
+if __name__ == "__main__":
+    results = generate_all()
+    for tool, paths in results.items():
+        print(f"{tool}: {[p.name for p in paths]}")
