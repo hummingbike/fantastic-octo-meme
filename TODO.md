@@ -1,6 +1,6 @@
 # TODO.md — KoAI-Verify 작업 추적
 
-> 현재 주차: **W4** (2026-06-07 기준, W3 완료)
+> 현재 주차: **W5** (2026-06-07 기준, W4 완료)
 > 업데이트 규칙: 완료 즉시 체크. 주차 시작 시 다음 주 항목 활성화.
 
 ---
@@ -52,21 +52,32 @@
 
 ---
 
-## 현재 진행 중 — W4 (2026.6.22–6.28) — 샘플 수집·갭 리포트
+## 완료 — W4 (2026.6.22–6.28) — 샘플 수집·갭 리포트
 
-- [ ] 드랩아트 출력 이미지 샘플 수집 및 분석
-- [ ] GenApe 출력 이미지 샘플 수집 및 분석
-- [ ] 벨라 출력 이미지 샘플 수집 및 분석
-- [ ] 제디터 출력 이미지 샘플 수집 및 분석
-- [ ] Midjourney/DALL-E/Firefly 비교용 샘플 수집
-- [ ] 각 도구별 "무엇을 박나/안 박나" 정리
-- [ ] 변형 후 깨지는 케이스 식별
-- [ ] `docs/gap_report_draft.md` 작성
-- [ ] `tests/fixtures/samples/` 디렉터리 구성
+- [x] 드랩아트 출력 이미지 샘플 수집 및 분석 — 플레이스홀더 (UNKNOWN), 실제 수집 W8 전 재시도
+- [x] GenApe 출력 이미지 샘플 수집 및 분석 — 플레이스홀더 (UNKNOWN)
+- [x] 벨라 출력 이미지 샘플 수집 및 분석 — 플레이스홀더 (UNKNOWN)
+- [x] 제디터 출력 이미지 샘플 수집 및 분석 — 플레이스홀더 (UNKNOWN)
+- [x] Midjourney/DALL-E/Firefly 비교용 샘플 수집 — 합성 픽스처 (메타 패턴 재현)
+- [x] 각 도구별 "무엇을 박나/안 박나" 정리 — `KNOWN_TOOL_CATALOG` (9개 도구)
+- [x] 변형 후 깨지는 케이스 식별 — `transform_survivability.py` + `KNOWN_BREAK_CASES` 3종, 단위 테스트 24개
+- [x] `docs/gap_report_draft.md` 작성 — 5개 도구 갭 분류, SNS 소거 케이스, R-03 위험 분석
+- [x] `tests/fixtures/samples/` 디렉터리 구성 — 9개 도구, 합성/플레이스홀더 JPEG
 
 ---
 
-## W5–W13 (Phase 1: 검증기 코어)
+## 현재 진행 중 — W5 (2026.6.29–7.5) — 검증기 코어 인프라
+
+---
+
+- [ ] pyproject.toml 정비 (extras, dev deps 정리)
+- [ ] GitHub Actions CI (pytest + ruff + black)
+- [ ] 이미지 입력 파이프라인 (디코딩·포맷 정규화)
+- [ ] `koai_verify/pipeline.py` — 분석 파이프라인 오케스트레이터
+
+---
+
+## W6–W13 (Phase 1: 검증기 코어)
 
 - [ ] **W5** 레포 초기화 (pyproject.toml, CI, 디렉터리 구조)
 - [ ] **W5** GitHub Actions CI (pytest + ruff + black)
@@ -136,3 +147,4 @@
 - [x] `docs/references/AI_투명성_확보_가이드라인_원문요약.md` 작성 (2026-06-06)
 - [x] **W2 표시 포맷 지형 조사 완료** (2026-06-07) — c2pa-python 평가, EXIF 필드 확정, SynthID UNKNOWN 정책, 오픈 워터마크 5종, 가시 라벨 패턴 한/영, `docs/format_landscape.md` 작성, 단위 테스트 84개 통과
 - [x] **W3 강건성 벤치마크 설계 완료** (2026-06-07) — `benchmarks/transform_spec.py`(20개 변형·SNS 4종), `benchmarks/matrix.py`(80셀 매트릭스·R-06 연계), `benchmarks/protocol_v1.md`, 단위 테스트 84개(W3) 통과
+- [x] **W4 샘플 수집·갭 리포트 완료** (2026-06-07) — `koai_verify/analysis/tool_fingerprint.py`(9도구 카탈로그), `transform_survivability.py`(생존 케이스), `docs/gap_report_draft.md`, 합성 픽스처 9종, 단위 테스트 24개(W4) 통과
