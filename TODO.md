@@ -1,6 +1,6 @@
 # TODO.md — KoAI-Verify 작업 추적
 
-> 현재 주차: **W5** (2026-06-07 기준, W4 완료)
+> 현재 주차: **W6** (2026-06-07 기준, W5 완료)
 > 업데이트 규칙: 완료 즉시 체크. 주차 시작 시 다음 주 항목 활성화.
 
 ---
@@ -66,22 +66,27 @@
 
 ---
 
-## 현재 진행 중 — W5 (2026.6.29–7.5) — 검증기 코어 인프라
+## 완료 — W5 (2026.6.29–7.5) — 검증기 코어 인프라
+
+- [x] pyproject.toml 정비 — Pillow >=10, CLI 엔트리포인트, pytest ini_options
+- [x] GitHub Actions CI (pytest + ruff + black) — Python 3.10/3.11/3.12 매트릭스
+- [x] 이미지 입력 파이프라인 — `koai_verify/pipeline.py` (로드·검증·sha256·SSRF 방지)
+- [x] `koai_verify/detectors/` 기반 타입 — DetectionResult + DetectorBase (23 tests)
+- [x] `koai_verify/rules/` 룰 엔진 — Verdict + RuleEngine R-01~R-07 (37 tests)
+- [x] 단위 테스트 총계: 399개 통과
 
 ---
 
-- [ ] pyproject.toml 정비 (extras, dev deps 정리)
-- [ ] GitHub Actions CI (pytest + ruff + black)
-- [ ] 이미지 입력 파이프라인 (디코딩·포맷 정규화)
-- [ ] `koai_verify/pipeline.py` — 분석 파이프라인 오케스트레이터
+## 현재 진행 중 — W6 (2026.7.6–7.12) — 탐지 엔진 ① C2PA + EXIF
+
+- [ ] `koai_verify/detectors/c2pa_detector.py` — C2PA 탐지 엔진
+- [ ] `koai_verify/detectors/exif_detector.py` — EXIF AI 탐지 엔진
+- [ ] 각 탐지기 단위 테스트 (실제 픽스처 사용)
 
 ---
 
-## W6–W13 (Phase 1: 검증기 코어)
+## W7–W13 (Phase 1: 검증기 코어)
 
-- [ ] **W5** 레포 초기화 (pyproject.toml, CI, 디렉터리 구조)
-- [ ] **W5** GitHub Actions CI (pytest + ruff + black)
-- [ ] **W5** 이미지 입력 파이프라인 (디코딩·포맷 정규화)
 - [ ] **W6** C2PA 탐지 엔진
 - [ ] **W6** EXIF 탐지 엔진
 - [ ] **W7** OCR 탐지 엔진 (가시 라벨)
@@ -148,3 +153,4 @@
 - [x] **W2 표시 포맷 지형 조사 완료** (2026-06-07) — c2pa-python 평가, EXIF 필드 확정, SynthID UNKNOWN 정책, 오픈 워터마크 5종, 가시 라벨 패턴 한/영, `docs/format_landscape.md` 작성, 단위 테스트 84개 통과
 - [x] **W3 강건성 벤치마크 설계 완료** (2026-06-07) — `benchmarks/transform_spec.py`(20개 변형·SNS 4종), `benchmarks/matrix.py`(80셀 매트릭스·R-06 연계), `benchmarks/protocol_v1.md`, 단위 테스트 84개(W3) 통과
 - [x] **W4 샘플 수집·갭 리포트 완료** (2026-06-07) — `koai_verify/analysis/tool_fingerprint.py`(9도구 카탈로그), `transform_survivability.py`(생존 케이스), `docs/gap_report_draft.md`, 합성 픽스처 9종, 단위 테스트 24개(W4) 통과
+- [x] **W5 검증기 코어 인프라 완료** (2026-06-07) — `detectors/` 기반 타입, `pipeline.py` 입력 파이프라인, `rules/` 룰 엔진(R-01~R-07), CI(GitHub Actions), 단위 테스트 114개(W5) 통과
