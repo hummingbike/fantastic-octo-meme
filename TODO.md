@@ -1,11 +1,11 @@
 # TODO.md — KoAI-Verify 작업 추적
 
-> 현재 주차: **W1** (2026-06-06 기준)
+> 현재 주차: **W3** (2026-06-07 기준, W2 완료)
 > 업데이트 규칙: 완료 즉시 체크. 주차 시작 시 다음 주 항목 활성화.
 
 ---
 
-## 현재 진행 중 — W1 (2026.6.1–6.7)
+## 완료 — W1 (2026.6.1–6.7)
 
 ### 법령·가이드라인 원문 정독 + 룰셋 초안
 
@@ -27,22 +27,22 @@
 
 ---
 
-## 다음 주 — W2 (2026.6.8–6.14)
+## 완료 — W2 (2026.6.8–6.14)
 
 ### 표시 포맷 지형 조사
 
-- [ ] c2pa-python 라이브러리 평가 (pip install, 매니페스트 파싱 테스트)
-- [ ] C2PA 매니페스트 구조 문서화
-- [ ] SynthID 탐지 가능성 조사 (Google 공개 문헌 조사)
-- [ ] EXIF AI 관련 표준 필드 목록 확정
-  - [ ] UserComment, XMP:DCSubjectCode, MakerNote 등
-- [ ] 흔한 오픈 워터마크 패턴 목록 작성
-- [ ] 가시 라벨 패턴 목록 (한국어 "AI 생성", "AI-generated", 영문 변형)
-- [ ] `docs/format_landscape.md` 작성
+- [x] c2pa-python 라이브러리 평가 (pip install, 매니페스트 파싱 테스트) — 2026-06-07
+- [x] C2PA 매니페스트 구조 문서화 — 2026-06-07
+- [x] SynthID 탐지 가능성 조사 (Google 공개 문헌 조사) — 2026-06-07 (UNKNOWN 확정)
+- [x] EXIF AI 관련 표준 필드 목록 확정 — 2026-06-07
+  - [x] UserComment, XMP:DCSubjectCode, MakerNote 등
+- [x] 흔한 오픈 워터마크 패턴 목록 작성 — 2026-06-07 (5종: Tree-Ring/HiDDeN/StegaStamp/Stable Signature/IMATAG)
+- [x] 가시 라벨 패턴 목록 (한국어 "AI 생성", "AI-generated", 영문 변형) — 2026-06-07
+- [x] `docs/format_landscape.md` 작성 — 2026-06-07
 
 ---
 
-## W3 (2026.6.15–6.21) — 강건성 벤치마크 설계 ★
+## 현재 진행 중 — W3 (2026.6.15–6.21) — 강건성 벤치마크 설계 ★
 
 - [ ] 변형 배터리 파라미터 확정 (JPEG/WebP/리사이즈/크롭/재인코딩/스크린샷)
 - [ ] SNS 재인코딩 시뮬 파라미터 조사 (Instagram·Twitter·KakaoTalk 실측)
@@ -134,3 +134,4 @@
 - [x] `docs/rules/rule_engine_spec_v0.md` v0.2 완성 (2026-06-06) — 원문 기반 R-01~R-07, VerificationContext, 딥페이크 룰, 판정 알고리즘, 체크리스트 A~E 매핑
 - [x] `docs/references/AI_투명성_확보_가이드라인_NIA.pdf` 다운로드 (2026-06-06) — 과기정통부 원본 33p
 - [x] `docs/references/AI_투명성_확보_가이드라인_원문요약.md` 작성 (2026-06-06)
+- [x] **W2 표시 포맷 지형 조사 완료** (2026-06-07) — c2pa-python 평가, EXIF 필드 확정, SynthID UNKNOWN 정책, 오픈 워터마크 5종, 가시 라벨 패턴 한/영, `docs/format_landscape.md` 작성, 단위 테스트 84개 통과
