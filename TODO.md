@@ -1,6 +1,6 @@
 # TODO.md — KoAI-Verify 작업 추적
 
-> 현재 주차: **W9** (2026-06-07 기준, W8 완료)
+> 현재 주차: **W10** (2026-06-08 기준, W9 완료)
 > 업데이트 규칙: 완료 즉시 체크. 주차 시작 시 다음 주 항목 활성화.
 
 ---
@@ -102,12 +102,21 @@
 
 ---
 
-## 현재 진행 중 — W9 (2026.7.27–8.2) — 강건성 하니스
+## 완료 — W9 (2026.7.27–8.2) — 강건성 하니스
 
-- [ ] `koai_verify/robustness/harness.py` — 변형 배터리 실행기
-- [ ] `transform(image, spec) → transformed_image` 구현 (W3 설계 기반)
-- [ ] `run_battery(image_path, detector) → SurvivalReport` 구현
-- [ ] 강건성 하니스 단위 테스트
+- [x] `koai_verify/robustness/harness.py` — 변형 배터리 실행기 (2026-06-08)
+- [x] `transform(image, spec) → bytes` 구현 (W3 설계 기반) (2026-06-08)
+- [x] `run_battery(image_bytes, detector) → SurvivalReport` 구현 (2026-06-08)
+- [x] 강건성 하니스 단위 테스트 41개, 전체 652개 통과 (2026-06-08)
+
+---
+
+## 현재 진행 중 — W10 (2026.8.3–8.9) — 판정 리포트 포맷
+
+- [ ] `koai_verify/report/formatter.py` — JSON 리포트 + 사람 읽기용 요약
+- [ ] `VerificationReport` 데이터 모델 (image hash, verdict, detections, robustness, recommendation)
+- [ ] JSON 직렬화 / 역직렬화
+- [ ] 판정 리포트 단위 테스트
 
 ---
 
@@ -118,7 +127,7 @@
 - [x] **W7** OCR 탐지 엔진 (가시 라벨)
 - [x] **W7** 오픈 워터마크 탐지 모듈
 - [x] **W8** 한국법 룰 엔진
-- [ ] **W9** 강건성 하니스 (변형 배터리 실행)
+- [x] **W9** 강건성 하니스 (변형 배터리 실행)
 - [ ] **W10** 판정 리포트 포맷 확정 (JSON + 요약)
 - [ ] **W11** CLI v0 (`koai-verify <image>`)
 - [ ] **W12** Python SDK (`pip install koai-verify`)
@@ -183,3 +192,4 @@
 - [x] **W6 탐지 엔진 ① C2PA + EXIF 완료** (2026-06-07) — `c2pa_detector.py`(FOUND/NOT_FOUND/UNKNOWN), `exif_detector.py`(5개 필드 검사), c2pa-python 공식 서명 픽스처, 단위 테스트 75개(W6) 통과 / 전체 474개
 - [x] **W7 탐지 엔진 ② OCR + 워터마크 완료** (2026-06-07) — `ocr_detector.py`(한/영 패턴 18종, easyocr/pytesseract 폴백), `watermark_detector.py`(항상 UNKNOWN·heuristic 점수), OCR 픽스처 5종, 단위 테스트 96개(W7) 통과 / 전체 564개
 - [x] **W8 한국법 룰 엔진 완료** (2026-06-07) — `aggregate_detections()`(4개 탐지기 출력 집계, FOUND>UNKNOWN>NOT_FOUND 우선순위), `RuleEngine.evaluate_outputs()`(DetectorOutput 리스트 직접 수용), 단위 테스트 47개(W8) 통과 / 전체 611개
+- [x] **W9 강건성 하니스 완료** (2026-06-08) — `transform()`(apply_transform 래퍼), `TransformEntry`(survived: bool|None), `SurvivalReport`(생존율 집계·to_robustness_dict()), `run_battery()`(EXIFDetector × 20개 변형 배터리), RuleEngine R-06 연동, 단위 테스트 41개(W9) 통과 / 전체 652개
