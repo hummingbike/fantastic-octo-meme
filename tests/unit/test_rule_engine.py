@@ -4,8 +4,6 @@ R-01~R-07 판정 로직, Verdict, VerificationContext, RuleVerdict 검증.
 """
 from __future__ import annotations
 
-import pytest
-
 from koai_verify.rules import RuleEngine, RuleVerdict, Verdict, VerificationContext
 
 # 공통 탐지 결과 상수

@@ -8,7 +8,6 @@ import pytest
 
 from koai_verify.detectors import DetectionResult, DetectorBase, DetectorOutput
 
-
 # ---------------------------------------------------------------------------
 # DetectionResult 열거형
 # ---------------------------------------------------------------------------

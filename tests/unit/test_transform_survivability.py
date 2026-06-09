@@ -11,10 +11,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
-
 from benchmarks.transform_spec import (
-    TRANSFORM_BATTERY,
     TransformSpec,
     TransformType,
     apply_transform,
@@ -77,10 +74,18 @@ class TestToolTransformReport:
     def _make_report(self) -> ToolTransformReport:
         fp = fingerprint_image(_read("stable_diffusion", 1), "stable_diffusion")
         results = [
-            TransformSurvivalResult("jpeg_q80", "exif_ai", MarkingPresence.FOUND, MarkingPresence.FOUND, SurvivalOutcome.SURVIVED),
-            TransformSurvivalResult("sns_instagram", "exif_ai", MarkingPresence.FOUND, MarkingPresence.NOT_FOUND, SurvivalOutcome.BROKEN),
-            TransformSurvivalResult("resize_50pct", "exif_ai", MarkingPresence.FOUND, MarkingPresence.FOUND, SurvivalOutcome.SURVIVED),
-            TransformSurvivalResult("screenshot_96dpi", "exif_ai", MarkingPresence.FOUND, MarkingPresence.NOT_FOUND, SurvivalOutcome.BROKEN),
+            TransformSurvivalResult(
+                "jpeg_q80", "exif_ai", MarkingPresence.FOUND, MarkingPresence.FOUND, SurvivalOutcome.SURVIVED
+            ),
+            TransformSurvivalResult(
+                "sns_instagram", "exif_ai", MarkingPresence.FOUND, MarkingPresence.NOT_FOUND, SurvivalOutcome.BROKEN
+            ),
+            TransformSurvivalResult(
+                "resize_50pct", "exif_ai", MarkingPresence.FOUND, MarkingPresence.FOUND, SurvivalOutcome.SURVIVED
+            ),
+            TransformSurvivalResult(
+                "screenshot_96dpi", "exif_ai", MarkingPresence.FOUND, MarkingPresence.NOT_FOUND, SurvivalOutcome.BROKEN
+            ),
         ]
         return ToolTransformReport("stable_diffusion", fp, results)
 

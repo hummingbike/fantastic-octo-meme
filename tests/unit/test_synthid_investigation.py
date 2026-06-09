@@ -10,7 +10,7 @@
   탐지 불가 마크를 "탐지됨"이라 주장하면 신뢰 자산 훼손.
   SDK는 UNKNOWN을 명시적으로 반환해야 하며 절대 추측하지 않는다.
 """
-
+import pytest
 
 # ---------------------------------------------------------------------------
 # 비공개 워터마크 탐지 가능성 카탈로그
@@ -89,7 +89,7 @@ class TestSynthIdInvestigation:
     def test_no_public_synthid_detection_library_exists(self):
         """2026년 기준 pip 설치 가능한 SynthID 탐지 라이브러리 없음."""
         try:
-            import synthid_detector  # type: ignore[import]
+            import synthid_detector  # type: ignore[import]  # noqa: F401
             # 만약 미래에 공개된다면 이 테스트를 업데이트해야 함
             pytest.fail("synthid_detector 가 설치되어 있음 — 탐지 가능성 재평가 필요")
         except ImportError:
@@ -168,6 +168,3 @@ class TestUnknownHandlingPolicy:
         for name, info in WATERMARK_DETECTABILITY.items():
             assert "sdk_verdict" in info, f"{name} 에 sdk_verdict 없음"
             assert info["sdk_verdict"] in {"FOUND", "NOT_FOUND", "UNKNOWN"}
-
-
-import pytest

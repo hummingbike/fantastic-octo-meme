@@ -5,12 +5,9 @@ aggregate_detections() + evaluate_outputs() 경로 전체를 R-01~R-07 케이스
 """
 from __future__ import annotations
 
-import pytest
-
 from koai_verify.detectors import DetectionResult, DetectorOutput
 from koai_verify.rules import (
     RuleEngine,
-    RuleVerdict,
     Verdict,
     VerificationContext,
     aggregate_detections,

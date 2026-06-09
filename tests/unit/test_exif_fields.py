@@ -12,10 +12,8 @@
              Iptc4xmpCore:Subject, 도구별 네임스페이스
 """
 import io
-import struct
 
 import piexif
-import pytest
 from PIL import Image
 
 # ---------------------------------------------------------------------------

@@ -17,14 +17,14 @@ from pathlib import Path
 import pytest
 from PIL import Image
 
-from koai_verify.detectors.watermark_detector import (
-    WatermarkDetector,
-    KNOWN_WATERMARK_TYPES,
-    _lsb_chi_score,
-    _dct_anomaly_score,
-    _channel_noise_variance,
-)
 from koai_verify.detectors.result import DetectionResult
+from koai_verify.detectors.watermark_detector import (
+    KNOWN_WATERMARK_TYPES,
+    WatermarkDetector,
+    _channel_noise_variance,
+    _dct_anomaly_score,
+    _lsb_chi_score,
+)
 
 SAMPLES_DIR = Path(__file__).parent.parent / "fixtures" / "samples"
 

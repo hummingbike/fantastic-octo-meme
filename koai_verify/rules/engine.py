@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from koai_verify.detectors.result import DetectorOutput
 
-from .models import RuleVerdict, VerificationContext, Verdict
+from .models import RuleVerdict, Verdict, VerificationContext
 
 _ROBUSTNESS_THRESHOLD = 0.70
 

@@ -15,7 +15,11 @@ from pathlib import Path
 import pytest
 from PIL import Image
 
-from koai_verify.detectors.c2pa_detector import C2PADetector, _detect_mime, _extract_manifest_details
+from koai_verify.detectors.c2pa_detector import (
+    C2PADetector,
+    _detect_mime,
+    _extract_manifest_details,
+)
 from koai_verify.detectors.result import DetectionResult
 
 FIXTURES_DIR = Path(__file__).parent.parent / "fixtures"

@@ -20,10 +20,8 @@ from benchmarks.transform_spec import (
     TransformSpec,
     TransformType,
 )
-from koai_verify.detectors import DetectionResult, DetectorOutput, EXIFDetector
-from koai_verify.detectors.base import DetectorBase
+from koai_verify.detectors import DetectionResult, EXIFDetector
 from koai_verify.robustness import SurvivalReport, TransformEntry, run_battery, transform
-
 
 # ---------------------------------------------------------------------------
 # 테스트 픽스처 헬퍼

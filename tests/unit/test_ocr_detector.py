@@ -17,11 +17,11 @@ import pytest
 from PIL import Image
 
 from koai_verify.detectors.ocr_detector import (
-    OCRDetector,
-    KO_LABEL_PATTERNS,
     EN_LABEL_PATTERNS,
-    match_label_patterns,
+    KO_LABEL_PATTERNS,
+    OCRDetector,
     is_ocr_available,
+    match_label_patterns,
 )
 from koai_verify.detectors.result import DetectionResult
 

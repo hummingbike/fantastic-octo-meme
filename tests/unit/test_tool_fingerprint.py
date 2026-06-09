@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import piexif
 import pytest
 
 from koai_verify.analysis.tool_fingerprint import (

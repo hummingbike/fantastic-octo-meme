@@ -11,20 +11,17 @@
 from __future__ import annotations
 
 import io
-import struct
 
 import piexif
-import pytest
 from PIL import Image
 
 from benchmarks.transform_spec import (
-    TRANSFORM_BATTERY,
     SNS_PARAMS,
+    TRANSFORM_BATTERY,
     TransformSpec,
     TransformType,
     apply_transform,
 )
-
 
 # ---------------------------------------------------------------------------
 # 공통 헬퍼

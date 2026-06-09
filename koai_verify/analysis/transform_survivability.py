@@ -14,7 +14,6 @@ from typing import Optional
 
 from benchmarks.transform_spec import TRANSFORM_BATTERY, TransformSpec, apply_transform
 from koai_verify.analysis.tool_fingerprint import (
-    GapCategory,
     MarkingPresence,
     ToolFingerprint,
     fingerprint_image,

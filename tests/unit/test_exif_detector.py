@@ -17,8 +17,8 @@ from PIL import Image
 
 from koai_verify.detectors.exif_detector import (
     EXIFDetector,
-    decode_user_comment,
     _contains_ai_keyword_any,
+    decode_user_comment,
 )
 from koai_verify.detectors.result import DetectionResult
 

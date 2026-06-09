@@ -12,8 +12,6 @@ from __future__ import annotations
 
 import json
 
-import pytest
-
 from benchmarks.matrix import (
     ROBUSTNESS_THRESHOLD,
     DetectionFormat,
@@ -25,7 +23,6 @@ from benchmarks.matrix import (
     worst_transforms,
 )
 from benchmarks.transform_spec import TRANSFORM_BATTERY
-
 
 # ---------------------------------------------------------------------------
 # DetectionFormat

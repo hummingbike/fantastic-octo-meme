@@ -10,7 +10,7 @@ W6/W7 탐지 엔진의 전신(前身) — Phase 0 분석 단계용.
 from __future__ import annotations
 
 import io
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
 from typing import Optional
 
