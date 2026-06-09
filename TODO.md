@@ -1,6 +1,6 @@
 # TODO.md — KoAI-Verify 작업 추적
 
-> 현재 주차: **W12** (2026-06-09 기준, W11 완료)
+> 현재 주차: **W13** (2026-06-09 기준, W12 완료)
 > 업데이트 규칙: 완료 즉시 체크. 주차 시작 시 다음 주 항목 활성화.
 
 ---
@@ -130,12 +130,22 @@
 
 ---
 
-## 현재 진행 중 — W12 (2026.8.17–8.23) — Python SDK + JS SDK + 웹 플레이그라운드
+## 완료 — W12 (2026.8.17–8.23) — Python SDK + JS SDK + 웹 플레이그라운드
 
-- [ ] `pip install koai-verify` Python 패키지 배포 준비 (PyPI 메타데이터 정비, `__version__`)
-- [ ] `koai_verify` 공개 API 정리 (`__init__.py` 모듈 익스포트)
-- [ ] JS/TS SDK 래퍼 (`sdk/` 디렉터리, `npm install @koai/verify`)
-- [ ] 웹 플레이그라운드 (Gradio 또는 정적 HTML 드래그&드롭)
+- [x] `pip install koai-verify` Python 패키지 배포 준비 (PyPI 메타데이터 정비, `__version__`)
+- [x] `koai_verify` 공개 API 정리 (`__init__.py` 모듈 익스포트)
+- [x] JS/TS SDK 래퍼 (`sdk/` 디렉터리, `npm install @koai/verify`)
+- [x] 웹 플레이그라운드 (Gradio 드래그&드롭 UI, `playground/app.py`)
+
+---
+
+## 현재 진행 중 — W13 (2026.8.24–8.30) — 오픈소스 공개 준비
+
+- [ ] `README.md` — 한국어/영어, 빠른 시작, CLI/SDK 사용 예시
+- [ ] `CONTRIBUTING.md` — 기여 가이드 (코드 스타일, 테스트, PR 절차)
+- [ ] `LICENSE` — Apache-2.0
+- [ ] `docs/quickstart.md` — 5분 시작 가이드
+- [ ] `.github/ISSUE_TEMPLATE/` — 버그 리포트 / 기능 요청 템플릿
 
 ---
 
@@ -149,9 +159,9 @@
 - [x] **W9** 강건성 하니스 (변형 배터리 실행)
 - [x] **W10** 판정 리포트 포맷 확정 (JSON + 요약)
 - [x] **W11** CLI v0 (`koai-verify <image>`)
-- [ ] **W12** Python SDK (`pip install koai-verify`)
-- [ ] **W12** JS SDK 래퍼 (`npm install @koai/verify`)
-- [ ] **W12** 웹 플레이그라운드 (드래그&드롭)
+- [x] **W12** Python SDK (`pip install koai-verify`)
+- [x] **W12** JS SDK 래퍼 (`npm install @koai/verify`)
+- [x] **W12** 웹 플레이그라운드 (드래그&드롭)
 - [ ] **W13** README (한/영), CONTRIBUTING.md, LICENSE
 - [ ] **W13** 오픈소스 공개 준비 완료
 
@@ -214,3 +224,4 @@
 - [x] **W9 강건성 하니스 완료** (2026-06-08) — `transform()`(apply_transform 래퍼), `TransformEntry`(survived: bool|None), `SurvivalReport`(생존율 집계·to_robustness_dict()), `run_battery()`(EXIFDetector × 20개 변형 배터리), RuleEngine R-06 연동, 단위 테스트 41개(W9) 통과 / 전체 652개
 - [x] **W10 판정 리포트 포맷 완료** (2026-06-08) — `VerificationReport`(image_sha256·verdict·detections·robustness·recommendation·timestamp), `to_json/from_json/from_dict`, `from_rule_verdict()` 팩토리, `to_summary()` 한국어 요약, `format_report()` 단축 함수, 단위 테스트 51개(W10) 통과 / 전체 703개
 - [x] **W11 CLI v0 완료** (2026-06-09) — `koai_verify/cli.py`(`koai-verify <image>`), `--format json|summary`, `--robustness`(변형 배터리), 종료 코드 0~3/10, click >=8.0 추가, 단위 테스트 24개(W11) 통과 / 전체 727개
+- [x] **W12 SDK·플레이그라운드 완료** (2026-06-09) — `api.py`(고수준 verify()), `__init__.py`(공개 API), `sdk/@koai/verify`(TS·spawnSync 래퍼, Jest 20개), `playground/app.py`(Gradio UI), 단위 테스트 44개(W12) 추가 / 전체 771개
