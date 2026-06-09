@@ -1,0 +1,699 @@
+{
+  "version": "1",
+  "generated_at": "2026-06-09T05:53:10.558060+00:00",
+  "fixture_note": "합성 테스트 픽스처 기반 — 실측치는 gap_report_v1.md 참조",
+  "transform_count": 20,
+  "detector_formats": [
+    "c2pa",
+    "exif",
+    "visible_label",
+    "open_watermark"
+  ],
+  "r06_threshold": 0.8,
+  "matrix": {
+    "cells": [
+      {
+        "format": "c2pa",
+        "transform_label": "jpeg_compress_q95",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform_label": "jpeg_compress_q80",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform_label": "jpeg_compress_q60",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform_label": "jpeg_compress_q40",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform_label": "jpeg_compress_q20",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform_label": "webp_convert_q90",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform_label": "webp_convert_q70",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform_label": "webp_convert_q50",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform_label": "resize_75pct",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform_label": "resize_50pct",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform_label": "resize_25pct",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform_label": "crop_center_90pct",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform_label": "crop_center_70pct",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform_label": "crop_random_80pct",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform_label": "sns_instagram",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform_label": "sns_twitter",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform_label": "sns_kakaotalk_chat",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform_label": "sns_kakaotalk_profile",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform_label": "screenshot_96dpi",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform_label": "screenshot_72dpi",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform_label": "jpeg_compress_q95",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform_label": "jpeg_compress_q80",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform_label": "jpeg_compress_q60",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform_label": "jpeg_compress_q40",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform_label": "jpeg_compress_q20",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform_label": "webp_convert_q90",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform_label": "webp_convert_q70",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform_label": "webp_convert_q50",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform_label": "resize_75pct",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform_label": "resize_50pct",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform_label": "resize_25pct",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform_label": "crop_center_90pct",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform_label": "crop_center_70pct",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform_label": "crop_random_80pct",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform_label": "sns_instagram",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform_label": "sns_twitter",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform_label": "sns_kakaotalk_chat",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform_label": "sns_kakaotalk_profile",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform_label": "screenshot_96dpi",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform_label": "screenshot_72dpi",
+        "survival_rate": 0.0
+      },
+      {
+        "format": "visible_label",
+        "transform_label": "jpeg_compress_q95",
+        "survival_rate": null
+      },
+      {
+        "format": "visible_label",
+        "transform_label": "jpeg_compress_q80",
+        "survival_rate": null
+      },
+      {
+        "format": "visible_label",
+        "transform_label": "jpeg_compress_q60",
+        "survival_rate": null
+      },
+      {
+        "format": "visible_label",
+        "transform_label": "jpeg_compress_q40",
+        "survival_rate": null
+      },
+      {
+        "format": "visible_label",
+        "transform_label": "jpeg_compress_q20",
+        "survival_rate": null
+      },
+      {
+        "format": "visible_label",
+        "transform_label": "webp_convert_q90",
+        "survival_rate": null
+      },
+      {
+        "format": "visible_label",
+        "transform_label": "webp_convert_q70",
+        "survival_rate": null
+      },
+      {
+        "format": "visible_label",
+        "transform_label": "webp_convert_q50",
+        "survival_rate": null
+      },
+      {
+        "format": "visible_label",
+        "transform_label": "resize_75pct",
+        "survival_rate": null
+      },
+      {
+        "format": "visible_label",
+        "transform_label": "resize_50pct",
+        "survival_rate": null
+      },
+      {
+        "format": "visible_label",
+        "transform_label": "resize_25pct",
+        "survival_rate": null
+      },
+      {
+        "format": "visible_label",
+        "transform_label": "crop_center_90pct",
+        "survival_rate": null
+      },
+      {
+        "format": "visible_label",
+        "transform_label": "crop_center_70pct",
+        "survival_rate": null
+      },
+      {
+        "format": "visible_label",
+        "transform_label": "crop_random_80pct",
+        "survival_rate": null
+      },
+      {
+        "format": "visible_label",
+        "transform_label": "sns_instagram",
+        "survival_rate": null
+      },
+      {
+        "format": "visible_label",
+        "transform_label": "sns_twitter",
+        "survival_rate": null
+      },
+      {
+        "format": "visible_label",
+        "transform_label": "sns_kakaotalk_chat",
+        "survival_rate": null
+      },
+      {
+        "format": "visible_label",
+        "transform_label": "sns_kakaotalk_profile",
+        "survival_rate": null
+      },
+      {
+        "format": "visible_label",
+        "transform_label": "screenshot_96dpi",
+        "survival_rate": null
+      },
+      {
+        "format": "visible_label",
+        "transform_label": "screenshot_72dpi",
+        "survival_rate": null
+      },
+      {
+        "format": "open_watermark",
+        "transform_label": "jpeg_compress_q95",
+        "survival_rate": null
+      },
+      {
+        "format": "open_watermark",
+        "transform_label": "jpeg_compress_q80",
+        "survival_rate": null
+      },
+      {
+        "format": "open_watermark",
+        "transform_label": "jpeg_compress_q60",
+        "survival_rate": null
+      },
+      {
+        "format": "open_watermark",
+        "transform_label": "jpeg_compress_q40",
+        "survival_rate": null
+      },
+      {
+        "format": "open_watermark",
+        "transform_label": "jpeg_compress_q20",
+        "survival_rate": null
+      },
+      {
+        "format": "open_watermark",
+        "transform_label": "webp_convert_q90",
+        "survival_rate": null
+      },
+      {
+        "format": "open_watermark",
+        "transform_label": "webp_convert_q70",
+        "survival_rate": null
+      },
+      {
+        "format": "open_watermark",
+        "transform_label": "webp_convert_q50",
+        "survival_rate": null
+      },
+      {
+        "format": "open_watermark",
+        "transform_label": "resize_75pct",
+        "survival_rate": null
+      },
+      {
+        "format": "open_watermark",
+        "transform_label": "resize_50pct",
+        "survival_rate": null
+      },
+      {
+        "format": "open_watermark",
+        "transform_label": "resize_25pct",
+        "survival_rate": null
+      },
+      {
+        "format": "open_watermark",
+        "transform_label": "crop_center_90pct",
+        "survival_rate": null
+      },
+      {
+        "format": "open_watermark",
+        "transform_label": "crop_center_70pct",
+        "survival_rate": null
+      },
+      {
+        "format": "open_watermark",
+        "transform_label": "crop_random_80pct",
+        "survival_rate": null
+      },
+      {
+        "format": "open_watermark",
+        "transform_label": "sns_instagram",
+        "survival_rate": null
+      },
+      {
+        "format": "open_watermark",
+        "transform_label": "sns_twitter",
+        "survival_rate": null
+      },
+      {
+        "format": "open_watermark",
+        "transform_label": "sns_kakaotalk_chat",
+        "survival_rate": null
+      },
+      {
+        "format": "open_watermark",
+        "transform_label": "sns_kakaotalk_profile",
+        "survival_rate": null
+      },
+      {
+        "format": "open_watermark",
+        "transform_label": "screenshot_96dpi",
+        "survival_rate": null
+      },
+      {
+        "format": "open_watermark",
+        "transform_label": "screenshot_72dpi",
+        "survival_rate": null
+      }
+    ]
+  },
+  "r06_evaluation": {
+    "threshold": 0.8,
+    "total_measured": 40,
+    "failing_count": 40,
+    "r06_triggered": true,
+    "failing_cells": [
+      {
+        "format": "c2pa",
+        "transform": "jpeg_compress_q95",
+        "rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform": "jpeg_compress_q80",
+        "rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform": "jpeg_compress_q60",
+        "rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform": "jpeg_compress_q40",
+        "rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform": "jpeg_compress_q20",
+        "rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform": "webp_convert_q90",
+        "rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform": "webp_convert_q70",
+        "rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform": "webp_convert_q50",
+        "rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform": "resize_75pct",
+        "rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform": "resize_50pct",
+        "rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform": "resize_25pct",
+        "rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform": "crop_center_90pct",
+        "rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform": "crop_center_70pct",
+        "rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform": "crop_random_80pct",
+        "rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform": "sns_instagram",
+        "rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform": "sns_twitter",
+        "rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform": "sns_kakaotalk_chat",
+        "rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform": "sns_kakaotalk_profile",
+        "rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform": "screenshot_96dpi",
+        "rate": 0.0
+      },
+      {
+        "format": "c2pa",
+        "transform": "screenshot_72dpi",
+        "rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform": "jpeg_compress_q95",
+        "rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform": "jpeg_compress_q80",
+        "rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform": "jpeg_compress_q60",
+        "rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform": "jpeg_compress_q40",
+        "rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform": "jpeg_compress_q20",
+        "rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform": "webp_convert_q90",
+        "rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform": "webp_convert_q70",
+        "rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform": "webp_convert_q50",
+        "rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform": "resize_75pct",
+        "rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform": "resize_50pct",
+        "rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform": "resize_25pct",
+        "rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform": "crop_center_90pct",
+        "rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform": "crop_center_70pct",
+        "rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform": "crop_random_80pct",
+        "rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform": "sns_instagram",
+        "rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform": "sns_twitter",
+        "rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform": "sns_kakaotalk_chat",
+        "rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform": "sns_kakaotalk_profile",
+        "rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform": "screenshot_96dpi",
+        "rate": 0.0
+      },
+      {
+        "format": "exif",
+        "transform": "screenshot_72dpi",
+        "rate": 0.0
+      }
+    ]
+  },
+  "images": [
+    {
+      "path": "tests/fixtures/c2pa/c2pa_test_C.jpg",
+      "detections": {
+        "c2pa": "FOUND",
+        "exif": "NOT_FOUND",
+        "ocr": "UNKNOWN"
+      }
+    },
+    {
+      "path": "tests/fixtures/ocr/ocr_aigc.jpg",
+      "detections": {
+        "c2pa": "NOT_FOUND",
+        "exif": "NOT_FOUND",
+        "ocr": "UNKNOWN"
+      }
+    },
+    {
+      "path": "tests/fixtures/ocr/ocr_en_label.jpg",
+      "detections": {
+        "c2pa": "NOT_FOUND",
+        "exif": "NOT_FOUND",
+        "ocr": "UNKNOWN"
+      }
+    },
+    {
+      "path": "tests/fixtures/ocr/ocr_ko_ascii_label.jpg",
+      "detections": {
+        "c2pa": "NOT_FOUND",
+        "exif": "NOT_FOUND",
+        "ocr": "UNKNOWN"
+      }
+    },
+    {
+      "path": "tests/fixtures/ocr/ocr_made_with_ai.jpg",
+      "detections": {
+        "c2pa": "NOT_FOUND",
+        "exif": "NOT_FOUND",
+        "ocr": "UNKNOWN"
+      }
+    },
+    {
+      "path": "tests/fixtures/ocr/ocr_no_label.jpg",
+      "detections": {
+        "c2pa": "NOT_FOUND",
+        "exif": "NOT_FOUND",
+        "ocr": "UNKNOWN"
+      }
+    },
+    {
+      "path": "tests/fixtures/samples/midjourney/midjourney_01.jpg",
+      "detections": {
+        "c2pa": "NOT_FOUND",
+        "exif": "NOT_FOUND",
+        "ocr": "UNKNOWN"
+      }
+    },
+    {
+      "path": "tests/fixtures/samples/stable_diffusion/stable_diffusion_01.jpg",
+      "detections": {
+        "c2pa": "NOT_FOUND",
+        "exif": "FOUND",
+        "ocr": "UNKNOWN"
+      }
+    },
+    {
+      "path": "tests/fixtures/samples/firefly/firefly_01.jpg",
+      "detections": {
+        "c2pa": "NOT_FOUND",
+        "exif": "FOUND",
+        "ocr": "UNKNOWN"
+      }
+    }
+  ]
+}

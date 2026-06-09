@@ -1,6 +1,6 @@
 # TODO.md — KoAI-Verify 작업 추적
 
-> 현재 주차: **W14** (2026-06-09 기준, W13 완료)
+> 현재 주차: **W16** (2026-06-09 기준, W15 완료)
 > 업데이트 규칙: 완료 즉시 체크. 주차 시작 시 다음 주 항목 활성화.
 
 ---
@@ -158,12 +158,21 @@
 
 ---
 
-## 현재 진행 중 — W15 (2026.9.7–9.13) — 문서·예제 정비
+## 완료 — W15 (2026.9.7–9.13) — 문서·예제 정비
 
-- [ ] `docs/examples/` — 언어별 사용 예제 (Python, Node.js, curl)
-- [ ] GitHub Actions 검증 통합 예제 (`.github/workflows/koai-verify.yml` 샘플)
-- [ ] `README.md` 배지 업데이트 및 갭 리포트 링크 추가
-- [ ] `docs/architecture.md` — 검증기 아키텍처 다이어그램 + 룰 흐름
+- [x] `docs/examples/` — 언어별 사용 예제 (Python, Node.js, curl)
+- [x] GitHub Actions 검증 통합 예제 (`.github/workflows/koai-verify.yml` 샘플)
+- [x] `README.md` 배지 업데이트 및 갭 리포트 링크 추가
+- [x] `docs/architecture.md` — 검증기 아키텍처 다이어그램 + 룰 흐름
+
+---
+
+## 현재 진행 중 — W16 (2026.9.14–9.20) — 오픈 SDK + 강건성 벤치마크 공개
+
+- [ ] Tistory 기술 블로그 포스팅 (검증기 소개 + 갭 리포트 요약)
+- [ ] GitHub 릴리즈 태깅 (`v0.1.0`) + PyPI 배포
+- [ ] GeekNews / 디스콰이엇 공개 게시
+- [ ] `benchmarks/results/` — 강건성 벤치마크 결과 공개 (SNS 생존율 매트릭스)
 
 ---
 
@@ -245,3 +254,4 @@
 - [x] **W12 SDK·플레이그라운드 완료** (2026-06-09) — `api.py`(고수준 verify()), `__init__.py`(공개 API), `sdk/@koai/verify`(TS·spawnSync 래퍼, Jest 20개), `playground/app.py`(Gradio UI), 단위 테스트 44개(W12) 추가 / 전체 771개
 - [x] **W13 오픈소스 공개 준비 완료** (2026-06-09) — `README.md`(한/영 확장, 빠른 시작·룰 테이블·JS SDK), `CONTRIBUTING.md`(코드 스타일·mock 금지·PR 절차·보안), `docs/quickstart.md`(5분 가이드, 판정 해석), `.github/ISSUE_TEMPLATE/`(bug_report·feature_request), 단위 테스트 44개(W13) 추가 / 전체 815개
 - [x] **W14 갭 리포트 확정 완료** (2026-06-09) — `batch_runner.py`(Phase 0 배치 분석기, ToolVerifyResult·BatchAnalysisReport, SNS 4종 생존율 실측), `docs/gap_report_v1.md`(확정본, 예측 정확도 5/5, SNS 생존율 0% 실측), 단위 테스트 53개(W14) 추가 / 전체 868개
+- [x] **W15 문서·예제 정비 완료** (2026-06-09) — `docs/examples/`(Python·Node.js·curl 예제), `.github/workflows/koai-verify.yml`(PR 자동 검증), `README.md`(PyPI 배지·갭 리포트 링크), `docs/architecture.md`(탐지 레이어·룰 흐름 다이어그램), 단위 테스트 52개(W15) 추가 / 전체 920개
