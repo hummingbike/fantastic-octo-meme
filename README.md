@@ -3,7 +3,7 @@
 **한국 AI 기본법 제31조 표시 의무 검증 오픈소스 SDK**  
 *Open-source SDK for verifying AI disclosure requirements under Korea's AI Basic Act Article 31*
 
-[![CI](https://github.com/seokwoo-han/fantastic-octo-meme/actions/workflows/ci.yml/badge.svg)](https://github.com/seokwoo-han/fantastic-octo-meme/actions/workflows/ci.yml)
+[![CI](https://github.com/hummingbike/fantastic-octo-meme/actions/workflows/ci.yml/badge.svg)](https://github.com/hummingbike/fantastic-octo-meme/actions/workflows/ci.yml)
 [![PyPI version](https://img.shields.io/pypi/v/koai-verify.svg)](https://pypi.org/project/koai-verify/)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
