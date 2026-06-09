@@ -16,17 +16,8 @@ import sys
 
 import click
 
-from koai_verify.detectors.c2pa_detector import C2PADetector
-from koai_verify.detectors.exif_detector import EXIFDetector
-from koai_verify.detectors.ocr_detector import OCRDetector
-from koai_verify.detectors.watermark_detector import WatermarkDetector
-from koai_verify.pipeline import ImageLoadError, load_from_path
-from koai_verify.report.formatter import VerificationReport
-from koai_verify.robustness.harness import run_battery
-from koai_verify.rules.engine import RuleEngine, aggregate_detections
-
-_DETECTORS = [C2PADetector(), EXIFDetector(), OCRDetector(), WatermarkDetector()]
-_RULE_ENGINE = RuleEngine()
+from koai_verify.api import verify
+from koai_verify.pipeline import ImageLoadError
 
 _EXIT_CODES = {
     "COMPLIANT": 0,
@@ -58,28 +49,10 @@ def main(image_path: str, output_format: str, robustness: bool) -> None:
     IMAGE 파일을 검증하고 판정 결과를 출력한다.
     """
     try:
-        img = load_from_path(image_path)
+        vreport = verify(image_path, robustness=robustness)
     except ImageLoadError as e:
         click.echo(f"오류: {e}", err=True)
         sys.exit(10)
-
-    outputs = [det.detect_safe(img.image_bytes) for det in _DETECTORS]
-
-    robustness_dict: dict[str, float] = {}
-    if robustness:
-        for det in _DETECTORS:
-            report = run_battery(img.image_bytes, det)
-            robustness_dict.update(report.to_robustness_dict())
-
-    detections = aggregate_detections(outputs)
-    rule_verdict = _RULE_ENGINE.evaluate(detections, robustness=robustness_dict or None)
-
-    vreport = VerificationReport.from_rule_verdict(
-        image_sha256=f"sha256:{img.sha256}",
-        rule_verdict=rule_verdict,
-        detections=detections,
-        robustness=robustness_dict,
-    )
 
     if output_format == "summary":
         click.echo(vreport.to_summary())
@@ -87,3 +60,7 @@ def main(image_path: str, output_format: str, robustness: bool) -> None:
         click.echo(vreport.to_json())
 
     sys.exit(_EXIT_CODES.get(vreport.verdict, 3))
+
+
+if __name__ == "__main__":
+    main()
