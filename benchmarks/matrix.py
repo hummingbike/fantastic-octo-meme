@@ -7,6 +7,7 @@
 
 이 모듈은 W3 설계 산출물이며, 실제 측정은 W9 강건성 하니스에서 수행한다.
 """
+
 from __future__ import annotations
 
 import json
@@ -19,8 +20,9 @@ from benchmarks.transform_spec import TRANSFORM_BATTERY, TransformSpec
 
 class DetectionFormat(str, Enum):
     """탐지 대상 포맷 분류 (R-01~R-04 룰과 대응)."""
-    C2PA = "c2pa"               # R-01: C2PA 매니페스트
-    EXIF = "exif"               # R-02: EXIF/XMP AI 플래그
+
+    C2PA = "c2pa"  # R-01: C2PA 매니페스트
+    EXIF = "exif"  # R-02: EXIF/XMP AI 플래그
     VISIBLE_LABEL = "visible_label"  # R-04: 가시 라벨 (OCR)
     OPEN_WATERMARK = "open_watermark"  # 오픈 워터마크 (키 있을 때)
 
@@ -28,6 +30,7 @@ class DetectionFormat(str, Enum):
 @dataclass
 class SurvivalCell:
     """매트릭스 한 셀 — 포맷 × 변형 조합의 탐지 생존율."""
+
     format: DetectionFormat
     transform_label: str
     survival_rate: Optional[float] = None  # None = 미측정, 0.0–1.0
@@ -45,6 +48,7 @@ class SurvivalCell:
 @dataclass
 class SurvivalMatrix:
     """포맷 × 변형 전체 매트릭스."""
+
     cells: list[SurvivalCell] = field(default_factory=list)
 
     def get(self, fmt: DetectionFormat, transform_label: str) -> Optional[SurvivalCell]:
@@ -95,17 +99,14 @@ def empty_matrix(
         formats = list(DetectionFormat)
     if battery is None:
         battery = TRANSFORM_BATTERY
-    cells = [
-        SurvivalCell(fmt, spec.label(), None)
-        for fmt in formats
-        for spec in battery
-    ]
+    cells = [SurvivalCell(fmt, spec.label(), None) for fmt in formats for spec in battery]
     return SurvivalMatrix(cells=cells)
 
 
 # ---------------------------------------------------------------------------
 # 매트릭스 집계 유틸리티
 # ---------------------------------------------------------------------------
+
 
 def format_survival_summary(matrix: SurvivalMatrix) -> dict[str, dict[str, float | None]]:
     """포맷별 변형별 생존율을 중첩 딕셔너리로 반환한다."""
@@ -135,6 +136,7 @@ def worst_transforms(
 # PRD §4 R-06: 생존율 < 임계치 → WARNING
 ROBUSTNESS_THRESHOLD = 0.8  # 80%
 
+
 def evaluate_robustness(matrix: SurvivalMatrix, threshold: float = ROBUSTNESS_THRESHOLD) -> dict:
     """매트릭스에서 R-06 경고 판정을 수행한다."""
     failing = matrix.failing_cells(threshold)
@@ -144,7 +146,6 @@ def evaluate_robustness(matrix: SurvivalMatrix, threshold: float = ROBUSTNESS_TH
         "failing_count": len(failing),
         "r06_triggered": len(failing) > 0,
         "failing_cells": [
-            {"format": c.format.value, "transform": c.transform_label, "rate": c.survival_rate}
-            for c in failing
+            {"format": c.format.value, "transform": c.transform_label, "rate": c.survival_rate} for c in failing
         ],
     }

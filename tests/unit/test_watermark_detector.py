@@ -9,6 +9,7 @@
 
 픽스처: 합성 JPEG + PNG (Pillow 생성)
 """
+
 from __future__ import annotations
 
 import io
@@ -17,14 +18,14 @@ from pathlib import Path
 import pytest
 from PIL import Image
 
-from koai_verify.detectors.watermark_detector import (
-    WatermarkDetector,
-    KNOWN_WATERMARK_TYPES,
-    _lsb_chi_score,
-    _dct_anomaly_score,
-    _channel_noise_variance,
-)
 from koai_verify.detectors.result import DetectionResult
+from koai_verify.detectors.watermark_detector import (
+    KNOWN_WATERMARK_TYPES,
+    WatermarkDetector,
+    _channel_noise_variance,
+    _dct_anomaly_score,
+    _lsb_chi_score,
+)
 
 SAMPLES_DIR = Path(__file__).parent.parent / "fixtures" / "samples"
 
@@ -32,6 +33,7 @@ SAMPLES_DIR = Path(__file__).parent.parent / "fixtures" / "samples"
 # ---------------------------------------------------------------------------
 # 헬퍼
 # ---------------------------------------------------------------------------
+
 
 def _make_jpeg(color=(128, 128, 128), size=(64, 64), quality=92) -> bytes:
     img = Image.new("RGB", size, color=color)
@@ -49,11 +51,9 @@ def _make_png(color=(128, 128, 128), size=(64, 64)) -> bytes:
 
 def _make_gradient_jpeg(seed: int = 0, size=(128, 128)) -> bytes:
     import random
+
     rng = random.Random(seed)
-    pixels = [
-        (rng.randint(0, 255), rng.randint(0, 255), rng.randint(0, 255))
-        for _ in range(size[0] * size[1])
-    ]
+    pixels = [(rng.randint(0, 255), rng.randint(0, 255), rng.randint(0, 255)) for _ in range(size[0] * size[1])]
     img = Image.new("RGB", size)
     img.putdata(pixels)
     buf = io.BytesIO()
@@ -65,16 +65,19 @@ def _make_gradient_jpeg(seed: int = 0, size=(128, 128)) -> bytes:
 # 인터페이스 검증
 # ---------------------------------------------------------------------------
 
+
 class TestWatermarkDetectorInterface:
     def test_name_is_watermark(self):
         assert WatermarkDetector().name == "watermark"
 
     def test_is_detector_base_subclass(self):
         from koai_verify.detectors.base import DetectorBase
+
         assert isinstance(WatermarkDetector(), DetectorBase)
 
     def test_detect_returns_detector_output(self):
         from koai_verify.detectors.result import DetectorOutput
+
         output = WatermarkDetector().detect(_make_jpeg())
         assert isinstance(output, DetectorOutput)
 
@@ -86,6 +89,7 @@ class TestWatermarkDetectorInterface:
 # ---------------------------------------------------------------------------
 # 항상 UNKNOWN — 디코더 키 없음
 # ---------------------------------------------------------------------------
+
 
 class TestWatermarkDetectorAlwaysUnknown:
     def test_plain_jpeg_returns_unknown(self):
@@ -118,6 +122,7 @@ class TestWatermarkDetectorAlwaysUnknown:
 # UNKNOWN reason=image_not_readable (파싱 불가)
 # ---------------------------------------------------------------------------
 
+
 class TestWatermarkDetectorImageNotReadable:
     def test_garbage_bytes_returns_unknown(self):
         output = WatermarkDetector().detect(b"\x00\x01garbage")
@@ -135,6 +140,7 @@ class TestWatermarkDetectorImageNotReadable:
 # ---------------------------------------------------------------------------
 # details 필드 검증
 # ---------------------------------------------------------------------------
+
 
 class TestWatermarkDetectorDetails:
     def test_reason_is_no_decoder_key(self):
@@ -199,6 +205,7 @@ class TestWatermarkDetectorDetails:
 # detect_safe — 예외 안전 래퍼
 # ---------------------------------------------------------------------------
 
+
 class TestWatermarkDetectorSafe:
     def test_detect_safe_does_not_raise(self):
         output = WatermarkDetector().detect_safe(b"\xff" * 50)
@@ -212,6 +219,7 @@ class TestWatermarkDetectorSafe:
 # ---------------------------------------------------------------------------
 # 알려진 워터마크 유형 카탈로그
 # ---------------------------------------------------------------------------
+
 
 class TestKnownWatermarkTypes:
     def test_minimum_count(self):
@@ -234,6 +242,7 @@ class TestKnownWatermarkTypes:
 # Heuristic 점수 함수 단위 검증
 # ---------------------------------------------------------------------------
 
+
 class TestLSBChiScore:
     def _make_pil(self, color, size=(64, 64)) -> Image.Image:
         return Image.new("RGB", size, color=color)
@@ -250,6 +259,7 @@ class TestLSBChiScore:
 
     def test_gradient_score_in_range(self):
         import random
+
         rng = random.Random(7)
         pixels = [(rng.randint(0, 255), rng.randint(0, 255), rng.randint(0, 255)) for _ in range(64 * 64)]
         img = Image.new("RGB", (64, 64))
@@ -286,6 +296,7 @@ class TestChannelNoiseVariance:
 
     def test_gradient_score_positive(self):
         import random
+
         rng = random.Random(13)
         pixels = [(rng.randint(0, 255), rng.randint(0, 255), rng.randint(0, 255)) for _ in range(64 * 64)]
         img = Image.new("RGB", (64, 64))
@@ -295,6 +306,7 @@ class TestChannelNoiseVariance:
 
     def test_score_in_range(self):
         import random
+
         rng = random.Random(99)
         pixels = [(rng.randint(0, 255), rng.randint(0, 255), rng.randint(0, 255)) for _ in range(64 * 64)]
         img = Image.new("RGB", (64, 64))
@@ -310,6 +322,7 @@ class TestChannelNoiseVariance:
 # ---------------------------------------------------------------------------
 # 실제 픽스처 이미지 — samples/ (모두 UNKNOWN 이어야 함)
 # ---------------------------------------------------------------------------
+
 
 class TestWatermarkDetectorWithRealFixtures:
     @pytest.fixture

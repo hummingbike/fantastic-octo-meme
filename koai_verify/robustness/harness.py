@@ -12,6 +12,7 @@
 run_battery() 결과의 to_robustness_dict() 는 RuleEngine.evaluate() 의
 robustness 인자로 직접 사용할 수 있다.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -105,11 +106,13 @@ def run_battery(
         else:
             survived = None  # 원본 탐지 불가 → 비교 불가
 
-        entries.append(TransformEntry(
-            transform_label=spec.label(),
-            result=output.result,
-            survived=survived,
-        ))
+        entries.append(
+            TransformEntry(
+                transform_label=spec.label(),
+                result=output.result,
+                survived=survived,
+            )
+        )
 
     return SurvivalReport(
         detector_name=detector.name,

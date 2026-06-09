@@ -7,11 +7,12 @@
 
 참조: PLAN.md W3, PRD §3.2 강건성 벤치마크
 """
+
 from __future__ import annotations
 
 import io
 import random
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
 from typing import Optional
 
@@ -36,11 +37,11 @@ class TransformSpec:
     """변형 하나를 완전히 기술하는 불변 명세."""
 
     type: TransformType
-    quality: Optional[int] = None       # JPEG/WebP 품질 (1-95)
-    scale: Optional[float] = None       # 리사이즈 배율 (0.0-1.0)
+    quality: Optional[int] = None  # JPEG/WebP 품질 (1-95)
+    scale: Optional[float] = None  # 리사이즈 배율 (0.0-1.0)
     crop_ratio: Optional[float] = None  # 크롭 비율 (0.0-1.0)
-    dpi: Optional[int] = None           # 스크린샷 DPI
-    seed: int = 42                      # 랜덤 크롭 재현성용 seed
+    dpi: Optional[int] = None  # 스크린샷 DPI
+    seed: int = 42  # 랜덤 크롭 재현성용 seed
 
     def label(self) -> str:
         """매트릭스 표 행/열 레이블."""
@@ -59,6 +60,7 @@ class TransformSpec:
 # ---------------------------------------------------------------------------
 # 변형 실행 함수
 # ---------------------------------------------------------------------------
+
 
 def apply_transform(image_bytes: bytes, spec: TransformSpec) -> bytes:
     """image_bytes 에 TransformSpec 변형을 적용하고 결과 bytes 를 반환한다."""
@@ -110,6 +112,7 @@ def _limit_max_dimension(img, max_px: int):
 
 
 # --- 개별 변형 구현 ---
+
 
 def _jpeg_compress(img, spec: TransformSpec) -> bytes:
     q = spec.quality if spec.quality is not None else 80

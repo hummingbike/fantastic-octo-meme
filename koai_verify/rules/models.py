@@ -2,6 +2,7 @@
 
 한국 AI 기본법 제31조 판정에 사용되는 Verdict, VerificationContext, RuleVerdict.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -11,10 +12,10 @@ from enum import Enum
 class Verdict(str, Enum):
     """판정 결과 열거형 (제31조 컴플라이언스)."""
 
-    COMPLIANT = "COMPLIANT"          # 제31조 충족
+    COMPLIANT = "COMPLIANT"  # 제31조 충족
     NON_COMPLIANT = "NON_COMPLIANT"  # 명백한 불충족
-    WARNING = "WARNING"              # 충족 가능성 있으나 컨텍스트 불명 또는 강건성 미달
-    UNKNOWN = "UNKNOWN"              # 판정 불가 (탐지 결과 부족)
+    WARNING = "WARNING"  # 충족 가능성 있으나 컨텍스트 불명 또는 강건성 미달
+    UNKNOWN = "UNKNOWN"  # 판정 불가 (탐지 결과 부족)
 
 
 @dataclass

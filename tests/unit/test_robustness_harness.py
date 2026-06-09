@@ -7,6 +7,7 @@
   - 실제 EXIFDetector 로 SNS 변형 후 소실 확인
   - to_robustness_dict() → RuleEngine 입력 호환
 """
+
 from __future__ import annotations
 
 import io
@@ -20,14 +21,13 @@ from benchmarks.transform_spec import (
     TransformSpec,
     TransformType,
 )
-from koai_verify.detectors import DetectionResult, DetectorOutput, EXIFDetector
-from koai_verify.detectors.base import DetectorBase
+from koai_verify.detectors import DetectionResult, EXIFDetector
 from koai_verify.robustness import SurvivalReport, TransformEntry, run_battery, transform
-
 
 # ---------------------------------------------------------------------------
 # 테스트 픽스처 헬퍼
 # ---------------------------------------------------------------------------
+
 
 def _make_ai_exif_jpeg(width: int = 200, height: int = 150) -> bytes:
     """UserComment 에 'AI Generated' 가 있는 JPEG — EXIFDetector 가 FOUND 반환."""
@@ -58,6 +58,7 @@ def _open(data: bytes) -> Image.Image:
 # ---------------------------------------------------------------------------
 # transform() 래퍼
 # ---------------------------------------------------------------------------
+
 
 class TestTransformFunction:
     JPEG = _make_ai_exif_jpeg()
@@ -119,6 +120,7 @@ class TestTransformFunction:
 # TransformEntry 모델
 # ---------------------------------------------------------------------------
 
+
 class TestTransformEntry:
     def test_survived_true(self):
         e = TransformEntry(transform_label="jpeg_q80", result=DetectionResult.FOUND, survived=True)
@@ -140,6 +142,7 @@ class TestTransformEntry:
 # ---------------------------------------------------------------------------
 # SurvivalReport 모델 + 메서드
 # ---------------------------------------------------------------------------
+
 
 class TestSurvivalReport:
     def _report(self, survivals: list[bool | None]) -> SurvivalReport:
@@ -193,9 +196,13 @@ class TestSurvivalReport:
         assert d["exif"] == pytest.approx(0.5)
 
     def test_to_robustness_dict_all_none_empty(self):
-        r = SurvivalReport("exif", DetectionResult.NOT_FOUND, [
-            TransformEntry("t", DetectionResult.NOT_FOUND, None),
-        ])
+        r = SurvivalReport(
+            "exif",
+            DetectionResult.NOT_FOUND,
+            [
+                TransformEntry("t", DetectionResult.NOT_FOUND, None),
+            ],
+        )
         assert r.to_robustness_dict() == {}
 
     def test_detector_name_stored(self):
@@ -206,6 +213,7 @@ class TestSurvivalReport:
 # ---------------------------------------------------------------------------
 # run_battery() — 원본 탐지 불가 케이스
 # ---------------------------------------------------------------------------
+
 
 class TestRunBatteryOriginalNotFound:
     """원본 이미지가 NOT_FOUND 일 때 모든 survived=None."""
@@ -241,6 +249,7 @@ class TestRunBatteryOriginalNotFound:
 # run_battery() — EXIFDetector 실제 실행
 # ---------------------------------------------------------------------------
 
+
 class TestRunBatteryWithEXIFDetector:
     """EXIFDetector 로 실제 run_battery() 실행 — 픽스처 JPEG 사용."""
 
@@ -248,15 +257,23 @@ class TestRunBatteryWithEXIFDetector:
     DETECTOR = EXIFDetector()
 
     def test_original_result_found(self):
-        report = run_battery(self.AI_JPEG, self.DETECTOR, battery=[
-            TransformSpec(type=TransformType.JPEG_COMPRESS, quality=80),
-        ])
+        report = run_battery(
+            self.AI_JPEG,
+            self.DETECTOR,
+            battery=[
+                TransformSpec(type=TransformType.JPEG_COMPRESS, quality=80),
+            ],
+        )
         assert report.original_result == DetectionResult.FOUND
 
     def test_detector_name_is_exif(self):
-        report = run_battery(self.AI_JPEG, self.DETECTOR, battery=[
-            TransformSpec(type=TransformType.JPEG_COMPRESS, quality=80),
-        ])
+        report = run_battery(
+            self.AI_JPEG,
+            self.DETECTOR,
+            battery=[
+                TransformSpec(type=TransformType.JPEG_COMPRESS, quality=80),
+            ],
+        )
         assert report.detector_name == "exif"
 
     def test_entry_count_matches_battery(self):
@@ -329,6 +346,7 @@ class TestRunBatteryWithEXIFDetector:
 # ---------------------------------------------------------------------------
 # run_battery() → RuleEngine 연동 확인
 # ---------------------------------------------------------------------------
+
 
 class TestRunBatteryRuleEngineIntegration:
     """SurvivalReport.to_robustness_dict() 가 RuleEngine 과 호환되는지 확인."""

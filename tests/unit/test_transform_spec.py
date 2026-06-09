@@ -8,27 +8,26 @@
 
 테스트 픽스처: 200×150 RGB JPEG (EXIF 있음)
 """
+
 from __future__ import annotations
 
 import io
-import struct
 
 import piexif
-import pytest
 from PIL import Image
 
 from benchmarks.transform_spec import (
-    TRANSFORM_BATTERY,
     SNS_PARAMS,
+    TRANSFORM_BATTERY,
     TransformSpec,
     TransformType,
     apply_transform,
 )
 
-
 # ---------------------------------------------------------------------------
 # 공통 헬퍼
 # ---------------------------------------------------------------------------
+
 
 def _make_test_jpeg(width: int = 200, height: int = 150, quality: int = 95, gradient: bool = False) -> bytes:
     """EXIF UserComment 가 있는 테스트 JPEG.
@@ -36,12 +35,10 @@ def _make_test_jpeg(width: int = 200, height: int = 150, quality: int = 95, grad
     gradient=True 이면 노이즈 그라디언트 이미지를 생성한다 (압축률 비교 테스트용).
     """
     import random as _rnd
+
     rng = _rnd.Random(7)
     if gradient:
-        pixels = [
-            (rng.randint(0, 255), rng.randint(0, 255), rng.randint(0, 255))
-            for _ in range(width * height)
-        ]
+        pixels = [(rng.randint(0, 255), rng.randint(0, 255), rng.randint(0, 255)) for _ in range(width * height)]
         img = Image.new("RGB", (width, height))
         img.putdata(pixels)
     else:
@@ -71,6 +68,7 @@ def _get_exif_user_comment(data: bytes) -> bytes | None:
 # ---------------------------------------------------------------------------
 # JPEG 압축 테스트
 # ---------------------------------------------------------------------------
+
 
 class TestJpegCompress:
     SRC = _make_test_jpeg(width=400, height=400, quality=95, gradient=True)
@@ -108,6 +106,7 @@ class TestJpegCompress:
 # WebP 변환 테스트
 # ---------------------------------------------------------------------------
 
+
 class TestWebpConvert:
     SRC = _make_test_jpeg()
 
@@ -137,6 +136,7 @@ class TestWebpConvert:
 # ---------------------------------------------------------------------------
 # 리사이즈 테스트
 # ---------------------------------------------------------------------------
+
 
 class TestResize:
     SRC = _make_test_jpeg(width=200, height=150)
@@ -169,6 +169,7 @@ class TestResize:
 # ---------------------------------------------------------------------------
 # 크롭 테스트
 # ---------------------------------------------------------------------------
+
 
 class TestCropCenter:
     SRC = _make_test_jpeg(width=200, height=200, gradient=True)
@@ -217,6 +218,7 @@ class TestCropRandom:
 # ---------------------------------------------------------------------------
 # SNS 시뮬 테스트
 # ---------------------------------------------------------------------------
+
 
 class TestSnsInstagram:
     SRC = _make_test_jpeg(width=2000, height=1500)  # 큰 이미지 → 축소
@@ -288,6 +290,7 @@ class TestSnsKakaotalk:
 # 스크린샷 시뮬 테스트
 # ---------------------------------------------------------------------------
 
+
 class TestScreenshot:
     SRC = _make_test_jpeg(width=400, height=300)
 
@@ -313,6 +316,7 @@ class TestScreenshot:
 # ---------------------------------------------------------------------------
 # 배터리 상수 완전성 테스트
 # ---------------------------------------------------------------------------
+
 
 class TestTransformBattery:
     def test_battery_not_empty(self):
@@ -349,6 +353,7 @@ class TestTransformBattery:
 # ---------------------------------------------------------------------------
 # SNS 파라미터 카탈로그 테스트
 # ---------------------------------------------------------------------------
+
 
 class TestSnsParams:
     def test_all_major_platforms_documented(self):

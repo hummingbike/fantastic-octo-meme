@@ -1,4 +1,5 @@
 """Shared pytest fixtures for KoAI-Verify tests."""
+
 import io
 from pathlib import Path
 

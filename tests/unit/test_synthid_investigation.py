@@ -11,6 +11,7 @@
   SDK는 UNKNOWN을 명시적으로 반환해야 하며 절대 추측하지 않는다.
 """
 
+import pytest
 
 # ---------------------------------------------------------------------------
 # 비공개 워터마크 탐지 가능성 카탈로그
@@ -89,7 +90,8 @@ class TestSynthIdInvestigation:
     def test_no_public_synthid_detection_library_exists(self):
         """2026년 기준 pip 설치 가능한 SynthID 탐지 라이브러리 없음."""
         try:
-            import synthid_detector  # type: ignore[import]
+            import synthid_detector  # type: ignore[import]  # noqa: F401
+
             # 만약 미래에 공개된다면 이 테스트를 업데이트해야 함
             pytest.fail("synthid_detector 가 설치되어 있음 — 탐지 가능성 재평가 필요")
         except ImportError:
@@ -105,11 +107,7 @@ class TestNonDetectableWatermarks:
     """탐지 불가 워터마크 목록이 완전함을 확인한다."""
 
     def _get_undetectable(self) -> list[str]:
-        return [
-            name
-            for name, info in WATERMARK_DETECTABILITY.items()
-            if not info["detection_possible"]
-        ]
+        return [name for name, info in WATERMARK_DETECTABILITY.items() if not info["detection_possible"]]
 
     def test_multiple_undetectable_watermarks_documented(self):
         assert len(self._get_undetectable()) >= 4
@@ -117,9 +115,9 @@ class TestNonDetectableWatermarks:
     def test_all_undetectable_return_unknown_verdict(self):
         for name, info in WATERMARK_DETECTABILITY.items():
             if not info["detection_possible"]:
-                assert info["sdk_verdict"] == "UNKNOWN", (
-                    f"{name}: detection_possible=False 이지만 sdk_verdict 가 UNKNOWN 이 아님"
-                )
+                assert (
+                    info["sdk_verdict"] == "UNKNOWN"
+                ), f"{name}: detection_possible=False 이지만 sdk_verdict 가 UNKNOWN 이 아님"
 
     def test_dall_e_undetectable(self):
         assert not WATERMARK_DETECTABILITY["DALL_E_watermark"]["detection_possible"]
@@ -132,11 +130,7 @@ class TestDetectableWatermarks:
     """탐지 가능한 마킹 방식 목록이 정확함을 확인한다."""
 
     def _get_detectable(self) -> list[str]:
-        return [
-            name
-            for name, info in WATERMARK_DETECTABILITY.items()
-            if info["detection_possible"]
-        ]
+        return [name for name, info in WATERMARK_DETECTABILITY.items() if info["detection_possible"]]
 
     def test_at_least_one_detectable(self):
         assert len(self._get_detectable()) >= 1
@@ -168,6 +162,3 @@ class TestUnknownHandlingPolicy:
         for name, info in WATERMARK_DETECTABILITY.items():
             assert "sdk_verdict" in info, f"{name} 에 sdk_verdict 없음"
             assert info["sdk_verdict"] in {"FOUND", "NOT_FOUND", "UNKNOWN"}
-
-
-import pytest

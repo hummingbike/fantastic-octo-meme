@@ -7,6 +7,7 @@
   - 원본 이미지 데이터 리포트 포함 금지 — 해시(sha256)만 사용
   - 최대 이미지 크기: 50MB (DoS 방지)
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -96,9 +97,7 @@ def load_from_bytes(image_bytes: bytes, source_path: str | None = None) -> Image
         raise ImageLoadError("빈 이미지 데이터")
 
     if len(image_bytes) > _MAX_BYTES:
-        raise ImageLoadError(
-            f"이미지 크기 초과: {len(image_bytes) / 1024 / 1024:.1f}MB > 50MB 제한"
-        )
+        raise ImageLoadError(f"이미지 크기 초과: {len(image_bytes) / 1024 / 1024:.1f}MB > 50MB 제한")
 
     fmt = _detect_format(image_bytes)
     sha256 = _compute_sha256(image_bytes)

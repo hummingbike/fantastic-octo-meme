@@ -7,14 +7,12 @@
   - ToolTransformReport 집계 (broken/survived, survival_rate)
   - KNOWN_BREAK_CASES 카탈로그 구조 검증
 """
+
 from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
-
 from benchmarks.transform_spec import (
-    TRANSFORM_BATTERY,
     TransformSpec,
     TransformType,
     apply_transform,
@@ -46,6 +44,7 @@ def _read(tool: str, index: int = 1, placeholder: bool = False) -> bytes:
 # _compare_presence 단위 테스트
 # ---------------------------------------------------------------------------
 
+
 class TestComparePresence:
     def test_found_to_found_survived(self):
         result = _compare_presence(MarkingPresence.FOUND, MarkingPresence.FOUND)
@@ -73,14 +72,23 @@ class TestComparePresence:
 # TransformSurvivalResult / ToolTransformReport
 # ---------------------------------------------------------------------------
 
+
 class TestToolTransformReport:
     def _make_report(self) -> ToolTransformReport:
         fp = fingerprint_image(_read("stable_diffusion", 1), "stable_diffusion")
         results = [
-            TransformSurvivalResult("jpeg_q80", "exif_ai", MarkingPresence.FOUND, MarkingPresence.FOUND, SurvivalOutcome.SURVIVED),
-            TransformSurvivalResult("sns_instagram", "exif_ai", MarkingPresence.FOUND, MarkingPresence.NOT_FOUND, SurvivalOutcome.BROKEN),
-            TransformSurvivalResult("resize_50pct", "exif_ai", MarkingPresence.FOUND, MarkingPresence.FOUND, SurvivalOutcome.SURVIVED),
-            TransformSurvivalResult("screenshot_96dpi", "exif_ai", MarkingPresence.FOUND, MarkingPresence.NOT_FOUND, SurvivalOutcome.BROKEN),
+            TransformSurvivalResult(
+                "jpeg_q80", "exif_ai", MarkingPresence.FOUND, MarkingPresence.FOUND, SurvivalOutcome.SURVIVED
+            ),
+            TransformSurvivalResult(
+                "sns_instagram", "exif_ai", MarkingPresence.FOUND, MarkingPresence.NOT_FOUND, SurvivalOutcome.BROKEN
+            ),
+            TransformSurvivalResult(
+                "resize_50pct", "exif_ai", MarkingPresence.FOUND, MarkingPresence.FOUND, SurvivalOutcome.SURVIVED
+            ),
+            TransformSurvivalResult(
+                "screenshot_96dpi", "exif_ai", MarkingPresence.FOUND, MarkingPresence.NOT_FOUND, SurvivalOutcome.BROKEN
+            ),
         ]
         return ToolTransformReport("stable_diffusion", fp, results)
 
@@ -106,6 +114,7 @@ class TestToolTransformReport:
 # ---------------------------------------------------------------------------
 # 실제 변형 적용 후 EXIF 생존 테스트
 # ---------------------------------------------------------------------------
+
 
 class TestExifSurvivalAfterTransform:
     """합성 SD 픽스처에 변형 적용 후 EXIF 생존 확인."""
@@ -158,6 +167,7 @@ class TestExifSurvivalAfterTransform:
 # analyze_transform_survival 통합 테스트 (일부 변형만 사용 — 속도)
 # ---------------------------------------------------------------------------
 
+
 class TestAnalyzeTransformSurvivalIntegration:
     MINI_BATTERY = [
         TransformSpec(type=TransformType.SNS_INSTAGRAM),
@@ -174,8 +184,9 @@ class TestAnalyzeTransformSurvivalIntegration:
     def test_sd_report_sns_exif_broken(self):
         data = _read("stable_diffusion", 1)
         report = analyze_transform_survival(data, "stable_diffusion", self.MINI_BATTERY)
-        sns_results = [r for r in report.results
-                       if r.transform_label == "sns_instagram" and r.marking_type == "exif_ai"]
+        sns_results = [
+            r for r in report.results if r.transform_label == "sns_instagram" and r.marking_type == "exif_ai"
+        ]
         assert len(sns_results) == 1
         assert sns_results[0].outcome == SurvivalOutcome.BROKEN
 
@@ -191,13 +202,20 @@ class TestAnalyzeTransformSurvivalIntegration:
 # KNOWN_BREAK_CASES 카탈로그 검증
 # ---------------------------------------------------------------------------
 
+
 class TestKnownBreakCases:
     def test_catalog_not_empty(self):
         assert len(KNOWN_BREAK_CASES) >= 3
 
     def test_each_entry_has_required_fields(self):
-        required = {"tool", "marking", "breaking_transforms", "surviving_transforms",
-                    "survival_rate_estimate", "reason"}
+        required = {
+            "tool",
+            "marking",
+            "breaking_transforms",
+            "surviving_transforms",
+            "survival_rate_estimate",
+            "reason",
+        }
         for entry in KNOWN_BREAK_CASES:
             missing = required - set(entry.keys())
             assert not missing, f"{entry.get('tool')}: 필드 누락 {missing}"

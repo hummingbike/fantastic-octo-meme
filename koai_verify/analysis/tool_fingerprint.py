@@ -7,10 +7,11 @@ W6/W7 탐지 엔진의 전신(前身) — Phase 0 분석 단계용.
   - UNKNOWN 을 명시적으로 반환 — 과대주장 금지
   - OCR 탐지는 W7 이후 — 여기서는 EXIF/C2PA만 처리
 """
+
 from __future__ import annotations
 
 import io
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
 from typing import Optional
 
@@ -23,16 +24,18 @@ class MarkingPresence(str, Enum):
 
 class GapCategory(str, Enum):
     """컴플라이언스 갭 분류 (R-01~R-05 연계)."""
-    NO_MARKING = "no_marking"            # R-05: 어떤 표시도 없음
-    INVISIBLE_ONLY = "invisible_only"    # R-03 위험: 비가시만, 안내 없음
-    PARTIAL = "partial"                  # 일부 마킹 있으나 불완전
-    DETECTABLE = "detectable"            # 하나 이상 탐지 가능한 마킹 있음
-    UNKNOWN = "unknown"                  # 탐지 자체 불가 (한국 도구 미수집 등)
+
+    NO_MARKING = "no_marking"  # R-05: 어떤 표시도 없음
+    INVISIBLE_ONLY = "invisible_only"  # R-03 위험: 비가시만, 안내 없음
+    PARTIAL = "partial"  # 일부 마킹 있으나 불완전
+    DETECTABLE = "detectable"  # 하나 이상 탐지 가능한 마킹 있음
+    UNKNOWN = "unknown"  # 탐지 자체 불가 (한국 도구 미수집 등)
 
 
 @dataclass
 class ToolFingerprint:
     """도구 하나의 AI 표시 마킹 핑거프린트."""
+
     tool_name: str
     c2pa: MarkingPresence
     exif_ai: MarkingPresence
@@ -44,16 +47,10 @@ class ToolFingerprint:
     notes: str = ""
 
     def any_marking_found(self) -> bool:
-        return any(
-            m == MarkingPresence.FOUND
-            for m in (self.c2pa, self.exif_ai, self.visible_label)
-        )
+        return any(m == MarkingPresence.FOUND for m in (self.c2pa, self.exif_ai, self.visible_label))
 
     def any_invisible_found(self) -> bool:
-        return any(
-            m == MarkingPresence.FOUND
-            for m in (self.c2pa, self.exif_ai, self.open_watermark)
-        )
+        return any(m == MarkingPresence.FOUND for m in (self.c2pa, self.exif_ai, self.open_watermark))
 
 
 # ---------------------------------------------------------------------------
@@ -61,13 +58,26 @@ class ToolFingerprint:
 # ---------------------------------------------------------------------------
 
 _AI_SOFTWARE_KEYWORDS = [
-    b"stable diffusion", b"comfyui", b"midjourney", b"dall-e", b"firefly",
-    b"ai generated", b"ai", b"dream", b"diffusion",
+    b"stable diffusion",
+    b"comfyui",
+    b"midjourney",
+    b"dall-e",
+    b"firefly",
+    b"ai generated",
+    b"ai",
+    b"dream",
+    b"diffusion",
 ]
 
 _AI_USER_COMMENT_KEYWORDS = [
-    "ai generated", "aigc", "artificial intelligence", "ai 생성",
-    "steps:", "sampler:", "model:", "nodes",  # SD/ComfyUI 파라미터
+    "ai generated",
+    "aigc",
+    "artificial intelligence",
+    "ai 생성",
+    "steps:",
+    "sampler:",
+    "model:",
+    "nodes",  # SD/ComfyUI 파라미터
 ]
 
 _USER_COMMENT_ASCII_PREFIX = b"ASCII\x00\x00\x00"
@@ -83,7 +93,7 @@ def _decode_user_comment(raw: bytes) -> Optional[str]:
     ):
         if raw.startswith(prefix):
             try:
-                return raw[len(prefix):].decode(enc, errors="ignore").rstrip("\x00").strip()
+                return raw[len(prefix) :].decode(enc, errors="ignore").rstrip("\x00").strip()
             except Exception:
                 return None
     return raw.decode("latin-1", errors="ignore").strip() or None
@@ -102,6 +112,7 @@ def _has_ai_user_comment(text: str) -> bool:
 # ---------------------------------------------------------------------------
 # EXIF 분석
 # ---------------------------------------------------------------------------
+
 
 def _analyze_exif(image_bytes: bytes) -> tuple[MarkingPresence, Optional[str], Optional[str]]:
     """EXIF 기반 AI 표시 분석.
@@ -129,9 +140,7 @@ def _analyze_exif(image_bytes: bytes) -> tuple[MarkingPresence, Optional[str], O
 
     image_desc = exif.get("0th", {}).get(piexif.ImageIFD.ImageDescription, b"")
     image_desc_str = image_desc.decode("latin-1", errors="ignore").strip() if image_desc else ""
-    has_desc = bool(image_desc_str) and any(
-        kw in image_desc_str.lower() for kw in ("ai generated", "ai 생성")
-    )
+    has_desc = bool(image_desc_str) and any(kw in image_desc_str.lower() for kw in ("ai generated", "ai 생성"))
 
     if has_soft or has_uc or has_desc:
         return MarkingPresence.FOUND, software_str, uc_text
@@ -142,6 +151,7 @@ def _analyze_exif(image_bytes: bytes) -> tuple[MarkingPresence, Optional[str], O
 # ---------------------------------------------------------------------------
 # C2PA 분석
 # ---------------------------------------------------------------------------
+
 
 def _analyze_c2pa(image_bytes: bytes) -> MarkingPresence:
     try:
@@ -165,6 +175,7 @@ def _analyze_c2pa(image_bytes: bytes) -> MarkingPresence:
 # ---------------------------------------------------------------------------
 # 갭 분류
 # ---------------------------------------------------------------------------
+
 
 def _classify_gap(fp: ToolFingerprint) -> GapCategory:
     """R-01~R-05 기반 갭 분류."""
@@ -191,6 +202,7 @@ def _classify_gap(fp: ToolFingerprint) -> GapCategory:
 # 메인 분석 함수
 # ---------------------------------------------------------------------------
 
+
 def fingerprint_image(image_bytes: bytes, tool_name: str = "unknown") -> ToolFingerprint:
     """이미지 bytes 를 분석해 ToolFingerprint 를 반환한다.
 
@@ -204,7 +216,7 @@ def fingerprint_image(image_bytes: bytes, tool_name: str = "unknown") -> ToolFin
         c2pa=c2pa_result,
         exif_ai=exif_result,
         visible_label=MarkingPresence.NOT_FOUND,  # W7 구현 예정
-        open_watermark=MarkingPresence.UNKNOWN,    # W7 구현 예정
+        open_watermark=MarkingPresence.UNKNOWN,  # W7 구현 예정
         exif_software=software,
         exif_user_comment_text=uc_text,
         gap_category=GapCategory.UNKNOWN,

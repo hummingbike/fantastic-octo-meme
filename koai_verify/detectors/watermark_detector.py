@@ -18,10 +18,10 @@
   UNKNOWN  : 항상 (디코더 키 없음)
   details 에 heuristic_scores 포함 (0.0–1.0, 높을수록 의심)
 """
+
 from __future__ import annotations
 
 import io
-import math
 import struct
 from typing import Optional
 
@@ -32,12 +32,12 @@ from .result import DetectionResult, DetectorOutput
 
 # 알려진 오픈 워터마크 유형
 KNOWN_WATERMARK_TYPES: list[str] = [
-    "Tree-Ring",        # 주파수 도메인, NeurIPS 2023
-    "HiDDeN",           # 공간 도메인 신경망, ECCV 2018
-    "StegaStamp",       # 공간 도메인, CVPR 2020
-    "Stable_Signature", # 주파수 도메인, ICCV 2023
-    "IMATAG",           # 공간 도메인, 비공개 상용
-    "SynthID",          # Google 비공개 API
+    "Tree-Ring",  # 주파수 도메인, NeurIPS 2023
+    "HiDDeN",  # 공간 도메인 신경망, ECCV 2018
+    "StegaStamp",  # 공간 도메인, CVPR 2020
+    "Stable_Signature",  # 주파수 도메인, ICCV 2023
+    "IMATAG",  # 공간 도메인, 비공개 상용
+    "SynthID",  # Google 비공개 API
 ]
 
 # 탐지 불가 이유 요약
@@ -96,6 +96,7 @@ class WatermarkDetector(DetectorBase):
 # ---------------------------------------------------------------------------
 # Heuristic 분석 — 탐지 확정 불가, 참고용 점수만 제공
 # ---------------------------------------------------------------------------
+
 
 def _compute_heuristics(
     img: Image.Image,
