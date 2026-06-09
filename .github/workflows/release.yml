@@ -16,6 +16,14 @@ on:
   push:
     tags:
       - "v*"
+  workflow_dispatch:
+    inputs:
+      skip_tests:
+        description: "테스트 건너뛰기 (PyPI 재배포 시)"
+        required: false
+        default: "false"
+        type: choice
+        options: ["false", "true"]
 
 jobs:
   test:
@@ -99,14 +107,17 @@ jobs:
           draft: false
           prerelease: ${{ contains(github.ref_name, 'alpha') || contains(github.ref_name, 'beta') || contains(github.ref_name, 'rc') }}
 
-      - name: Publish to PyPI
+      - name: Diagnose and publish to PyPI
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
         run: |
           if [ -z "$TWINE_PASSWORD" ]; then
-            echo "::warning::PYPI_TOKEN secret 미설정 — PyPI 업로드 건너뜀"
-            echo "설정 방법: GitHub Settings → Secrets → PYPI_TOKEN"
-            exit 0
+            echo "::error::PYPI_TOKEN secret 이 비어 있습니다."
+            echo "확인: GitHub → hummingbike/fantastic-octo-meme → Settings"
+            echo "      → Secrets and variables → Actions → Repository secrets"
+            echo "      이름이 정확히 'PYPI_TOKEN' (모두 대문자) 인지 확인하세요."
+            exit 1
           fi
+          echo "✓ PYPI_TOKEN 감지됨 — PyPI 업로드 시작"
           twine upload dist/*
