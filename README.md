@@ -4,8 +4,10 @@
 *Open-source SDK for verifying AI disclosure requirements under Korea's AI Basic Act Article 31*
 
 [![CI](https://github.com/seokwoo-han/fantastic-octo-meme/actions/workflows/ci.yml/badge.svg)](https://github.com/seokwoo-han/fantastic-octo-meme/actions/workflows/ci.yml)
+[![PyPI version](https://img.shields.io/pypi/v/koai-verify.svg)](https://pypi.org/project/koai-verify/)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![Tests](https://img.shields.io/badge/tests-868%20passed-brightgreen.svg)](tests/)
 
 ---
 
@@ -135,6 +137,30 @@ playground/        # Gradio 웹 플레이그라운드
 tests/unit/        # 단위 테스트
 docs/              # 법령·기술 문서
 ```
+
+---
+
+## 갭 리포트 / Gap Report
+
+한국 AI 이미지 도구 9종에 대한 실측 표시 현황 및 SNS 소거 취약성 분석:
+
+- [갭 리포트 v1 (확정본)](docs/gap_report_v1.md) — 9개 도구 갭 분류, SNS 생존율 0% 실측, R-03 위험 분석
+- [갭 리포트 초안](docs/gap_report_draft.md) — Phase 0 분석 초안
+
+---
+
+## 사용 예제 / Examples
+
+- [Python 예제](docs/examples/python_example.py) — verify(), 배치 검증, 강건성 배터리
+- [Node.js / TypeScript 예제](docs/examples/node_example.ts) — async/await, CI/CD 통합
+- [CLI / curl 예제](docs/examples/curl_example.sh) — bash 스크립트, 일괄 검증
+- [GitHub Actions 통합](docs/examples/) — PR에서 AI 표시 의무 자동 검증
+
+---
+
+## 아키텍처 / Architecture
+
+검증기 내부 구조 및 룰 흐름: [docs/architecture.md](docs/architecture.md)
 
 ---
 
