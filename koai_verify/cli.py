@@ -60,3 +60,7 @@ def main(image_path: str, output_format: str, robustness: bool) -> None:
         click.echo(vreport.to_json())
 
     sys.exit(_EXIT_CODES.get(vreport.verdict, 3))
+
+
+if __name__ == "__main__":
+    main()
