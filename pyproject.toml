@@ -14,6 +14,9 @@ piexif = "^1.1"
 c2pa-python = "^0.32"
 click = ">=8.0"
 
+[tool.poetry.extras]
+playground = ["gradio"]
+
 [tool.poetry.group.dev.dependencies]
 pytest = ">=8.0"
 ruff = ">=0.4"
