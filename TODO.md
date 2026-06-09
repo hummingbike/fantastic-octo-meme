@@ -1,6 +1,6 @@
 # TODO.md — KoAI-Verify 작업 추적
 
-> 현재 주차: **W13** (2026-06-09 기준, W12 완료)
+> 현재 주차: **W14** (2026-06-09 기준, W13 완료)
 > 업데이트 규칙: 완료 즉시 체크. 주차 시작 시 다음 주 항목 활성화.
 
 ---
@@ -139,13 +139,31 @@
 
 ---
 
-## 현재 진행 중 — W13 (2026.8.24–8.30) — 오픈소스 공개 준비
+## 완료 — W13 (2026.8.24–8.30) — 오픈소스 공개 준비
 
-- [ ] `README.md` — 한국어/영어, 빠른 시작, CLI/SDK 사용 예시
-- [ ] `CONTRIBUTING.md` — 기여 가이드 (코드 스타일, 테스트, PR 절차)
-- [ ] `LICENSE` — Apache-2.0
-- [ ] `docs/quickstart.md` — 5분 시작 가이드
-- [ ] `.github/ISSUE_TEMPLATE/` — 버그 리포트 / 기능 요청 템플릿
+- [x] `README.md` — 한국어/영어, 빠른 시작, CLI/SDK 사용 예시
+- [x] `CONTRIBUTING.md` — 기여 가이드 (코드 스타일, 테스트, PR 절차)
+- [x] `LICENSE` — Apache-2.0
+- [x] `docs/quickstart.md` — 5분 시작 가이드
+- [x] `.github/ISSUE_TEMPLATE/` — 버그 리포트 / 기능 요청 템플릿
+
+---
+
+## 완료 — W14 (2026.8.31–9.6) — 갭 리포트 확정
+
+- [x] Phase 0 샘플 전체 → 검증기 실행 → 갭 리포트 확정
+- [x] `koai_verify/analysis/` 탐지 결과 → `docs/gap_report_v1.md` 최종본 작성
+- [x] 9개 도구 카탈로그 → 실제 검증기 출력과 대조하여 갭 분류 업데이트 (예측 정확도 5/5)
+- [x] SNS 재인코딩 생존율 실측 결과 반영 (SD/ComfyUI/Firefly 모두 0%)
+
+---
+
+## 현재 진행 중 — W15 (2026.9.7–9.13) — 문서·예제 정비
+
+- [ ] `docs/examples/` — 언어별 사용 예제 (Python, Node.js, curl)
+- [ ] GitHub Actions 검증 통합 예제 (`.github/workflows/koai-verify.yml` 샘플)
+- [ ] `README.md` 배지 업데이트 및 갭 리포트 링크 추가
+- [ ] `docs/architecture.md` — 검증기 아키텍처 다이어그램 + 룰 흐름
 
 ---
 
@@ -162,8 +180,8 @@
 - [x] **W12** Python SDK (`pip install koai-verify`)
 - [x] **W12** JS SDK 래퍼 (`npm install @koai/verify`)
 - [x] **W12** 웹 플레이그라운드 (드래그&드롭)
-- [ ] **W13** README (한/영), CONTRIBUTING.md, LICENSE
-- [ ] **W13** 오픈소스 공개 준비 완료
+- [x] **W13** README (한/영), CONTRIBUTING.md, LICENSE
+- [x] **W13** 오픈소스 공개 준비 완료
 
 ---
 
@@ -225,3 +243,5 @@
 - [x] **W10 판정 리포트 포맷 완료** (2026-06-08) — `VerificationReport`(image_sha256·verdict·detections·robustness·recommendation·timestamp), `to_json/from_json/from_dict`, `from_rule_verdict()` 팩토리, `to_summary()` 한국어 요약, `format_report()` 단축 함수, 단위 테스트 51개(W10) 통과 / 전체 703개
 - [x] **W11 CLI v0 완료** (2026-06-09) — `koai_verify/cli.py`(`koai-verify <image>`), `--format json|summary`, `--robustness`(변형 배터리), 종료 코드 0~3/10, click >=8.0 추가, 단위 테스트 24개(W11) 통과 / 전체 727개
 - [x] **W12 SDK·플레이그라운드 완료** (2026-06-09) — `api.py`(고수준 verify()), `__init__.py`(공개 API), `sdk/@koai/verify`(TS·spawnSync 래퍼, Jest 20개), `playground/app.py`(Gradio UI), 단위 테스트 44개(W12) 추가 / 전체 771개
+- [x] **W13 오픈소스 공개 준비 완료** (2026-06-09) — `README.md`(한/영 확장, 빠른 시작·룰 테이블·JS SDK), `CONTRIBUTING.md`(코드 스타일·mock 금지·PR 절차·보안), `docs/quickstart.md`(5분 가이드, 판정 해석), `.github/ISSUE_TEMPLATE/`(bug_report·feature_request), 단위 테스트 44개(W13) 추가 / 전체 815개
+- [x] **W14 갭 리포트 확정 완료** (2026-06-09) — `batch_runner.py`(Phase 0 배치 분석기, ToolVerifyResult·BatchAnalysisReport, SNS 4종 생존율 실측), `docs/gap_report_v1.md`(확정본, 예측 정확도 5/5, SNS 생존율 0% 실측), 단위 테스트 53개(W14) 추가 / 전체 868개
