@@ -1,6 +1,6 @@
 # TODO.md — KoAI-Verify 작업 추적
 
-> 현재 주차: **W10** (2026-06-08 기준, W9 완료)
+> 현재 주차: **W11** (2026-06-08 기준, W10 완료)
 > 업데이트 규칙: 완료 즉시 체크. 주차 시작 시 다음 주 항목 활성화.
 
 ---
@@ -111,12 +111,22 @@
 
 ---
 
-## 현재 진행 중 — W10 (2026.8.3–8.9) — 판정 리포트 포맷
+## 완료 — W10 (2026.8.3–8.9) — 판정 리포트 포맷
 
-- [ ] `koai_verify/report/formatter.py` — JSON 리포트 + 사람 읽기용 요약
-- [ ] `VerificationReport` 데이터 모델 (image hash, verdict, detections, robustness, recommendation)
-- [ ] JSON 직렬화 / 역직렬화
-- [ ] 판정 리포트 단위 테스트
+- [x] `koai_verify/report/formatter.py` — JSON 리포트 + 사람 읽기용 요약 (2026-06-08)
+- [x] `VerificationReport` 데이터 모델 (image_sha256, verdict, detections, robustness, recommendation, timestamp) (2026-06-08)
+- [x] JSON 직렬화 / 역직렬화 (`to_json`, `from_json`, `from_dict`) (2026-06-08)
+- [x] 판정 리포트 단위 테스트 51개, 전체 703개 통과 (2026-06-08)
+
+---
+
+## 현재 진행 중 — W11 (2026.8.10–8.16) — CLI v0
+
+- [ ] `koai_verify/cli.py` — `koai-verify <image>` CLI 진입점
+- [ ] `koai-verify image.jpg` 기본 실행 (JSON 판정 출력)
+- [ ] `--format json` / `--summary` 옵션
+- [ ] `--robustness` 옵션 (강건성 배터리 포함)
+- [ ] CLI 단위 테스트 (Click test runner 사용)
 
 ---
 
@@ -128,7 +138,7 @@
 - [x] **W7** 오픈 워터마크 탐지 모듈
 - [x] **W8** 한국법 룰 엔진
 - [x] **W9** 강건성 하니스 (변형 배터리 실행)
-- [ ] **W10** 판정 리포트 포맷 확정 (JSON + 요약)
+- [x] **W10** 판정 리포트 포맷 확정 (JSON + 요약)
 - [ ] **W11** CLI v0 (`koai-verify <image>`)
 - [ ] **W12** Python SDK (`pip install koai-verify`)
 - [ ] **W12** JS SDK 래퍼 (`npm install @koai/verify`)
@@ -193,3 +203,4 @@
 - [x] **W7 탐지 엔진 ② OCR + 워터마크 완료** (2026-06-07) — `ocr_detector.py`(한/영 패턴 18종, easyocr/pytesseract 폴백), `watermark_detector.py`(항상 UNKNOWN·heuristic 점수), OCR 픽스처 5종, 단위 테스트 96개(W7) 통과 / 전체 564개
 - [x] **W8 한국법 룰 엔진 완료** (2026-06-07) — `aggregate_detections()`(4개 탐지기 출력 집계, FOUND>UNKNOWN>NOT_FOUND 우선순위), `RuleEngine.evaluate_outputs()`(DetectorOutput 리스트 직접 수용), 단위 테스트 47개(W8) 통과 / 전체 611개
 - [x] **W9 강건성 하니스 완료** (2026-06-08) — `transform()`(apply_transform 래퍼), `TransformEntry`(survived: bool|None), `SurvivalReport`(생존율 집계·to_robustness_dict()), `run_battery()`(EXIFDetector × 20개 변형 배터리), RuleEngine R-06 연동, 단위 테스트 41개(W9) 통과 / 전체 652개
+- [x] **W10 판정 리포트 포맷 완료** (2026-06-08) — `VerificationReport`(image_sha256·verdict·detections·robustness·recommendation·timestamp), `to_json/from_json/from_dict`, `from_rule_verdict()` 팩토리, `to_summary()` 한국어 요약, `format_report()` 단축 함수, 단위 테스트 51개(W10) 통과 / 전체 703개
