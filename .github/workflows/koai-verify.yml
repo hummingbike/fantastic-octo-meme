@@ -1,0 +1,99 @@
+# KoAI-Verify GitHub Actions 통합 예제
+#
+# 이 워크플로우는 PR에 포함된 AI 생성 이미지가 한국 AI 기본법 제31조
+# 표시 요건을 충족하는지 자동으로 검증합니다.
+#
+# 사용법:
+#   1. 이 파일을 저장소의 .github/workflows/koai-verify.yml 로 복사
+#   2. IMAGES_DIR 변수를 실제 이미지 경로로 수정
+#   3. PR을 생성하면 자동으로 검증이 실행됩니다
+
+name: KoAI-Verify AI Disclosure Check
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "assets/images/**"
+      - "public/images/**"
+      - "static/**/*.jpg"
+      - "static/**/*.png"
+      - "static/**/*.webp"
+  workflow_dispatch:
+    inputs:
+      image_path:
+        description: "검증할 이미지 경로 (예: assets/images/banner.jpg)"
+        required: false
+        default: ""
+
+jobs:
+  koai-verify:
+    name: AI 표시 의무 검증
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install koai-verify
+        run: pip install koai-verify
+
+      - name: Verify AI disclosure — single image (workflow_dispatch)
+        if: github.event_name == 'workflow_dispatch' && inputs.image_path != ''
+        run: |
+          koai-verify "${{ inputs.image_path }}" --format summary
+          EXIT_CODE=$?
+          if [ $EXIT_CODE -eq 1 ]; then
+            echo "::error::AI 표시 요건 불충족 — ${{ inputs.image_path }}"
+            exit 1
+          fi
+
+      - name: Verify AI disclosure — changed images (pull_request)
+        if: github.event_name == 'pull_request'
+        run: |
+          # PR에서 변경된 이미지 파일만 검증
+          CHANGED_IMAGES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD \
+            | grep -E '\.(jpg|jpeg|png|webp)$' || true)
+
+          if [ -z "$CHANGED_IMAGES" ]; then
+            echo "변경된 이미지 없음 — 검증 건너뜀"
+            exit 0
+          fi
+
+          FAIL_COUNT=0
+          while IFS= read -r img; do
+            if [ ! -f "$img" ]; then
+              continue
+            fi
+            echo "검증 중: $img"
+            VERDICT=$(koai-verify "$img" | python3 -c \
+              "import sys,json; print(json.load(sys.stdin).get('verdict','ERROR'))" \
+              2>/dev/null || echo "ERROR")
+            echo "  → $VERDICT"
+            if [ "$VERDICT" = "NON_COMPLIANT" ]; then
+              echo "::error file=$img::AI 표시 요건 불충족 (R-03 또는 R-05)"
+              FAIL_COUNT=$((FAIL_COUNT + 1))
+            elif [ "$VERDICT" = "WARNING" ]; then
+              echo "::warning file=$img::강건성 생존율이 낮습니다 (R-06)"
+            fi
+          done <<< "$CHANGED_IMAGES"
+
+          if [ "$FAIL_COUNT" -gt 0 ]; then
+            echo "::error::$FAIL_COUNT개 이미지가 AI 표시 요건을 충족하지 않습니다"
+            exit 1
+          fi
+          echo "모든 이미지 표시 요건 충족"
+
+      - name: Upload verification report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: koai-verify-report
+          path: koai-verify-*.json
+          if-no-files-found: ignore
+          retention-days: 30
