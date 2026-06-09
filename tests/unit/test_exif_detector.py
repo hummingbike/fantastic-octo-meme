@@ -6,6 +6,7 @@
   - 합성 JPEG (piexif 로 직접 작성) — 각 필드별 양성/음성 케이스
   - tests/fixtures/samples/ 아래 실제 합성 픽스처 (stable_diffusion, comfyui, midjourney)
 """
+
 from __future__ import annotations
 
 import io
@@ -29,6 +30,7 @@ SAMPLES_DIR = Path(__file__).parent.parent / "fixtures" / "samples"
 # 헬퍼: 합성 JPEG 생성
 # ---------------------------------------------------------------------------
 
+
 def _make_jpeg(exif_dict: dict | None = None) -> bytes:
     """32×32 JPEG — exif_dict 없으면 메타데이터 없음."""
     img = Image.new("RGB", (32, 32), color=(100, 150, 200))
@@ -48,16 +50,19 @@ def _empty_exif() -> dict:
 # 탐지기 이름 및 인터페이스
 # ---------------------------------------------------------------------------
 
+
 class TestEXIFDetectorInterface:
     def test_name_is_exif(self):
         assert EXIFDetector().name == "exif"
 
     def test_is_detector_base_subclass(self):
         from koai_verify.detectors.base import DetectorBase
+
         assert isinstance(EXIFDetector(), DetectorBase)
 
     def test_detect_returns_detector_output(self):
         from koai_verify.detectors.result import DetectorOutput
+
         output = EXIFDetector().detect(_make_jpeg())
         assert isinstance(output, DetectorOutput)
 
@@ -73,6 +78,7 @@ class TestEXIFDetectorInterface:
 # ---------------------------------------------------------------------------
 # NOT_FOUND — AI 키워드 없음
 # ---------------------------------------------------------------------------
+
 
 class TestEXIFDetectorNotFound:
     def test_plain_jpeg_no_exif_returns_not_found(self):
@@ -110,6 +116,7 @@ class TestEXIFDetectorNotFound:
 # FOUND — UserComment 에서 AI 키워드 탐지
 # ---------------------------------------------------------------------------
 
+
 class TestEXIFDetectorFoundUserComment:
     def _make_user_comment_jpeg(self, comment: bytes) -> bytes:
         exif = _empty_exif()
@@ -145,6 +152,7 @@ class TestEXIFDetectorFoundUserComment:
 
     def test_comfyui_workflow_in_user_comment_returns_found(self):
         import json
+
         workflow = json.dumps({"nodes": [{"type": "KSampler"}]})
         data = self._make_user_comment_jpeg(b"ASCII\x00\x00\x00" + workflow.encode())
         # ComfyUI 워크플로우가 UserComment 에 있을 때
@@ -157,6 +165,7 @@ class TestEXIFDetectorFoundUserComment:
 # ---------------------------------------------------------------------------
 # FOUND — Software 필드에서 AI 도구 탐지
 # ---------------------------------------------------------------------------
+
 
 class TestEXIFDetectorFoundSoftware:
     def _make_software_jpeg(self, software: bytes) -> bytes:
@@ -195,6 +204,7 @@ class TestEXIFDetectorFoundSoftware:
 # FOUND — ImageDescription 에서 탐지
 # ---------------------------------------------------------------------------
 
+
 class TestEXIFDetectorFoundImageDescription:
     def test_ai_generated_description_returns_found(self):
         exif = _empty_exif()
@@ -218,6 +228,7 @@ class TestEXIFDetectorFoundImageDescription:
 # ---------------------------------------------------------------------------
 # 실제 픽스처 이미지 — samples/
 # ---------------------------------------------------------------------------
+
 
 class TestEXIFDetectorFixtures:
     @pytest.fixture
@@ -272,6 +283,7 @@ class TestEXIFDetectorFixtures:
 # UNKNOWN — 파싱 불가
 # ---------------------------------------------------------------------------
 
+
 class TestEXIFDetectorUnknown:
     def test_random_bytes_returns_unknown(self):
         output = EXIFDetector().detect(b"\x00\x01\x02garbage_data")
@@ -290,6 +302,7 @@ class TestEXIFDetectorUnknown:
 # detect_safe — 예외 안전 래퍼
 # ---------------------------------------------------------------------------
 
+
 class TestEXIFDetectorSafe:
     def test_detect_safe_does_not_raise(self):
         output = EXIFDetector().detect_safe(b"\xff" * 50)
@@ -303,6 +316,7 @@ class TestEXIFDetectorSafe:
 # ---------------------------------------------------------------------------
 # decode_user_comment 헬퍼
 # ---------------------------------------------------------------------------
+
 
 class TestDecodeUserComment:
     def test_ascii_prefix_decoded(self):
@@ -330,6 +344,7 @@ class TestDecodeUserComment:
 # ---------------------------------------------------------------------------
 # _contains_ai_keyword_any 헬퍼
 # ---------------------------------------------------------------------------
+
 
 class TestContainsAiKeyword:
     def test_ai_generated_detected(self):

@@ -7,6 +7,7 @@
 
 픽스처는 tests/fixtures/make_synthetic_samples.py 로 생성된다.
 """
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -48,6 +49,7 @@ def _exif(path: Path) -> dict:
 # 디렉터리 구조 검증
 # ---------------------------------------------------------------------------
 
+
 class TestSamplesDirectoryStructure:
     def test_samples_dir_exists(self):
         assert SAMPLES_DIR.exists()
@@ -74,6 +76,7 @@ class TestSamplesDirectoryStructure:
 # 픽스처 유효성 검증
 # ---------------------------------------------------------------------------
 
+
 class TestFixtureValidity:
     @pytest.mark.parametrize("tool", KNOWN_TOOLS)
     def test_all_jpgs_are_valid(self, tool):
@@ -92,6 +95,7 @@ class TestFixtureValidity:
 # ---------------------------------------------------------------------------
 # 도구별 메타데이터 패턴 검증
 # ---------------------------------------------------------------------------
+
 
 class TestStableDiffusionFixture:
     def test_has_jpeg_files(self):
@@ -132,6 +136,7 @@ class TestComfyuiFixture:
             uc = exif.get("Exif", {}).get(piexif.ExifIFD.UserComment, b"")
             payload = uc[8:] if uc.startswith(b"ASCII\x00\x00\x00") else uc
             import json
+
             data = json.loads(payload.decode("ascii", errors="ignore"))
             assert "nodes" in data
 

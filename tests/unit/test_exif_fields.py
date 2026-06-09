@@ -11,6 +11,7 @@
   XMP      : dc:description, xmpRights:UsageTerms,
              Iptc4xmpCore:Subject, 도구별 네임스페이스
 """
+
 import io
 
 import piexif
@@ -22,22 +23,22 @@ from PIL import Image
 
 # 범용 EXIF IFD 필드 (piexif 태그 번호)
 AI_EXIF_FIELDS = {
-    "UserComment": piexif.ExifIFD.UserComment,       # 0x9286 — 가장 흔히 사용
-    "MakerNote": piexif.ExifIFD.MakerNote,           # 0x927C — 도구 고유 메타
+    "UserComment": piexif.ExifIFD.UserComment,  # 0x9286 — 가장 흔히 사용
+    "MakerNote": piexif.ExifIFD.MakerNote,  # 0x927C — 도구 고유 메타
 }
 
 # 범용 0th IFD 필드
 AI_0TH_FIELDS = {
     "ImageDescription": piexif.ImageIFD.ImageDescription,  # 0x010E
-    "Software": piexif.ImageIFD.Software,                  # 0x0131
-    "Artist": piexif.ImageIFD.Artist,                      # 0x013B
-    "Copyright": piexif.ImageIFD.Copyright,                # 0x8298
+    "Software": piexif.ImageIFD.Software,  # 0x0131
+    "Artist": piexif.ImageIFD.Artist,  # 0x013B
+    "Copyright": piexif.ImageIFD.Copyright,  # 0x8298
 }
 
 # 도구별 XMP 네임스페이스 (읽기: Pillow getxmp() / info["XML:com.adobe.xmp"])
 AI_XMP_NAMESPACES = {
-    "stable_diffusion": "http://ns.adobe.com/xap/1.0/",   # parameters 필드
-    "dc": "http://purl.org/dc/elements/1.1/",             # dc:description
+    "stable_diffusion": "http://ns.adobe.com/xap/1.0/",  # parameters 필드
+    "dc": "http://purl.org/dc/elements/1.1/",  # dc:description
     "xmp_rights": "http://ns.adobe.com/xap/1.0/rights/",  # UsageTerms
     "iptc4_xmpcore": "http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/",
 }
@@ -58,6 +59,7 @@ USER_COMMENT_AI_KEYWORDS = [
 # Helper: JPEG with EXIF
 # ---------------------------------------------------------------------------
 
+
 def _make_jpeg_with_exif(exif_dict: dict) -> bytes:
     img = Image.new("RGB", (32, 32), color=(128, 128, 128))
     buf = io.BytesIO()
@@ -72,6 +74,7 @@ def _read_exif(jpeg_bytes: bytes) -> dict:
 # ---------------------------------------------------------------------------
 # 테스트: piexif 읽기 가능성
 # ---------------------------------------------------------------------------
+
 
 class TestPiexifFieldReadability:
     """piexif 로 AI 관련 EXIF 필드를 읽을 수 있음을 검증한다."""
@@ -151,7 +154,7 @@ class TestUserCommentDecoding:
         }
         for prefix, enc in prefixes.items():
             if raw.startswith(prefix):
-                payload = raw[len(prefix):]
+                payload = raw[len(prefix) :]
                 try:
                     return payload.decode(enc).rstrip("\x00").strip()
                 except UnicodeDecodeError:

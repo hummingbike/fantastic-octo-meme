@@ -8,6 +8,7 @@
   - 집계 유틸리티 (worst_transforms, format_survival_summary)
   - evaluate_robustness R-06 연계
 """
+
 from __future__ import annotations
 
 import json
@@ -28,6 +29,7 @@ from benchmarks.transform_spec import TRANSFORM_BATTERY
 # DetectionFormat
 # ---------------------------------------------------------------------------
 
+
 class TestDetectionFormat:
     def test_all_formats_defined(self):
         formats = list(DetectionFormat)
@@ -47,6 +49,7 @@ class TestDetectionFormat:
 # ---------------------------------------------------------------------------
 # SurvivalCell
 # ---------------------------------------------------------------------------
+
 
 class TestSurvivalCell:
     def test_initial_rate_none(self):
@@ -81,6 +84,7 @@ class TestSurvivalCell:
 # ---------------------------------------------------------------------------
 # empty_matrix
 # ---------------------------------------------------------------------------
+
 
 class TestEmptyMatrix:
     def test_empty_matrix_default_formats(self):
@@ -117,6 +121,7 @@ class TestEmptyMatrix:
 # ---------------------------------------------------------------------------
 # SurvivalMatrix 읽기/쓰기
 # ---------------------------------------------------------------------------
+
 
 class TestSurvivalMatrixReadWrite:
     def _populated(self) -> SurvivalMatrix:
@@ -168,6 +173,7 @@ class TestSurvivalMatrixReadWrite:
 # JSON 직렬화/역직렬화
 # ---------------------------------------------------------------------------
 
+
 class TestMatrixSerialization:
     def _sample(self) -> SurvivalMatrix:
         m = empty_matrix(
@@ -213,6 +219,7 @@ class TestMatrixSerialization:
 # 집계 유틸리티
 # ---------------------------------------------------------------------------
 
+
 class TestMatrixAggregation:
     def _matrix_with_data(self) -> SurvivalMatrix:
         m = empty_matrix()
@@ -247,6 +254,7 @@ class TestMatrixAggregation:
 # ---------------------------------------------------------------------------
 # R-06 룰 연계: evaluate_robustness
 # ---------------------------------------------------------------------------
+
 
 class TestEvaluateRobustness:
     def test_no_failures_when_all_unmeasured(self):

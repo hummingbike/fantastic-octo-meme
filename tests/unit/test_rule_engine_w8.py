@@ -3,6 +3,7 @@
 4개 탐지기(C2PA/EXIF/OCR/Watermark) DetectorOutput 을 RuleEngine 에 직접 연동.
 aggregate_detections() + evaluate_outputs() 경로 전체를 R-01~R-07 케이스로 검증.
 """
+
 from __future__ import annotations
 
 from koai_verify.detectors import DetectionResult, DetectorOutput
@@ -16,6 +17,7 @@ from koai_verify.rules import (
 # ---------------------------------------------------------------------------
 # 헬퍼 — DetectorOutput 생성 단축 함수
 # ---------------------------------------------------------------------------
+
 
 def _out(name: str, result: str) -> DetectorOutput:
     return DetectorOutput(
@@ -48,6 +50,7 @@ UNKNOWN = "UNKNOWN"
 # ---------------------------------------------------------------------------
 # aggregate_detections
 # ---------------------------------------------------------------------------
+
 
 class TestAggregateDetections:
     def test_empty_list_returns_empty_dict(self):
@@ -91,6 +94,7 @@ class TestAggregateDetections:
 # evaluate_outputs — R-05: 표시 전무 → NON_COMPLIANT
 # ---------------------------------------------------------------------------
 
+
 class TestEvaluateOutputsR05:
     engine = RuleEngine()
 
@@ -119,6 +123,7 @@ class TestEvaluateOutputsR05:
 # evaluate_outputs — R-04: 가시 라벨 → COMPLIANT
 # ---------------------------------------------------------------------------
 
+
 class TestEvaluateOutputsR04:
     engine = RuleEngine()
 
@@ -144,6 +149,7 @@ class TestEvaluateOutputsR04:
 # ---------------------------------------------------------------------------
 # evaluate_outputs — R-01/R-02 + R-03: 비가시 전용
 # ---------------------------------------------------------------------------
+
 
 class TestEvaluateOutputsR03:
     engine = RuleEngine()
@@ -203,6 +209,7 @@ class TestEvaluateOutputsR03:
 # evaluate_outputs — R-07: 딥페이크 강화
 # ---------------------------------------------------------------------------
 
+
 class TestEvaluateOutputsR07:
     engine = RuleEngine()
 
@@ -238,6 +245,7 @@ class TestEvaluateOutputsR07:
 # ---------------------------------------------------------------------------
 # evaluate_outputs — R-06: 강건성 생존율
 # ---------------------------------------------------------------------------
+
 
 class TestEvaluateOutputsR06:
     engine = RuleEngine(robustness_threshold=0.70)
@@ -276,6 +284,7 @@ class TestEvaluateOutputsR06:
 # evaluate_outputs — 워터마크 전용 케이스
 # ---------------------------------------------------------------------------
 
+
 class TestEvaluateOutputsWatermark:
     engine = RuleEngine()
 
@@ -299,6 +308,7 @@ class TestEvaluateOutputsWatermark:
 # ---------------------------------------------------------------------------
 # evaluate_outputs — 혼합 UNKNOWN 케이스
 # ---------------------------------------------------------------------------
+
 
 class TestEvaluateOutputsMixedUnknown:
     engine = RuleEngine()
@@ -327,6 +337,7 @@ class TestEvaluateOutputsMixedUnknown:
 # ---------------------------------------------------------------------------
 # evaluate_outputs — 전체 파이프라인 시나리오
 # ---------------------------------------------------------------------------
+
 
 class TestEvaluateOutputsScenarios:
     """실제 도구 출력 시나리오를 반영한 end-to-end 케이스."""

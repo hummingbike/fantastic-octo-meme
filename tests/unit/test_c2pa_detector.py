@@ -7,6 +7,7 @@
   - c2pa_test_C.jpg : c2pa-python 공식 테스트 픽스처 (서명 있음) → FOUND
   - invalid bytes  : 지원 불가 포맷 → UNKNOWN
 """
+
 from __future__ import annotations
 
 import io
@@ -43,16 +44,19 @@ def _plain_png_bytes() -> bytes:
 # 탐지기 이름 및 인터페이스
 # ---------------------------------------------------------------------------
 
+
 class TestC2PADetectorInterface:
     def test_name_is_c2pa(self):
         assert C2PADetector().name == "c2pa"
 
     def test_is_detector_base_subclass(self):
         from koai_verify.detectors.base import DetectorBase
+
         assert isinstance(C2PADetector(), DetectorBase)
 
     def test_detect_returns_detector_output(self):
         from koai_verify.detectors.result import DetectorOutput
+
         output = C2PADetector().detect(_plain_jpeg_bytes())
         assert isinstance(output, DetectorOutput)
 
@@ -64,6 +68,7 @@ class TestC2PADetectorInterface:
 # ---------------------------------------------------------------------------
 # NOT_FOUND — C2PA 매니페스트 없음
 # ---------------------------------------------------------------------------
+
 
 class TestC2PADetectorNotFound:
     def test_plain_jpeg_returns_not_found(self):
@@ -87,10 +92,8 @@ class TestC2PADetectorNotFound:
 # FOUND — C2PA 매니페스트 있음 (공식 테스트 픽스처)
 # ---------------------------------------------------------------------------
 
-@pytest.mark.skipif(
-    not C2PA_FIXTURE.exists(),
-    reason="C2PA test fixture not found — run: download c2pa test fixtures"
-)
+
+@pytest.mark.skipif(not C2PA_FIXTURE.exists(), reason="C2PA test fixture not found — run: download c2pa test fixtures")
 class TestC2PADetectorFound:
     def _signed_bytes(self) -> bytes:
         return C2PA_FIXTURE.read_bytes()
@@ -131,6 +134,7 @@ class TestC2PADetectorFound:
 # UNKNOWN — 지원 불가 포맷
 # ---------------------------------------------------------------------------
 
+
 class TestC2PADetectorUnknown:
     def test_random_bytes_returns_unknown(self):
         output = C2PADetector().detect(b"\x00\x01\x02\x03garbage_data_not_an_image")
@@ -153,6 +157,7 @@ class TestC2PADetectorUnknown:
 # detect_safe — 예외 안전 래퍼
 # ---------------------------------------------------------------------------
 
+
 class TestC2PADetectorSafe:
     def test_detect_safe_does_not_raise(self):
         # 최악의 입력에도 예외 없이 반환해야 한다
@@ -167,6 +172,7 @@ class TestC2PADetectorSafe:
 # ---------------------------------------------------------------------------
 # 헬퍼 함수
 # ---------------------------------------------------------------------------
+
 
 class TestDetectMimeHelper:
     def test_jpeg_mime(self):
@@ -188,15 +194,17 @@ class TestExtractManifestDetailsHelper:
         assert result["manifest_count"] == 0
 
     def test_active_manifest_key_present(self):
-        result = _extract_manifest_details({
-            "active_manifest": "id_1",
-            "manifests": {
-                "id_1": {
-                    "claim_generator": "Tool/1.0",
-                    "assertions": [{"label": "c2pa.training-mining"}],
-                }
-            },
-        })
+        result = _extract_manifest_details(
+            {
+                "active_manifest": "id_1",
+                "manifests": {
+                    "id_1": {
+                        "claim_generator": "Tool/1.0",
+                        "assertions": [{"label": "c2pa.training-mining"}],
+                    }
+                },
+            }
+        )
         assert result["active_manifest"] == "id_1"
         assert result["claim_generator"] == "Tool/1.0"
         assert "c2pa.training-mining" in result["assertion_labels"]
@@ -206,16 +214,18 @@ class TestExtractManifestDetailsHelper:
         assert result.get("active_manifest") is None
 
     def test_assertion_count_matches(self):
-        result = _extract_manifest_details({
-            "active_manifest": "id_1",
-            "manifests": {
-                "id_1": {
-                    "assertions": [
-                        {"label": "c2pa.actions.v2"},
-                        {"label": "stds.schema-org.CreativeWork"},
-                    ]
-                }
-            },
-        })
+        result = _extract_manifest_details(
+            {
+                "active_manifest": "id_1",
+                "manifests": {
+                    "id_1": {
+                        "assertions": [
+                            {"label": "c2pa.actions.v2"},
+                            {"label": "stds.schema-org.CreativeWork"},
+                        ]
+                    }
+                },
+            }
+        )
         assert result["assertion_count"] == 2
         assert len(result["assertion_labels"]) == 2

@@ -8,6 +8,7 @@
 
 결론 요약: test docstring 참조.
 """
+
 import io
 import json
 
@@ -104,9 +105,7 @@ class TestC2paManifestSchema:
             "manifests": {
                 "manifest_id_1": {
                     "claim_generator": "TestTool/1.0",
-                    "assertions": [
-                        {"label": "c2pa.training-mining", "data": {"use": "notAllowed"}}
-                    ],
+                    "assertions": [{"label": "c2pa.training-mining", "data": {"use": "notAllowed"}}],
                     "signature_info": {"issuer": "Test CA"},
                 }
             },

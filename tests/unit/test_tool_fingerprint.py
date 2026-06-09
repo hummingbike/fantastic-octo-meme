@@ -2,6 +2,7 @@
 
 합성 픽스처를 사용해 각 도구의 핑거프린트 분석 결과를 검증한다.
 """
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -33,6 +34,7 @@ def _read(tool: str, index: int = 1, placeholder: bool = False) -> bytes:
 # ---------------------------------------------------------------------------
 # 내부 헬퍼 단위 테스트
 # ---------------------------------------------------------------------------
+
 
 class TestDecodeUserComment:
     def test_ascii_prefix(self):
@@ -84,6 +86,7 @@ class TestHasAiUserComment:
 # EXIF 분석 단위 테스트
 # ---------------------------------------------------------------------------
 
+
 class TestAnalyzeExifStableDiffusion:
     def test_exif_found(self):
         data = _read("stable_diffusion", 1)
@@ -126,6 +129,7 @@ class TestAnalyzeExifDalle3:
 # ---------------------------------------------------------------------------
 # fingerprint_image 통합 테스트
 # ---------------------------------------------------------------------------
+
 
 class TestFingerprintStableDiffusion:
     def test_exif_found(self):
@@ -192,6 +196,7 @@ class TestFingerprintKoreanPlaceholders:
 # GapCategory 분류 로직
 # ---------------------------------------------------------------------------
 
+
 class TestClassifyGap:
     def _fp(
         self,
@@ -232,6 +237,7 @@ class TestClassifyGap:
 # ---------------------------------------------------------------------------
 # KNOWN_TOOL_CATALOG 검증
 # ---------------------------------------------------------------------------
+
 
 class TestKnownToolCatalog:
     def test_all_9_tools_documented(self):

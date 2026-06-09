@@ -7,6 +7,7 @@ piexif + Pillow XMP 를 이용해 AI 관련 EXIF/XMP 메타데이터를 탐지�
   NOT_FOUND: EXIF 파싱 성공했으나 AI 키워드 없음
   UNKNOWN  : EXIF 파싱 실패 (포맷 미지원 등)
 """
+
 from __future__ import annotations
 
 import io
@@ -103,9 +104,8 @@ class EXIFDetector(DetectorBase):
 # 내부 헬퍼 — 각 필드 확인
 # ---------------------------------------------------------------------------
 
-def _check_user_comment(
-    exif_data: dict, found_in: list[str], details: dict
-) -> None:
+
+def _check_user_comment(exif_data: dict, found_in: list[str], details: dict) -> None:
     raw = exif_data.get("Exif", {}).get(piexif.ExifIFD.UserComment)
     if not raw:
         return
@@ -116,9 +116,7 @@ def _check_user_comment(
             found_in.append("UserComment")
 
 
-def _check_software(
-    exif_data: dict, found_in: list[str], details: dict
-) -> None:
+def _check_software(exif_data: dict, found_in: list[str], details: dict) -> None:
     raw = exif_data.get("0th", {}).get(piexif.ImageIFD.Software)
     if not raw:
         return
@@ -129,9 +127,7 @@ def _check_software(
             found_in.append("Software")
 
 
-def _check_image_description(
-    exif_data: dict, found_in: list[str], details: dict
-) -> None:
+def _check_image_description(exif_data: dict, found_in: list[str], details: dict) -> None:
     raw = exif_data.get("0th", {}).get(piexif.ImageIFD.ImageDescription)
     if not raw:
         return
@@ -142,9 +138,7 @@ def _check_image_description(
             found_in.append("ImageDescription")
 
 
-def _check_maker_note(
-    exif_data: dict, found_in: list[str], details: dict
-) -> None:
+def _check_maker_note(exif_data: dict, found_in: list[str], details: dict) -> None:
     raw = exif_data.get("Exif", {}).get(piexif.ExifIFD.MakerNote)
     if not raw:
         return
@@ -173,6 +167,7 @@ def _read_xmp_text(image_bytes: bytes) -> Optional[str]:
 # 공개 헬퍼 — 테스트에서도 사용
 # ---------------------------------------------------------------------------
 
+
 def decode_user_comment(raw: bytes) -> Optional[str]:
     """EXIF UserComment raw bytes 에서 텍스트를 추출한다.
 
@@ -187,7 +182,7 @@ def decode_user_comment(raw: bytes) -> Optional[str]:
     ]
     for prefix, enc in prefixes:
         if raw.startswith(prefix):
-            payload = raw[len(prefix):]
+            payload = raw[len(prefix) :]
             try:
                 return payload.decode(enc).rstrip("\x00").strip()
             except (UnicodeDecodeError, LookupError):

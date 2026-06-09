@@ -8,6 +8,7 @@
   - OCR 엔진 부재 시 UNKNOWN 반환 검증 (항상 실행)
   - 실제 OCR 의존 테스트: 엔진 없으면 skip
 """
+
 from __future__ import annotations
 
 import io
@@ -34,6 +35,7 @@ OCR_AVAILABLE = is_ocr_available()
 # 헬퍼
 # ---------------------------------------------------------------------------
 
+
 def _make_plain_jpeg(color=(128, 128, 128)) -> bytes:
     img = Image.new("RGB", (64, 64), color=color)
     buf = io.BytesIO()
@@ -45,16 +47,19 @@ def _make_plain_jpeg(color=(128, 128, 128)) -> bytes:
 # 인터페이스 검증
 # ---------------------------------------------------------------------------
 
+
 class TestOCRDetectorInterface:
     def test_name_is_ocr(self):
         assert OCRDetector().name == "ocr"
 
     def test_is_detector_base_subclass(self):
         from koai_verify.detectors.base import DetectorBase
+
         assert isinstance(OCRDetector(), DetectorBase)
 
     def test_detect_returns_detector_output(self):
         from koai_verify.detectors.result import DetectorOutput
+
         output = OCRDetector().detect(_make_plain_jpeg())
         assert isinstance(output, DetectorOutput)
 
@@ -74,6 +79,7 @@ class TestOCRDetectorInterface:
 # ---------------------------------------------------------------------------
 # UNKNOWN — 이미지 파싱 불가
 # ---------------------------------------------------------------------------
+
 
 class TestOCRDetectorUnknown:
     def test_garbage_bytes_returns_unknown(self):
@@ -101,6 +107,7 @@ class TestOCRDetectorUnknown:
 # detect_safe — 예외 안전 래퍼
 # ---------------------------------------------------------------------------
 
+
 class TestOCRDetectorSafe:
     def test_detect_safe_does_not_raise(self):
         output = OCRDetector().detect_safe(b"\xff" * 50)
@@ -108,6 +115,7 @@ class TestOCRDetectorSafe:
 
     def test_detect_safe_returns_detector_output(self):
         from koai_verify.detectors.result import DetectorOutput
+
         output = OCRDetector().detect_safe(_make_plain_jpeg())
         assert isinstance(output, DetectorOutput)
 
@@ -115,6 +123,7 @@ class TestOCRDetectorSafe:
 # ---------------------------------------------------------------------------
 # match_label_patterns — 패턴 매칭 헬퍼 (OCR 엔진 불필요)
 # ---------------------------------------------------------------------------
+
 
 class TestMatchLabelPatterns:
     # 한국어 패턴
@@ -207,6 +216,7 @@ class TestMatchLabelPatterns:
 # 패턴 카탈로그 완전성
 # ---------------------------------------------------------------------------
 
+
 class TestPatternCatalog:
     def test_ko_patterns_minimum_count(self):
         assert len(KO_LABEL_PATTERNS) >= 6
@@ -216,11 +226,13 @@ class TestPatternCatalog:
 
     def test_ko_patterns_are_valid_regex(self):
         import re
+
         for p in KO_LABEL_PATTERNS:
             re.compile(p)
 
     def test_en_patterns_are_valid_regex(self):
         import re
+
         for p in EN_LABEL_PATTERNS:
             re.compile(p)
 
@@ -228,6 +240,7 @@ class TestPatternCatalog:
 # ---------------------------------------------------------------------------
 # OCR 엔진 실행 테스트 (엔진 설치 시에만)
 # ---------------------------------------------------------------------------
+
 
 @pytest.mark.skipif(not OCR_AVAILABLE, reason="OCR engine not installed")
 class TestOCRDetectorWithEngine:

@@ -2,6 +2,7 @@
 
 c2pa-python 라이브러리로 JPEG/PNG/WebP 이미지에서 C2PA 매니페스트 유무를 판정한다.
 """
+
 from __future__ import annotations
 
 import io
@@ -90,7 +91,5 @@ def _extract_manifest_details(manifest: dict) -> dict:
         details["claim_generator"] = active.get("claim_generator")
         assertions = active.get("assertions", [])
         details["assertion_count"] = len(assertions)
-        details["assertion_labels"] = [
-            a["label"] for a in assertions if isinstance(a, dict) and "label" in a
-        ]
+        details["assertion_labels"] = [a["label"] for a in assertions if isinstance(a, dict) and "label" in a]
     return details

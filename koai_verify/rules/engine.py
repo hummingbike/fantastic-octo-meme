@@ -6,6 +6,7 @@
 룰 평가 우선순위:
   R-05 → R-04 → R-01/R-02 → R-03 → R-07 → R-06
 """
+
 from __future__ import annotations
 
 from koai_verify.detectors.result import DetectorOutput
@@ -80,11 +81,11 @@ class RuleEngine:
         ocr = detections.get("ocr", "NOT_FOUND")
         watermark = detections.get("watermark", "UNKNOWN")
 
-        visible_found = (ocr == "FOUND")
-        c2pa_found = (c2pa == "FOUND")
-        exif_found = (exif == "FOUND")
+        visible_found = ocr == "FOUND"
+        c2pa_found = c2pa == "FOUND"
+        exif_found = exif == "FOUND"
         invisible_found = c2pa_found or exif_found
-        watermark_found = (watermark == "FOUND")
+        watermark_found = watermark == "FOUND"
 
         # R-05: 어떤 표시도 없음 → 즉시 NON_COMPLIANT
         if not visible_found and not invisible_found and not watermark_found:
@@ -122,9 +123,7 @@ class RuleEngine:
             if ctx.download_notice_confirmed is True:
                 triggered.append("R-03A")
                 verdict = Verdict.COMPLIANT
-                recommendation = (
-                    "비가시 표시와 배포 시 1회 안내가 확인됐습니다. 시행령 제23조 제2항 요건을 충족합니다."
-                )
+                recommendation = "비가시 표시와 배포 시 1회 안내가 확인됐습니다. 시행령 제23조 제2항 요건을 충족합니다."
 
             # R-03 케이스 B: 안내 없이 외부 배포 → NON_COMPLIANT
             elif ctx.download_notice_confirmed is False and ctx.is_external_distribution is True:
@@ -151,9 +150,7 @@ class RuleEngine:
         else:
             triggered.append("R-02")
             verdict = Verdict.WARNING
-            recommendation = (
-                "워터마크가 탐지됐으나 탐지 신뢰도가 낮습니다. 추가 표시 방법을 권장합니다."
-            )
+            recommendation = "워터마크가 탐지됐으나 탐지 신뢰도가 낮습니다. 추가 표시 방법을 권장합니다."
 
         # R-07: 딥페이크 강화 표시 검증
         if ctx.is_deepfake_service is True and not visible_found:
@@ -168,8 +165,7 @@ class RuleEngine:
             if verdict == Verdict.COMPLIANT:
                 verdict = Verdict.WARNING
                 recommendation += (
-                    "\n딥페이크 서비스 여부를 확인할 수 없습니다. "
-                    "딥페이크 콘텐츠라면 가시 라벨이 필수입니다 (R-07)."
+                    "\n딥페이크 서비스 여부를 확인할 수 없습니다. " "딥페이크 콘텐츠라면 가시 라벨이 필수입니다 (R-07)."
                 )
 
         # R-06: 강건성 생존율 미달 → WARNING

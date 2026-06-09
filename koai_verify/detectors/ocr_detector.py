@@ -11,6 +11,7 @@
   NOT_FOUND : OCR 성공했으나 패턴 없음
   UNKNOWN   : OCR 엔진 미설치 또는 이미지 파싱 불가
 """
+
 from __future__ import annotations
 
 import io
@@ -81,6 +82,7 @@ def match_label_patterns(text: str) -> bool:
 # OCR 엔진 탐지 (런타임 import)
 # ---------------------------------------------------------------------------
 
+
 def _ocr_with_easyocr(image_bytes: bytes) -> Optional[str]:
     """easyocr 로 이미지에서 텍스트를 추출한다."""
     try:
@@ -126,11 +128,13 @@ def is_ocr_available() -> bool:
     """OCR 엔진이 하나라도 설치되어 있으면 True."""
     try:
         import easyocr  # noqa: F401
+
         return True
     except ImportError:
         pass
     try:
         import pytesseract  # noqa: F401
+
         pytesseract.get_tesseract_version()
         return True
     except Exception:
@@ -140,6 +144,7 @@ def is_ocr_available() -> bool:
 # ---------------------------------------------------------------------------
 # OCRDetector
 # ---------------------------------------------------------------------------
+
 
 class OCRDetector(DetectorBase):
     """픽셀 내 AI 가시 라벨 텍스트를 OCR로 탐지한다.

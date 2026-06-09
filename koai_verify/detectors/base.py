@@ -2,6 +2,7 @@
 
 W6+ 탐지 엔진이 구현해야 하는 인터페이스.
 """
+
 from __future__ import annotations
 
 from abc import ABC, abstractmethod

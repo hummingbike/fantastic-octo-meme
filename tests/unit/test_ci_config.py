@@ -2,6 +2,7 @@
 
 인프라 파일이 필수 항목을 포함하는지 확인한다.
 """
+
 from __future__ import annotations
 
 import sys
@@ -22,6 +23,7 @@ class TestPyprojectToml:
         if sys.version_info < (3, 11):
             pytest.skip("tomllib Python 3.11+ 전용")
         import tomllib
+
         return tomllib.loads((ROOT / "pyproject.toml").read_text())
 
     def test_file_exists(self):

@@ -2,6 +2,7 @@
 
 이미지 로드·검증·정규화 파이프라인 검증.
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -49,6 +50,7 @@ def _make_webp_bytes(width: int = 60, height: int = 40) -> bytes:
 # ImageFormat 열거형
 # ---------------------------------------------------------------------------
 
+
 class TestImageFormat:
     def test_jpeg_value(self):
         assert ImageFormat.JPEG == "jpeg"
@@ -66,6 +68,7 @@ class TestImageFormat:
 # ---------------------------------------------------------------------------
 # _detect_format
 # ---------------------------------------------------------------------------
+
 
 class TestDetectFormat:
     def test_jpeg_detected(self):
@@ -93,6 +96,7 @@ class TestDetectFormat:
 # _compute_sha256
 # ---------------------------------------------------------------------------
 
+
 class TestComputeSha256:
     def test_returns_64_hex_chars(self):
         result = _compute_sha256(b"hello")
@@ -116,6 +120,7 @@ class TestComputeSha256:
 # ---------------------------------------------------------------------------
 # load_from_bytes
 # ---------------------------------------------------------------------------
+
 
 class TestLoadFromBytes:
     def test_jpeg_returns_image_input(self):
@@ -178,6 +183,7 @@ class TestLoadFromBytes:
 # ---------------------------------------------------------------------------
 # load_from_path
 # ---------------------------------------------------------------------------
+
 
 class TestLoadFromPath:
     def test_loads_real_fixture(self):

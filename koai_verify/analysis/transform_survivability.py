@@ -6,6 +6,7 @@
 실제 대규모 측정은 W9 강건성 하니스에서 수행.
 여기서는 케이스 식별(break/survive 분류) 프레임워크를 구축한다.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -21,16 +22,17 @@ from koai_verify.analysis.tool_fingerprint import (
 
 
 class SurvivalOutcome(str, Enum):
-    SURVIVED = "survived"   # 변형 후에도 마킹 탐지됨
-    BROKEN = "broken"       # 변형 후 마킹 소실
-    UNKNOWN = "unknown"     # 원본도 탐지 불가 → 비교 불가
+    SURVIVED = "survived"  # 변형 후에도 마킹 탐지됨
+    BROKEN = "broken"  # 변형 후 마킹 소실
+    UNKNOWN = "unknown"  # 원본도 탐지 불가 → 비교 불가
 
 
 @dataclass
 class TransformSurvivalResult:
     """단일 변형·단일 마킹 타입의 생존 결과."""
+
     transform_label: str
-    marking_type: str     # "exif_ai" | "c2pa" | "visible_label"
+    marking_type: str  # "exif_ai" | "c2pa" | "visible_label"
     before: MarkingPresence
     after: MarkingPresence
     outcome: SurvivalOutcome
@@ -39,6 +41,7 @@ class TransformSurvivalResult:
 @dataclass
 class ToolTransformReport:
     """도구 하나의 변형 배터리 전체 생존 결과."""
+
     tool_name: str
     original_fingerprint: ToolFingerprint
     results: list[TransformSurvivalResult]
@@ -90,13 +93,15 @@ def analyze_transform_survival(
             before = getattr(original_fp, marking_type)
             after = getattr(transformed_fp, marking_type)
             outcome = _compare_presence(before, after)
-            results.append(TransformSurvivalResult(
-                transform_label=spec.label(),
-                marking_type=marking_type,
-                before=before,
-                after=after,
-                outcome=outcome,
-            ))
+            results.append(
+                TransformSurvivalResult(
+                    transform_label=spec.label(),
+                    marking_type=marking_type,
+                    before=before,
+                    after=after,
+                    outcome=outcome,
+                )
+            )
 
     return ToolTransformReport(
         tool_name=tool_name,
@@ -115,10 +120,14 @@ KNOWN_BREAK_CASES: list[dict] = [
         "tool": "adobe_firefly",
         "marking": "c2pa",
         "breaking_transforms": [
-            "sns_instagram", "sns_twitter", "sns_kakaotalk_chat",
-            "sns_kakaotalk_profile", "screenshot_96dpi", "screenshot_72dpi",
+            "sns_instagram",
+            "sns_twitter",
+            "sns_kakaotalk_chat",
+            "sns_kakaotalk_profile",
+            "screenshot_96dpi",
+            "screenshot_72dpi",
             "jpeg_compress_q80",  # 재압축 시 JUMBF 박스 유실
-            "webp_convert_q90",   # 컨테이너 변경
+            "webp_convert_q90",  # 컨테이너 변경
         ],
         "surviving_transforms": [],  # 실질적으로 없음
         "survival_rate_estimate": 0.0,
@@ -129,11 +138,18 @@ KNOWN_BREAK_CASES: list[dict] = [
         "tool": "stable_diffusion",
         "marking": "exif_ai",
         "breaking_transforms": [
-            "sns_instagram", "sns_twitter", "sns_kakaotalk_chat",
-            "sns_kakaotalk_profile", "screenshot_96dpi", "screenshot_72dpi",
+            "sns_instagram",
+            "sns_twitter",
+            "sns_kakaotalk_chat",
+            "sns_kakaotalk_profile",
+            "screenshot_96dpi",
+            "screenshot_72dpi",
         ],
         "surviving_transforms": [
-            "jpeg_compress_q80", "jpeg_compress_q60", "resize_75pct", "resize_50pct",
+            "jpeg_compress_q80",
+            "jpeg_compress_q60",
+            "resize_75pct",
+            "resize_50pct",
             "crop_center_90pct",
         ],
         "survival_rate_estimate": 0.5,  # SNS에서 모두 유실, 직접 조작에서는 생존
@@ -144,14 +160,17 @@ KNOWN_BREAK_CASES: list[dict] = [
         "tool": "generic_visible_label",
         "marking": "visible_label",
         "breaking_transforms": [
-            "resize_25pct",          # 극단적 축소 시 OCR 불가
-            "jpeg_compress_q20",     # 심한 압축으로 텍스트 뭉개짐
-            "crop_center_70pct",     # 라벨이 외곽에 있으면 잘림
+            "resize_25pct",  # 극단적 축소 시 OCR 불가
+            "jpeg_compress_q20",  # 심한 압축으로 텍스트 뭉개짐
+            "crop_center_70pct",  # 라벨이 외곽에 있으면 잘림
         ],
         "surviving_transforms": [
-            "jpeg_compress_q80", "jpeg_compress_q60",
-            "resize_75pct", "resize_50pct",
-            "sns_instagram", "sns_twitter",  # 이미지 자체에 텍스트가 있으면 생존
+            "jpeg_compress_q80",
+            "jpeg_compress_q60",
+            "resize_75pct",
+            "resize_50pct",
+            "sns_instagram",
+            "sns_twitter",  # 이미지 자체에 텍스트가 있으면 생존
         ],
         "survival_rate_estimate": 0.75,
         "reason": "픽셀 데이터에 포함된 가시 라벨은 이미지 재인코딩에 강건. 극단적 변형에서만 손상.",

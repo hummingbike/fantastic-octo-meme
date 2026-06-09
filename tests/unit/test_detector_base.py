@@ -2,6 +2,7 @@
 
 DetectionResult, DetectorOutput, DetectorBase 검증.
 """
+
 from __future__ import annotations
 
 import pytest
@@ -11,6 +12,7 @@ from koai_verify.detectors import DetectionResult, DetectorBase, DetectorOutput
 # ---------------------------------------------------------------------------
 # DetectionResult 열거형
 # ---------------------------------------------------------------------------
+
 
 class TestDetectionResult:
     def test_three_values_exist(self):
@@ -30,6 +32,7 @@ class TestDetectionResult:
 
     def test_json_serializable(self):
         import json
+
         payload = {"result": DetectionResult.FOUND}
         dumped = json.dumps(payload)
         assert '"FOUND"' in dumped
@@ -38,6 +41,7 @@ class TestDetectionResult:
 # ---------------------------------------------------------------------------
 # DetectorOutput
 # ---------------------------------------------------------------------------
+
 
 class TestDetectorOutput:
     def _make(self, result: DetectionResult) -> DetectorOutput:
@@ -83,6 +87,7 @@ class TestDetectorOutput:
 # ---------------------------------------------------------------------------
 # DetectorBase 추상 클래스
 # ---------------------------------------------------------------------------
+
 
 class TestDetectorBase:
     def _make_concrete(self, result: DetectionResult, name: str = "stub") -> DetectorBase:

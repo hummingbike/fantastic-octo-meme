@@ -2,6 +2,7 @@
 
 W6+ 탐지 엔진이 공통으로 사용하는 결과 타입.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field

@@ -5,6 +5,7 @@
 
 실행: python tests/fixtures/make_synthetic_samples.py
 """
+
 import io
 import json
 from pathlib import Path
@@ -18,6 +19,7 @@ SAMPLES_DIR = Path(__file__).parent / "samples"
 def _gradient_img(width: int = 256, height: int = 256, seed: int = 0) -> Image.Image:
     """픽셀마다 다른 색상의 그라디언트 이미지 (메타데이터 비교 테스트용)."""
     import random
+
     rng = random.Random(seed)
     pixels = [(rng.randint(0, 255), rng.randint(0, 255), rng.randint(0, 255)) for _ in range(width * height)]
     img = Image.new("RGB", (width, height))
@@ -55,8 +57,7 @@ def make_stable_diffusion(out_dir: Path = SAMPLES_DIR / "stable_diffusion") -> l
             },
             "Exif": {
                 piexif.ExifIFD.UserComment: (
-                    b"ASCII\x00\x00\x00"
-                    + f"Steps: 20, Sampler: DDIM, Model: sd-v1-5, Prompt: test prompt {i}".encode()
+                    b"ASCII\x00\x00\x00" + f"Steps: 20, Sampler: DDIM, Model: sd-v1-5, Prompt: test prompt {i}".encode()
                 ),
             },
             "GPS": {},
@@ -80,9 +81,7 @@ def make_comfyui(out_dir: Path = SAMPLES_DIR / "comfyui") -> list[Path]:
         exif = {
             "0th": {piexif.ImageIFD.Software: b"ComfyUI"},
             "Exif": {
-                piexif.ExifIFD.UserComment: (
-                    b"ASCII\x00\x00\x00" + workflow_snippet.encode()
-                ),
+                piexif.ExifIFD.UserComment: (b"ASCII\x00\x00\x00" + workflow_snippet.encode()),
             },
             "GPS": {},
             "1st": {},

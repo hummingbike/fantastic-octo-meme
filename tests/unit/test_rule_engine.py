@@ -2,6 +2,7 @@
 
 R-01~R-07 판정 로직, Verdict, VerificationContext, RuleVerdict 검증.
 """
+
 from __future__ import annotations
 
 from koai_verify.rules import RuleEngine, RuleVerdict, Verdict, VerificationContext
@@ -15,6 +16,7 @@ UNKNOWN = "UNKNOWN"
 # ---------------------------------------------------------------------------
 # Verdict 모델
 # ---------------------------------------------------------------------------
+
 
 class TestVerdict:
     def test_four_values_exist(self):
@@ -40,6 +42,7 @@ class TestVerdict:
 # VerificationContext 기본값
 # ---------------------------------------------------------------------------
 
+
 class TestVerificationContext:
     def test_all_none_by_default(self):
         ctx = VerificationContext()
@@ -52,6 +55,7 @@ class TestVerificationContext:
 # ---------------------------------------------------------------------------
 # RuleVerdict 편의 메서드
 # ---------------------------------------------------------------------------
+
 
 class TestRuleVerdict:
     def test_is_compliant_true(self):
@@ -74,6 +78,7 @@ class TestRuleVerdict:
 # ---------------------------------------------------------------------------
 # R-05: 표시 전무 → NON_COMPLIANT
 # ---------------------------------------------------------------------------
+
 
 class TestR05NoMarking:
     engine = RuleEngine()
@@ -103,6 +108,7 @@ class TestR05NoMarking:
 # R-04: 가시 라벨 → COMPLIANT
 # ---------------------------------------------------------------------------
 
+
 class TestR04VisibleLabel:
     engine = RuleEngine()
 
@@ -126,6 +132,7 @@ class TestR04VisibleLabel:
 # ---------------------------------------------------------------------------
 # R-01/R-02 + R-03: 비가시 전용 컨텍스트 판정
 # ---------------------------------------------------------------------------
+
 
 class TestR03InvisibleOnly:
     engine = RuleEngine()
@@ -187,6 +194,7 @@ class TestR03InvisibleOnly:
 # R-07: 딥페이크 강화 검증
 # ---------------------------------------------------------------------------
 
+
 class TestR07Deepfake:
     engine = RuleEngine()
 
@@ -220,6 +228,7 @@ class TestR07Deepfake:
 # ---------------------------------------------------------------------------
 # R-06: 강건성 생존율 미달 → WARNING
 # ---------------------------------------------------------------------------
+
 
 class TestR06Robustness:
     engine = RuleEngine(robustness_threshold=0.70)
