@@ -13,5 +13,12 @@
  */
 
 export { verify, parseReport } from "./verify";
-export type { VerificationReport, Detections, DetectionResult, Verdict, VerifyOptions } from "./types";
+export type {
+  VerificationReport,
+  Detections,
+  DetectionResult,
+  Verdict,
+  VerifyOptions,
+  VerifyErrorCode,
+} from "./types";
 export { VerifyError } from "./types";

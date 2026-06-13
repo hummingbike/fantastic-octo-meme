@@ -36,7 +36,27 @@ _MAX_BYTES = 50 * 1024 * 1024  # 50 MB
 
 
 class ImageLoadError(ValueError):
-    """이미지 로드 또는 검증 실패."""
+    """이미지 로드 또는 검증 실패 — 모든 파이프라인 오류의 베이스 클래스."""
+
+
+class UrlNotAllowedError(ImageLoadError):
+    """URL 로드 시도 거부 (SSRF 방지)."""
+
+
+class ImageNotFoundError(ImageLoadError):
+    """파일이 존재하지 않거나 디렉터리를 가리킴."""
+
+
+class UnsupportedFormatError(ImageLoadError):
+    """지원하지 않는 이미지 포맷."""
+
+
+class ImageTooLargeError(ImageLoadError):
+    """이미지 파일 크기가 50 MB 제한을 초과함."""
+
+
+class ImageCorruptedError(ImageLoadError):
+    """이미지 파일이 손상되어 디코딩할 수 없음."""
 
 
 @dataclass(frozen=True)
@@ -77,15 +97,15 @@ def load_from_path(path: Union[str, Path]) -> ImageInput:
     # (Path("http://...") 는 "http:/..." 로 정규화되어 // 비교가 깨짐)
     raw_str = str(path)
     if raw_str.startswith(("http://", "https://", "ftp://")):
-        raise ImageLoadError("URL 로드 금지 — 파일 경로만 허용합니다 (SSRF 방지)")
+        raise UrlNotAllowedError(f"URL 로드 금지 — 파일 경로만 허용합니다 (SSRF 방지): {raw_str}")
 
     path = Path(path)
 
     if not path.exists():
-        raise ImageLoadError(f"파일 없음: {path}")
+        raise ImageNotFoundError(f"파일 없음: {path}")
 
     if not path.is_file():
-        raise ImageLoadError(f"파일이 아님: {path}")
+        raise ImageNotFoundError(f"파일이 아님 (디렉터리?): {path}")
 
     raw = path.read_bytes()
     return load_from_bytes(raw, source_path=str(path))
@@ -94,10 +114,10 @@ def load_from_path(path: Union[str, Path]) -> ImageInput:
 def load_from_bytes(image_bytes: bytes, source_path: str | None = None) -> ImageInput:
     """bytes 에서 이미지를 로드해 ImageInput 을 반환한다."""
     if not image_bytes:
-        raise ImageLoadError("빈 이미지 데이터")
+        raise ImageCorruptedError("빈 이미지 데이터")
 
     if len(image_bytes) > _MAX_BYTES:
-        raise ImageLoadError(f"이미지 크기 초과: {len(image_bytes) / 1024 / 1024:.1f}MB > 50MB 제한")
+        raise ImageTooLargeError(f"이미지 크기 초과: {len(image_bytes) / 1024 / 1024:.1f}MB > 50MB 제한")
 
     fmt = _detect_format(image_bytes)
     sha256 = _compute_sha256(image_bytes)
@@ -119,11 +139,13 @@ def _detect_format(image_bytes: bytes) -> ImageFormat:
         img = PILImage.open(io.BytesIO(image_bytes))
         pil_fmt = img.format
     except Exception as e:
-        raise ImageLoadError(f"이미지 포맷 탐지 실패: {e}") from e
+        raise ImageCorruptedError(f"이미지 디코딩 실패 — 파일이 손상되었거나 지원하지 않는 포맷: {e}") from e
 
     if pil_fmt not in _FORMAT_MAP:
         supported = ", ".join(_FORMAT_MAP.keys())
-        raise ImageLoadError(f"지원하지 않는 포맷: {pil_fmt} (지원: {supported})")
+        raise UnsupportedFormatError(
+            f"지원하지 않는 포맷: {pil_fmt!r} (지원 포맷: {supported})\n" "PNG · JPEG · WebP 이미지를 사용하세요."
+        )
 
     return _FORMAT_MAP[pil_fmt]
 
@@ -137,4 +159,4 @@ def _read_dimensions(image_bytes: bytes) -> tuple[int, int]:
         img = PILImage.open(io.BytesIO(image_bytes))
         return img.size  # (width, height)
     except Exception as e:
-        raise ImageLoadError(f"이미지 크기 읽기 실패: {e}") from e
+        raise ImageCorruptedError(f"이미지 크기 읽기 실패: {e}") from e

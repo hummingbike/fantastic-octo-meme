@@ -46,6 +46,21 @@ export function verify(imagePath: string, options: VerifyOptions = {}): Verifica
 
   const result = spawnSync(bin, args, { encoding: "utf8", env: process.env });
 
+  // spawnSync 가 프로세스를 시작조차 못 한 경우 (CLI 미설치 등)
+  if (result.error) {
+    const isEnoent = (result.error as NodeJS.ErrnoException).code === "ENOENT";
+    if (isEnoent) {
+      throw new VerifyError(
+        `koai-verify CLI 를 찾을 수 없습니다. ` +
+          `'pip install koai-verify' 로 설치했는지 확인하세요. ` +
+          `(KOAI_VERIFY_CMD 환경 변수로 경로를 직접 지정할 수도 있습니다.)`,
+        -1,
+        "CLI_NOT_FOUND",
+      );
+    }
+    throw new VerifyError(`프로세스 실행 오류: ${result.error.message}`, -1, "EXECUTION_ERROR");
+  }
+
   const exitCode = result.status ?? -1;
 
   // exit 0–3: 판정 결과 코드 — stdout 에 유효한 JSON 이 있다.
@@ -53,13 +68,18 @@ export function verify(imagePath: string, options: VerifyOptions = {}): Verifica
     try {
       return JSON.parse(result.stdout) as VerificationReport;
     } catch {
-      throw new VerifyError(`JSON 파싱 실패: ${result.stdout.slice(0, 200)}`, exitCode);
+      throw new VerifyError(
+        `JSON 파싱 실패: ${result.stdout.slice(0, 200)}`,
+        exitCode,
+        "JSON_PARSE_ERROR",
+      );
     }
   }
 
   // exit 10: 입력 오류 (파일 없음 등)
   const stderr = (result.stderr ?? "").trim();
-  throw new VerifyError(`koai-verify 실행 실패 (exit ${exitCode}): ${stderr}`, exitCode);
+  const code = exitCode === 10 ? "IMAGE_NOT_FOUND" : ("EXECUTION_ERROR" as const);
+  throw new VerifyError(`koai-verify 실행 실패 (exit ${exitCode}): ${stderr}`, exitCode, code);
 }
 
 /** JSON 문자열을 VerificationReport 로 파싱한다 (단위 테스트 유틸). */
