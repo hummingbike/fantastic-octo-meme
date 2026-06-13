@@ -81,7 +81,7 @@ class TestDetectFormat:
         assert _detect_format(_make_webp_bytes()) == ImageFormat.WEBP
 
     def test_invalid_bytes_raises(self):
-        with pytest.raises(ImageLoadError, match="포맷 탐지 실패"):
+        with pytest.raises(ImageLoadError, match="디코딩 실패"):
             _detect_format(b"not_an_image_at_all")
 
     def test_gif_not_supported(self):

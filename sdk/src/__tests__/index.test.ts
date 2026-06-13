@@ -14,7 +14,7 @@ import * as os from "os";
 import * as path from "path";
 
 import { parseReport, verify, VerifyError } from "../index";
-import type { VerificationReport } from "../index";
+import type { VerificationReport, VerifyErrorCode } from "../index";
 
 // ---------------------------------------------------------------------------
 // 픽스처: 판정 리포트 JSON 샘플
@@ -150,6 +150,45 @@ describe("VerifyError", () => {
   test("message is accessible", () => {
     const err = new VerifyError("some message", 1);
     expect(err.message).toBe("some message");
+  });
+
+  // W17: 오류 코드 필드
+  test("default code is EXECUTION_ERROR", () => {
+    const err = new VerifyError("test", 1);
+    expect(err.code).toBe("EXECUTION_ERROR");
+  });
+
+  test("code can be CLI_NOT_FOUND", () => {
+    const err = new VerifyError("cli missing", -1, "CLI_NOT_FOUND");
+    expect(err.code).toBe("CLI_NOT_FOUND");
+  });
+
+  test("code can be IMAGE_NOT_FOUND", () => {
+    const err = new VerifyError("file missing", 10, "IMAGE_NOT_FOUND");
+    expect(err.code).toBe("IMAGE_NOT_FOUND");
+  });
+
+  test("code can be JSON_PARSE_ERROR", () => {
+    const err = new VerifyError("bad json", 0, "JSON_PARSE_ERROR");
+    expect(err.code).toBe("JSON_PARSE_ERROR");
+  });
+
+  test("code type is assignable from VerifyErrorCode", () => {
+    const codes: VerifyErrorCode[] = ["CLI_NOT_FOUND", "IMAGE_NOT_FOUND", "JSON_PARSE_ERROR", "EXECUTION_ERROR"];
+    codes.forEach((c) => {
+      const err = new VerifyError("msg", 0, c);
+      expect(err.code).toBe(c);
+    });
+  });
+
+  test("CLI_NOT_FOUND error has helpful install message when spawned with bad cmd", () => {
+    const err = new VerifyError(
+      "koai-verify CLI 를 찾을 수 없습니다. 'pip install koai-verify' 로 설치했는지 확인하세요.",
+      -1,
+      "CLI_NOT_FOUND",
+    );
+    expect(err.message).toContain("pip install koai-verify");
+    expect(err.exitCode).toBe(-1);
   });
 });
 

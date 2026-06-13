@@ -3,7 +3,14 @@
 __version__ = "0.1.0"
 
 from koai_verify.api import verify
-from koai_verify.pipeline import ImageLoadError
+from koai_verify.pipeline import (
+    ImageCorruptedError,
+    ImageLoadError,
+    ImageNotFoundError,
+    ImageTooLargeError,
+    UnsupportedFormatError,
+    UrlNotAllowedError,
+)
 from koai_verify.report.formatter import VerificationReport
 from koai_verify.rules.models import Verdict, VerificationContext
 
@@ -11,6 +18,11 @@ __all__ = [
     "__version__",
     "verify",
     "ImageLoadError",
+    "ImageNotFoundError",
+    "UrlNotAllowedError",
+    "UnsupportedFormatError",
+    "ImageTooLargeError",
+    "ImageCorruptedError",
     "VerificationReport",
     "Verdict",
     "VerificationContext",
