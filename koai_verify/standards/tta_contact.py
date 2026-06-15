@@ -9,7 +9,7 @@ TTA(한국정보통신기술협회) TC010 — 인공지능 표준화 위원회
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any
 
 

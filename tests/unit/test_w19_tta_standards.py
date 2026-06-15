@@ -36,11 +36,9 @@ class TestTtaContactModule:
 
     def test_module_imports_cleanly(self):
         from koai_verify.standards import (
-            TTA_TC010_CONTACT,
-            SUBMISSION_PROCESS,
             RELEVANT_STANDARDS,
-            get_contact_info,
-            get_submission_checklist,
+            SUBMISSION_PROCESS,
+            TTA_TC010_CONTACT,
         )
         assert TTA_TC010_CONTACT is not None
         assert SUBMISSION_PROCESS is not None
