@@ -1,6 +1,6 @@
 # TODO.md — KoAI-Verify 작업 추적
 
-> 현재 주차: **W18** (2026-06-13 기준, W17 완료)
+> 현재 주차: **W18** (2026-06-15 기준, W17 완료)
 > 업데이트 규칙: 완료 즉시 체크. 주차 시작 시 다음 주 항목 활성화.
 
 ---
@@ -192,11 +192,12 @@
 
 ---
 
-## 현재 진행 중 — W18 (2026.9.28–10.4) — 채택 피드백 스프린트 ②
+## 완료 — W18 (2026.9.28–10.4) — 채택 피드백 스프린트 ②
 
-- [ ] GitHub Issues 모니터링 지속 (W17 PR 이후 신규 오류 리포트 대응)
-- [ ] 통합 예제 개선 — Next.js / FastAPI 스니펫 추가 (`docs/examples/`)
-- [ ] 퀵스타트 문서 업데이트 — FAQ 링크, 오류 처리 섹션 보강
+- [x] GitHub Issues 모니터링 지속 — 신규 오류 리포트 없음 확인
+- [x] 통합 예제 개선 — `docs/examples/nextjs_example.ts` (App Router API Route + 클라이언트 헬퍼), `docs/examples/fastapi_example.py` (단일·배치 엔드포인트, 5종 오류 처리) 추가
+- [x] 퀵스타트 문서 업데이트 — 오류 처리 섹션 신규 추가, FAQ·예제 링크 보강
+- [x] 단위 테스트 42개 추가 / 전체 1082개 통과
 
 ---
 
@@ -280,3 +281,5 @@
 - [x] **W14 갭 리포트 확정 완료** (2026-06-09) — `batch_runner.py`(Phase 0 배치 분석기, ToolVerifyResult·BatchAnalysisReport, SNS 4종 생존율 실측), `docs/gap_report_v1.md`(확정본, 예측 정확도 5/5, SNS 생존율 0% 실측), 단위 테스트 53개(W14) 추가 / 전체 868개
 - [x] **W15 문서·예제 정비 완료** (2026-06-09) — `docs/examples/`(Python·Node.js·curl 예제), `.github/workflows/koai-verify.yml`(PR 자동 검증), `README.md`(PyPI 배지·갭 리포트 링크), `docs/architecture.md`(탐지 레이어·룰 흐름 다이어그램), 단위 테스트 52개(W15) 추가 / 전체 920개
 - [x] **W16 오픈 SDK + 벤치마크 공개 완료** (2026-06-09) — `scripts/run_benchmark.py`(벤치마크 러너), `benchmarks/results/`(생존율 매트릭스 JSON+MD), `.github/workflows/release.yml`(PyPI 릴리즈 CI), GitHub Release v0.1.0, 블로그·커뮤니티 게시 초안, 수동 작업 기록, 단위 테스트 60개(W16) 추가 / 전체 980개
+- [x] **W17 채택 피드백 스프린트 완료** (2026-06-13) — GitHub Issues 모니터링 및 통합 파트너 막힌 지점 해결, Python SDK `ImageLoadError` 서브클래스 5종 + 공개 API 노출, JS SDK `VerifyError.code`(VerifyErrorCode) + CLI_NOT_FOUND 안내 개선, `docs/faq.md` 신규 작성(설치·오류·판정·JS SDK·강건성·법령 섹션), 단위 테스트 60개(W17) 추가 / 전체 1040개
+- [x] **W18 채택 피드백 스프린트 ② 완료** (2026-06-15) — GitHub Issues 신규 이슈 없음 확인, `docs/examples/nextjs_example.ts`(App Router POST /api/verify, VerifyError 코드 분기, 임시 파일 cleanup), `docs/examples/fastapi_example.py`(단일·배치 엔드포인트, 5종 오류 → HTTPException 매핑), `docs/quickstart.md`(오류 처리 섹션 + FAQ·예제 링크), 단위 테스트 42개(W18) 추가 / 전체 1082개

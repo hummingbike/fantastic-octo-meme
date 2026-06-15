@@ -92,7 +92,40 @@ print(json.dumps(report.to_json(), indent=2, ensure_ascii=False))
 
 ---
 
-## 5단계: JavaScript/TypeScript SDK / Step 5: JS/TS SDK
+## 5단계: 오류 처리 / Step 5: Error Handling
+
+검증 실패 또는 잘못된 입력을 처리하는 예제입니다.
+
+```python
+from koai_verify import (
+    verify,
+    ImageNotFoundError,
+    UnsupportedFormatError,
+    ImageTooLargeError,
+    ImageCorruptedError,
+    UrlNotAllowedError,
+)
+
+try:
+    report = verify("path/to/image.jpg")
+    print(report.verdict)
+except ImageNotFoundError:
+    print("파일을 찾을 수 없습니다 — 경로를 확인하세요")
+except UnsupportedFormatError:
+    print("지원하지 않는 포맷입니다 (JPEG · PNG · WebP 만 가능)")
+except ImageTooLargeError:
+    print("이미지가 50MB 를 초과합니다 — 압축 후 재시도하세요")
+except ImageCorruptedError:
+    print("이미지 파일이 손상되었습니다")
+except UrlNotAllowedError:
+    print("URL 입력은 허용되지 않습니다 — 로컬 파일 경로를 사용하세요")
+```
+
+오류별 상세 해결 방법은 **[FAQ](faq.md)** 를 참조하세요.
+
+---
+
+## 6단계: JavaScript/TypeScript SDK / Step 6: JS/TS SDK
 
 ```bash
 npm install @koai/verify
@@ -121,6 +154,8 @@ python playground/app.py
 
 ## 다음 단계 / Next Steps
 
+- [FAQ](faq.md) — 자주 묻는 오류·판정·법령 관련 질문 모음
+- [통합 예제](examples/) — Python / Node.js / Next.js / FastAPI / curl 스니펫
 - [룰 엔진 스펙](rules/rule_engine_spec_v0.md) — R-01~R-07 상세 정의
 - [강건성 프로토콜](../benchmarks/protocol_v1.md) — 변형 배터리 설계
 - [포맷 지형 조사](format_landscape.md) — 탐지 가능/불가 경계
