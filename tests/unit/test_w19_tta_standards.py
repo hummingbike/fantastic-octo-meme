@@ -36,35 +36,39 @@ class TestTtaContactModule:
 
     def test_module_imports_cleanly(self):
         from koai_verify.standards import (
-            TTA_TC010_CONTACT,
-            SUBMISSION_PROCESS,
             RELEVANT_STANDARDS,
-            get_contact_info,
-            get_submission_checklist,
+            SUBMISSION_PROCESS,
+            TTA_TC010_CONTACT,
         )
+
         assert TTA_TC010_CONTACT is not None
         assert SUBMISSION_PROCESS is not None
         assert RELEVANT_STANDARDS is not None
 
     def test_tta_contact_has_committee_name(self):
         from koai_verify.standards import TTA_TC010_CONTACT
+
         assert "TC010" in TTA_TC010_CONTACT["committee"]
 
     def test_tta_contact_has_subgroup(self):
         from koai_verify.standards import TTA_TC010_CONTACT
+
         assert "SG10" in TTA_TC010_CONTACT["subgroup"]
 
     def test_tta_contact_has_website(self):
         from koai_verify.standards import TTA_TC010_CONTACT
+
         assert "tta.or.kr" in TTA_TC010_CONTACT["website"]
 
     def test_tta_contact_has_channels(self):
         from koai_verify.standards import TTA_TC010_CONTACT
+
         channels = TTA_TC010_CONTACT["channels"]
         assert len(channels) >= 3
 
     def test_tta_contact_channels_have_required_fields(self):
         from koai_verify.standards import TTA_TC010_CONTACT
+
         for ch in TTA_TC010_CONTACT["channels"]:
             assert hasattr(ch, "channel")
             assert hasattr(ch, "detail")
@@ -73,6 +77,7 @@ class TestTtaContactModule:
 
     def test_get_contact_info_returns_dict(self):
         from koai_verify.standards import get_contact_info
+
         info = get_contact_info()
         assert isinstance(info, dict)
         assert "committee" in info
@@ -81,44 +86,52 @@ class TestTtaContactModule:
 
     def test_get_contact_info_channels_are_list(self):
         from koai_verify.standards import get_contact_info
+
         info = get_contact_info()
         assert isinstance(info["channels"], list)
         assert len(info["channels"]) >= 3
 
     def test_get_submission_checklist_returns_list(self):
         from koai_verify.standards import get_submission_checklist
+
         checklist = get_submission_checklist()
         assert isinstance(checklist, list)
         assert len(checklist) >= 8
 
     def test_submission_checklist_items_are_strings(self):
         from koai_verify.standards import get_submission_checklist
+
         for item in get_submission_checklist():
             assert isinstance(item, str)
             assert len(item) > 0
 
     def test_submission_process_has_five_steps(self):
         from koai_verify.standards import SUBMISSION_PROCESS
+
         assert len(SUBMISSION_PROCESS) >= 5
 
     def test_submission_process_has_required_keys(self):
         from koai_verify.standards import SUBMISSION_PROCESS
+
         required = {"step", "name", "description", "output"}
         for step in SUBMISSION_PROCESS:
             assert required.issubset(step.keys())
 
     def test_relevant_standards_has_c2pa(self):
         from koai_verify.standards import RELEVANT_STANDARDS
+
         ids = [s.id for s in RELEVANT_STANDARDS]
         assert any("C2PA" in i for i in ids)
 
     def test_relevant_standards_has_iso_42001(self):
         from koai_verify.standards import RELEVANT_STANDARDS
+
         ids = [s.id for s in RELEVANT_STANDARDS]
         assert any("42001" in i for i in ids)
 
     def test_relevant_standards_fields(self):
         from koai_verify.standards import RELEVANT_STANDARDS
+
         for s in RELEVANT_STANDARDS:
             assert s.id
             assert s.title
