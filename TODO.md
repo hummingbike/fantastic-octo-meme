@@ -1,6 +1,6 @@
 # TODO.md — KoAI-Verify 작업 추적
 
-> 현재 주차: **W20** (2026-06-15 기준, W19 완료)
+> 현재 주차: **W21** (2026-06-16 기준, W20 완료)
 > 업데이트 규칙: 완료 즉시 체크. 주차 시작 시 다음 주 항목 활성화.
 
 ---
@@ -209,14 +209,18 @@
 
 ---
 
-## 현재 진행 중 — W20 (2026.10.12–10.18) — 호스팅 검증 API v0
+## 완료 — W20 (2026.10.12–10.18) — 호스팅 검증 API v0
 
-- [ ] REST API 서버 (`koai_verify/server/app.py`) — FastAPI 기반 `POST /v0/verify` 엔드포인트
-- [ ] API 키 인증 미들웨어 (`X-API-Key` 헤더 검증, 개발 모드용 bypass)
-- [ ] 사용량 측정 (`koai_verify/server/usage.py`) — 요청 횟수·이미지 크기·판정 결과 로깅
-- [ ] 셀프서브 API 키 발급 흐름 (환경변수 또는 설정 파일 기반)
-- [ ] Docker 컨테이너화 (`Dockerfile`, `docker-compose.yml`)
-- [ ] W20 단위 테스트 (FastAPI TestClient 기반)
+- [x] REST API 서버 (`koai_verify/server/app.py`) — FastAPI 기반 `POST /v0/verify` 엔드포인트
+- [x] API 키 인증 미들웨어 (`X-API-Key` 헤더 검증, 개발 모드용 bypass)
+- [x] 사용량 측정 (`koai_verify/server/usage.py`) — 요청 횟수·이미지 크기·판정 결과 로깅
+- [x] 셀프서브 API 키 발급 흐름 (환경변수 또는 설정 파일 기반)
+- [x] Docker 컨테이너화 (`Dockerfile`, `docker-compose.yml`)
+- [x] W20 단위 테스트 (FastAPI TestClient 기반)
+
+---
+
+## 현재 진행 중 — W21 (2026.10.19–10.25) — 사용량 기반 가격 가설 설계
 
 ---
 
@@ -242,7 +246,7 @@
 
 - [ ] **W16** 오픈 SDK + 강건성 벤치마크 공개 (Tistory·GitHub·GeekNews·디스콰이엇)
 - [x] **W19** TTA 표준화 참여 착수 (TC010 컨택)
-- [ ] **W20** 호스팅 검증 API v0 가동
+- [x] **W20** 호스팅 검증 API v0 가동
 - [ ] **W24** 외부 통합 ≥2곳 실연동
 
 ---
@@ -303,3 +307,4 @@
 - [x] **W17 채택 피드백 스프린트 완료** (2026-06-13) — GitHub Issues 모니터링 및 통합 파트너 막힌 지점 해결, Python SDK `ImageLoadError` 서브클래스 5종 + 공개 API 노출, JS SDK `VerifyError.code`(VerifyErrorCode) + CLI_NOT_FOUND 안내 개선, `docs/faq.md` 신규 작성(설치·오류·판정·JS SDK·강건성·법령 섹션), 단위 테스트 60개(W17) 추가 / 전체 1040개
 - [x] **W18 채택 피드백 스프린트 ② 완료** (2026-06-15) — GitHub Issues 신규 이슈 없음 확인, `docs/examples/nextjs_example.ts`(App Router POST /api/verify, VerifyError 코드 분기, 임시 파일 cleanup), `docs/examples/fastapi_example.py`(단일·배치 엔드포인트, 5종 오류 → HTTPException 매핑), `docs/quickstart.md`(오류 처리 섹션 + FAQ·예제 링크), 단위 테스트 42개(W18) 추가 / 전체 1082개
 - [x] **W19 TTA 표준화 참여 착수 완료** (2026-06-15) — `koai_verify/standards/tta_contact.py`(TC010 컨택 채널 4종·제출 프로세스 5단계·관련 표준 5종·헬퍼 함수), `docs/tta_gap_analysis.md`(R-01~R-07 × TTA 초안 매핑·R-06 강건성 갭 핵심 분석·§8 신설 제안), `docs/tta_submission_draft.md`(표준화 제안서 초안·실측 데이터 근거·수동 제출 절차), 단위 테스트 61개(W19) 추가 / 전체 1143개
+- [x] **W20 호스팅 검증 API v0 완료** (2026-06-16) — `koai_verify/server/app.py`(POST /v0/verify·GET /v0/health·GET /v0/usage), `server/auth.py`(X-API-Key 인증·KOAI_DEV_MODE bypass·셀프서브 키), `server/usage.py`(스레드-안전 사용량 추적·파일 영속화), `Dockerfile`+`docker-compose.yml`(비루트·헬스체크), pyproject.toml server extras, 단위 테스트 61개(W20) 추가 / 전체 1204개
