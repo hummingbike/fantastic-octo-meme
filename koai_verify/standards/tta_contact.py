@@ -69,8 +69,7 @@ SUBMISSION_PROCESS: list[dict[str, str]] = [
         "step": "1",
         "name": "표준화 필요성 사전 검토",
         "description": (
-            "KoAI-Verify 룰셋(R-01~R-07)과 강건성 벤치마크 결과를 토대로 "
-            "현행 TTA 초안과의 갭(gap) 분석 수행"
+            "KoAI-Verify 룰셋(R-01~R-07)과 강건성 벤치마크 결과를 토대로 " "현행 TTA 초안과의 갭(gap) 분석 수행"
         ),
         "output": "docs/tta_gap_analysis.md",
     },
@@ -148,10 +147,7 @@ def get_contact_info() -> dict[str, Any]:
     return {
         "committee": TTA_TC010_CONTACT["committee"],
         "subgroup": TTA_TC010_CONTACT["subgroup"],
-        "channels": [
-            {"channel": c.channel, "detail": c.detail, "note": c.note}
-            for c in TTA_TC010_CONTACT["channels"]
-        ],
+        "channels": [{"channel": c.channel, "detail": c.detail, "note": c.note} for c in TTA_TC010_CONTACT["channels"]],
         "submission_portal": TTA_TC010_CONTACT["standardization_portal"],
     }
 
