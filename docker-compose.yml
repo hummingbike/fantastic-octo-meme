@@ -1,0 +1,24 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      # 개발 모드: API 키 없이 접근 허용
+      KOAI_DEV_MODE: "true"
+      # 운영 모드: 아래 주석 해제 후 키 지정
+      # KOAI_DEV_MODE: "false"
+      # KOAI_API_KEYS: "your-secret-key-here"
+    volumes:
+      # 사용량 로그 영속화 (선택)
+      - usage_data:/home/koai/.koai
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/v0/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+volumes:
+  usage_data:

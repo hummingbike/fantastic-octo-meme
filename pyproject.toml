@@ -13,14 +13,22 @@ Pillow = ">=10.0"
 piexif = "^1.1"
 c2pa-python = "^0.32"
 click = ">=8.0"
+fastapi = {version = ">=0.111", optional = true}
+uvicorn = {version = ">=0.29", extras = ["standard"], optional = true}
+python-multipart = {version = ">=0.0.9", optional = true}
 
 [tool.poetry.extras]
 playground = ["gradio"]
+server = ["fastapi", "uvicorn", "python-multipart"]
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=8.0"
 ruff = ">=0.4"
 black = "^24.0"
+fastapi = ">=0.111"
+uvicorn = {version = ">=0.29", extras = ["standard"]}
+python-multipart = ">=0.0.9"
+httpx = ">=0.27"
 
 [tool.poetry.scripts]
 koai-verify = "koai_verify.cli:main"
