@@ -230,7 +230,15 @@
 
 ---
 
-## 현재 진행 중 — W22 (2026.10.26–11.1) — "공유 가능한 배지/리포트" (바이럴 훅)
+## 완료 — W22 (2026.10.26–11.1) — "공유 가능한 배지/리포트" (바이럴 훅)
+
+- [x] `koai_verify/report/badge.py` — shields.io 스타일 SVG 배지 생성 (`generate_badge_svg`, `badge_color` — verdict별 색상)
+- [x] `koai_verify/server/report_store.py` — 공개 공유 리포트 인메모리 저장소 (이미지 sha256을 식별자로 사용)
+- [x] `POST /v0/verify`에 `share` 옵션 추가 — true 시 `report_id`/`share_url`/`badge_url` 응답에 포함
+- [x] `GET /v0/share/{id}` — 공개 판정 리포트 조회 (인증 불필요, 404 시 처리)
+- [x] `GET /v0/badge/{id}.svg` — 공유 가능한 판정 배지 (인증 불필요, 미존재 ID도 UNKNOWN 배지로 200 폴백)
+- [x] `docs/badge_sharing.md` — 바이럴 훅 설계 문서 (배지 임베드 예시, 프라이버시·설계 결정, 한계)
+- [x] 단위 테스트 55개 추가 / 전체 1307개 통과
 
 ---
 
@@ -319,3 +327,4 @@
 - [x] **W19 TTA 표준화 참여 착수 완료** (2026-06-15) — `koai_verify/standards/tta_contact.py`(TC010 컨택 채널 4종·제출 프로세스 5단계·관련 표준 5종·헬퍼 함수), `docs/tta_gap_analysis.md`(R-01~R-07 × TTA 초안 매핑·R-06 강건성 갭 핵심 분석·§8 신설 제안), `docs/tta_submission_draft.md`(표준화 제안서 초안·실측 데이터 근거·수동 제출 절차), 단위 테스트 61개(W19) 추가 / 전체 1143개
 - [x] **W20 호스팅 검증 API v0 완료** (2026-06-16) — `koai_verify/server/app.py`(POST /v0/verify·GET /v0/health·GET /v0/usage), `server/auth.py`(X-API-Key 인증·KOAI_DEV_MODE bypass·셀프서브 키), `server/usage.py`(스레드-안전 사용량 추적·파일 영속화), `Dockerfile`+`docker-compose.yml`(비루트·헬스체크), pyproject.toml server extras, 단위 테스트 61개(W20) 추가 / 전체 1204개
 - [x] **W21 사용량 기반 가격 가설 설계 완료** (2026-06-17) — `koai_verify/server/pricing.py`(PricingTier Free/Pro/Enterprise·classify_tier·compute_overage·estimate_monthly_cost·usage_to_pricing_recommendation), `GET /v0/pricing` 엔드포인트(가격 테이블 + 사용량 기반 추천 티어), `docs/pricing_hypothesis.md`(산정 근거·무료↔유료 경계·W24 재보정 계획), 단위 테스트 48개(W21) 추가 / 전체 1252개
+- [x] **W22 공유 가능한 배지/리포트 완료** (2026-06-17) — `koai_verify/report/badge.py`(shields.io 스타일 SVG 배지·verdict별 색상), `koai_verify/server/report_store.py`(공개 공유 리포트 인메모리 저장소), `POST /v0/verify`(share 옵션·report_id/share_url/badge_url), `GET /v0/share/{id}`·`GET /v0/badge/{id}.svg`(인증 불필요), `docs/badge_sharing.md`(바이럴 훅 설계·임베드 예시·프라이버시 결정), 단위 테스트 55개(W22) 추가 / 전체 1307개

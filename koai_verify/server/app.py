@@ -1,10 +1,12 @@
 """W20 — 호스팅 검증 API v0.
 
 엔드포인트:
-  POST /v0/verify   — 이미지 파일 업로드 → 판정 리포트 반환
-  GET  /v0/health   — 서버 상태 확인
-  GET  /v0/usage    — 사용량 통계 (API 키 필요)
-  GET  /v0/pricing  — 가격 티어 가설 (W21, 공개)
+  POST /v0/verify        — 이미지 파일 업로드 → 판정 리포트 반환 (share=true 시 공유 링크 포함)
+  GET  /v0/health         — 서버 상태 확인
+  GET  /v0/usage          — 사용량 통계 (API 키 필요)
+  GET  /v0/pricing        — 가격 티어 가설 (W21, API 키 필요)
+  GET  /v0/share/{id}     — 공개 판정 리포트 조회 (W22, 인증 불필요)
+  GET  /v0/badge/{id}.svg — 공유 가능한 판정 배지 SVG (W22, 인증 불필요)
 
 실행:
   uvicorn koai_verify.server.app:app --reload
@@ -18,12 +20,14 @@ from pathlib import Path
 from typing import Annotated, Optional
 
 from fastapi import Depends, FastAPI, File, Form, HTTPException, UploadFile, status
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 
 from koai_verify.api import verify
 from koai_verify.pipeline import ImageLoadError
+from koai_verify.report.badge import generate_badge_svg
 from koai_verify.server.auth import require_api_key
 from koai_verify.server.pricing import get_tier_table, usage_to_pricing_recommendation
+from koai_verify.server.report_store import ReportStore, get_report_store
 from koai_verify.server.usage import UsageTracker, get_tracker
 
 _MAX_UPLOAD_BYTES = 50 * 1024 * 1024  # 50 MB
@@ -45,13 +49,16 @@ async def health() -> dict:
 async def verify_image(
     file: Annotated[UploadFile, File(description="검증할 이미지 파일 (JPEG/PNG/WebP)")],
     robustness: Annotated[bool, Form()] = False,
+    share: Annotated[bool, Form()] = False,
     api_key: str = Depends(require_api_key),
     tracker: UsageTracker = Depends(get_tracker),
+    report_store: ReportStore = Depends(get_report_store),
 ) -> JSONResponse:
     """이미지를 업로드해 한국 AI 표시 의무 판정 리포트를 반환한다.
 
     - **file**: JPEG / PNG / WebP 이미지 (최대 50 MB)
     - **robustness**: true 이면 변형 배터리 생존율을 포함한다 (처리 시간 ↑)
+    - **share**: true 이면 리포트를 공개 조회 가능하게 저장하고 공유 링크를 함께 반환한다
 
     응답 필드:
     - `verdict`: COMPLIANT / NON_COMPLIANT / WARNING / UNKNOWN
@@ -59,6 +66,7 @@ async def verify_image(
     - `detections`: 탐지기별 결과
     - `robustness`: 탐지기별 생존율 (robustness=true 일 때만)
     - `recommendation`: 조치 권고문
+    - `report_id` / `share_url` / `badge_url`: share=true 일 때만 포함
     """
     content = await file.read()
     size = len(content)
@@ -95,7 +103,14 @@ async def verify_image(
         duration_ms=duration_ms,
     )
 
-    return JSONResponse(content=report.to_dict())
+    body = report.to_dict()
+    if share:
+        report_id = report_store.save(body)
+        body["report_id"] = report_id
+        body["share_url"] = f"/v0/share/{report_id}"
+        body["badge_url"] = f"/v0/badge/{report_id}.svg"
+
+    return JSONResponse(content=body)
 
 
 @app.get("/v0/usage")
@@ -122,6 +137,37 @@ async def pricing(
         "tiers": get_tier_table(),
         "recommendation": usage_to_pricing_recommendation(tracker.get_stats()),
     }
+
+
+@app.get("/v0/share/{report_id}")
+async def share_report(
+    report_id: str,
+    report_store: ReportStore = Depends(get_report_store),
+) -> dict:
+    """share=true 로 저장된 판정 리포트를 공개 조회한다. 인증 불필요.
+
+    리포트에는 원본 이미지 데이터가 없다 (sha256 해시만 포함).
+    """
+    report = report_store.get(report_id)
+    if report is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="리포트를 찾을 수 없습니다.")
+    return report
+
+
+@app.get("/v0/badge/{report_id}.svg")
+async def badge(
+    report_id: str,
+    report_store: ReportStore = Depends(get_report_store),
+) -> Response:
+    """공유 가능한 판정 배지(SVG)를 반환한다. 인증 불필요.
+
+    존재하지 않는 report_id 도 UNKNOWN 배지를 200으로 반환한다 — README/소셜
+    임베드에서 깨진 이미지가 보이지 않도록 한다.
+    """
+    report = report_store.get(report_id)
+    verdict = report["verdict"] if report else "UNKNOWN"
+    svg = generate_badge_svg(verdict)
+    return Response(content=svg, media_type="image/svg+xml")
 
 
 def _safe_suffix(filename: Optional[str]) -> str:
