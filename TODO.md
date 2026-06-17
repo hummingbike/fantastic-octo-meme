@@ -220,7 +220,13 @@
 
 ---
 
-## 현재 진행 중 — W21 (2026.10.19–10.25) — 사용량 기반 가격 가설 설계
+## 완료 — W21 (2026.10.19–10.25) — 사용량 기반 가격 가설 설계
+
+- [x] 가격 티어 가설 정의 (Free/Pro/Enterprise — 요청 한도·이미지 크기·리포트 보관·가격)
+- [x] `koai_verify/server/pricing.py` — 티어 정의 + 사용량 분류(`classify_tier`) + 초과분(`compute_overage`) + 비용 추정(`estimate_monthly_cost`)
+- [x] `GET /v0/pricing` 엔드포인트 — 가격 테이블 + 누적 사용량 기반 추천 티어
+- [x] `docs/pricing_hypothesis.md` — 가격 가설 문서 (산정 근거, 무료↔유료 경계, 한계·검증 계획)
+- [x] 단위 테스트 48개 추가 / 전체 1252개 통과
 
 ---
 
@@ -308,3 +314,4 @@
 - [x] **W18 채택 피드백 스프린트 ② 완료** (2026-06-15) — GitHub Issues 신규 이슈 없음 확인, `docs/examples/nextjs_example.ts`(App Router POST /api/verify, VerifyError 코드 분기, 임시 파일 cleanup), `docs/examples/fastapi_example.py`(단일·배치 엔드포인트, 5종 오류 → HTTPException 매핑), `docs/quickstart.md`(오류 처리 섹션 + FAQ·예제 링크), 단위 테스트 42개(W18) 추가 / 전체 1082개
 - [x] **W19 TTA 표준화 참여 착수 완료** (2026-06-15) — `koai_verify/standards/tta_contact.py`(TC010 컨택 채널 4종·제출 프로세스 5단계·관련 표준 5종·헬퍼 함수), `docs/tta_gap_analysis.md`(R-01~R-07 × TTA 초안 매핑·R-06 강건성 갭 핵심 분석·§8 신설 제안), `docs/tta_submission_draft.md`(표준화 제안서 초안·실측 데이터 근거·수동 제출 절차), 단위 테스트 61개(W19) 추가 / 전체 1143개
 - [x] **W20 호스팅 검증 API v0 완료** (2026-06-16) — `koai_verify/server/app.py`(POST /v0/verify·GET /v0/health·GET /v0/usage), `server/auth.py`(X-API-Key 인증·KOAI_DEV_MODE bypass·셀프서브 키), `server/usage.py`(스레드-안전 사용량 추적·파일 영속화), `Dockerfile`+`docker-compose.yml`(비루트·헬스체크), pyproject.toml server extras, 단위 테스트 61개(W20) 추가 / 전체 1204개
+- [x] **W21 사용량 기반 가격 가설 설계 완료** (2026-06-17) — `koai_verify/server/pricing.py`(PricingTier Free/Pro/Enterprise·classify_tier·compute_overage·estimate_monthly_cost·usage_to_pricing_recommendation), `GET /v0/pricing` 엔드포인트(가격 테이블 + 사용량 기반 추천 티어), `docs/pricing_hypothesis.md`(산정 근거·무료↔유료 경계·W24 재보정 계획), 단위 테스트 48개(W21) 추가 / 전체 1252개
