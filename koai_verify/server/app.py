@@ -4,6 +4,7 @@
   POST /v0/verify   — 이미지 파일 업로드 → 판정 리포트 반환
   GET  /v0/health   — 서버 상태 확인
   GET  /v0/usage    — 사용량 통계 (API 키 필요)
+  GET  /v0/pricing  — 가격 티어 가설 (W21, 공개)
 
 실행:
   uvicorn koai_verify.server.app:app --reload
@@ -22,6 +23,7 @@ from fastapi.responses import JSONResponse
 from koai_verify.api import verify
 from koai_verify.pipeline import ImageLoadError
 from koai_verify.server.auth import require_api_key
+from koai_verify.server.pricing import get_tier_table, usage_to_pricing_recommendation
 from koai_verify.server.usage import UsageTracker, get_tracker
 
 _MAX_UPLOAD_BYTES = 50 * 1024 * 1024  # 50 MB
@@ -104,6 +106,22 @@ async def usage_stats(
     """사용량 통계를 반환한다. API 키 인증 필요."""
     stats = tracker.get_stats()
     return stats.to_dict()
+
+
+@app.get("/v0/pricing")
+async def pricing(
+    api_key: str = Depends(require_api_key),
+    tracker: UsageTracker = Depends(get_tracker),
+) -> dict:
+    """가격 티어 가설과 현재 누적 사용량 기반 추천 티어를 반환한다.
+
+    W21 가설값이며 외부 통합 파트너 실사용 데이터(W24)로 재보정될 수 있다.
+    상세: docs/pricing_hypothesis.md
+    """
+    return {
+        "tiers": get_tier_table(),
+        "recommendation": usage_to_pricing_recommendation(tracker.get_stats()),
+    }
 
 
 def _safe_suffix(filename: Optional[str]) -> str:
