@@ -242,12 +242,32 @@
 
 ---
 
-## 현재 진행 중 — W23 (2026.11.2–11.8) — 통합 파트너 2~3곳 실연동
+## 보류 — W23 (2026.11.2–11.8) — 통합 파트너 2~3곳 실연동
 
 > ⚠️ PLAN.md W24 원문: "통합 파트너 2~3곳 실연동 (협업, 영업 아님)". 실제 외부
 > 파트너와의 연동·협업이 필요한 항목으로, 코드 작업만으로 자동 완료할 수 없다.
-> 코드/문서로 준비할 수 있는 부분(연동 가이드, 레퍼런스 구현, 체크리스트)과
-> 실제 파트너 컨택·협업은 구분해서 진행해야 한다.
+> 사용자(1인 개발자)가 직접 파트너 컨택·협업을 진행해야 하며, 이 항목은 그
+> 진행 상황에 맞춰 별도로 갱신한다. 코드로 먼저 진행 가능한 W24로 건너뛴다.
+
+---
+
+## 완료 — W24 (2026.11.9–11.15) — 규제 변경 모니터링 자동화
+
+> PLAN.md W25 원문: "규제 변경 모니터링 자동화 (과기정통부·TTA 공지 트래킹)".
+> W19 제출 프로세스 5단계("반영 여부 추적")에서 예고한 "규제 변경 모니터링
+> 스크립트"를 구현한다 (`koai_verify/standards/tta_contact.py` SUBMISSION_PROCESS
+> step 5 참조).
+
+- [x] `koai_verify/standards/regulation_monitor.py` — 모니터링 소스 4종(과기정통부·NIA·TTA·법령정보센터) + 콘텐츠 해시 비교(`RegulationMonitor`, `compute_content_hash`)
+- [x] `scripts/check_regulation_updates.py` — CLI 실행 스크립트 (변경 감지 시 exit code 1)
+- [x] `.github/workflows/regulation_monitor.yml` — 매주 월요일 자동 실행 + 변경 시 GitHub 이슈 자동 생성 + 상태 파일 커밋
+- [x] `docs/regulation_monitoring.md` — 설계 근거·모니터링 대상·자동화 흐름·한계
+- [x] 단위 테스트 48개 추가 / 전체 1355개 통과
+
+> ⚠️ 매주 월요일 00:00 UTC에 실제 정부/표준화 기관 웹페이지로 HTTP 요청을
+> 보내고, 변경 감지 시 GitHub 이슈를 생성하며 상태 파일을 자동 커밋하는
+> **실제 동작하는 스케줄 워크플로**다. 외부 사이트가 막히거나 구조가 바뀌면
+> 거짓 변경 감지(이슈 스팸)가 발생할 수 있음을 인지하고 운영해야 한다.
 
 ---
 
@@ -337,3 +357,4 @@
 - [x] **W20 호스팅 검증 API v0 완료** (2026-06-16) — `koai_verify/server/app.py`(POST /v0/verify·GET /v0/health·GET /v0/usage), `server/auth.py`(X-API-Key 인증·KOAI_DEV_MODE bypass·셀프서브 키), `server/usage.py`(스레드-안전 사용량 추적·파일 영속화), `Dockerfile`+`docker-compose.yml`(비루트·헬스체크), pyproject.toml server extras, 단위 테스트 61개(W20) 추가 / 전체 1204개
 - [x] **W21 사용량 기반 가격 가설 설계 완료** (2026-06-17) — `koai_verify/server/pricing.py`(PricingTier Free/Pro/Enterprise·classify_tier·compute_overage·estimate_monthly_cost·usage_to_pricing_recommendation), `GET /v0/pricing` 엔드포인트(가격 테이블 + 사용량 기반 추천 티어), `docs/pricing_hypothesis.md`(산정 근거·무료↔유료 경계·W24 재보정 계획), 단위 테스트 48개(W21) 추가 / 전체 1252개
 - [x] **W22 공유 가능한 배지/리포트 완료** (2026-06-17) — `koai_verify/report/badge.py`(shields.io 스타일 SVG 배지·verdict별 색상), `koai_verify/server/report_store.py`(공개 공유 리포트 인메모리 저장소), `POST /v0/verify`(share 옵션·report_id/share_url/badge_url), `GET /v0/share/{id}`·`GET /v0/badge/{id}.svg`(인증 불필요), `docs/badge_sharing.md`(바이럴 훅 설계·임베드 예시·프라이버시 결정), 단위 테스트 55개(W22) 추가 / 전체 1307개
+- [x] **W24 규제 변경 모니터링 자동화 완료** (2026-06-17, W23 통합 파트너 실연동은 보류) — `koai_verify/standards/regulation_monitor.py`(MONITORED_SOURCES 4종·RegulationMonitor·콘텐츠 해시 비교), `scripts/check_regulation_updates.py`(CLI 러너), `.github/workflows/regulation_monitor.yml`(매주 월요일 자동 실행·변경 시 이슈 생성·상태 커밋), `docs/regulation_monitoring.md`(설계 근거·한계), 단위 테스트 48개(W24) 추가 / 전체 1355개
