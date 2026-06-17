@@ -1,0 +1,51 @@
+name: Regulation Monitor
+
+on:
+  schedule:
+    - cron: "0 0 * * 1" # 매주 월요일 00:00 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  check:
+    name: check regulation/standard notice changes
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install --no-interaction
+
+      - name: Run regulation monitor
+        id: monitor
+        run: |
+          poetry run python scripts/check_regulation_updates.py || echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Open issue on change
+        if: steps.monitor.outputs.changed == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create \
+            --title "규제/표준 공지 변경 감지 ($(date -u +%Y-%m-%d))" \
+            --body "scripts/check_regulation_updates.py 실행 결과 하나 이상의 모니터링 소스에서 콘텐츠 해시 변경이 감지되었습니다. 실행 로그: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+      - name: Commit updated state
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .regulation_monitor_state.json
+          git diff --cached --quiet || git commit -m "chore: 규제 모니터링 상태 갱신 [skip ci]"
+          git push
