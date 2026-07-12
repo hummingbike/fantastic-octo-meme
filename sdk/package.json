@@ -1,6 +1,6 @@
 {
   "name": "@koai/verify",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "KoAI-Verify JS/TS SDK — 한국 AI 기본법 제31조 표시 의무 검증",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

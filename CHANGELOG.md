@@ -3,6 +3,16 @@
 KoAI-Verify의 주요 변경 사항을 기록한다. [Keep a Changelog](https://keepachangelog.com/ko/1.1.0/) 형식,
 [SemVer](https://semver.org/lang/ko/)를 따른다.
 
+## [0.2.1] — 2026-07-12
+
+### Fixed
+
+- **배포 휠 import 실패** — `koai_verify.robustness.harness`가 패키징되지 않는 최상위
+  `benchmarks/` 모듈을 import해 `pip install koai-verify` 설치본이 import 시점에
+  `ModuleNotFoundError`로 깨지던 문제 (v0.1.0부터 존재). 변형 배터리 구현을
+  `koai_verify/robustness/transform_spec.py`로 이동하고, `benchmarks/transform_spec.py`는
+  하위 호환 재수출 심으로 유지. **v0.1.0·v0.2.0 설치본은 사용 불가 — 0.2.1로 업그레이드 필요.**
+
 ## [0.2.0] — 2026-07-12
 
 ### Added
@@ -32,5 +42,6 @@ KoAI-Verify의 주요 변경 사항을 기록한다. [Keep a Changelog](https://
 - Python SDK (`pip install koai-verify`), JS/TS SDK 래퍼, Gradio 웹 플레이그라운드
 - 강건성 벤치마크 공개(`benchmarks/results/`), 갭 리포트 v1
 
+[0.2.1]: https://github.com/hummingbike/fantastic-octo-meme/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/hummingbike/fantastic-octo-meme/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/hummingbike/fantastic-octo-meme/releases/tag/v0.1.0
