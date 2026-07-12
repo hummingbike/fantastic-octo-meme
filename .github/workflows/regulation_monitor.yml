@@ -30,8 +30,17 @@ jobs:
 
       - name: Run regulation monitor
         id: monitor
+        # exit 1(실제 해시 변경)만 이슈를 만든다. 그 외 비정상 종료(크래시)는
+        # 워크플로 실패로 드러내되 거짓 양성 이슈는 만들지 않는다.
         run: |
-          poetry run python scripts/check_regulation_updates.py || echo "changed=true" >> "$GITHUB_OUTPUT"
+          set +e
+          poetry run python scripts/check_regulation_updates.py
+          code=$?
+          if [ "$code" -eq 1 ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          elif [ "$code" -ne 0 ]; then
+            exit "$code"
+          fi
 
       - name: Open issue on change
         if: steps.monitor.outputs.changed == 'true'

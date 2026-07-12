@@ -72,13 +72,14 @@ def default_fetcher(url: str, timeout: float = 10.0) -> str:
 
 @dataclass
 class MonitorResult:
-    """단일 소스에 대한 점검 결과."""
+    """단일 소스에 대한 점검 결과. fetch 실패 시 error에 사유를 남기고 changed=False."""
 
     source_name: str
     changed: bool
     previous_hash: Optional[str]
     current_hash: str
     checked_at: str
+    error: Optional[str] = None
 
 
 class RegulationMonitor:
@@ -108,8 +109,20 @@ class RegulationMonitor:
         """소스를 점검하고, 이전 점검과 해시가 다르면 changed=True를 반환한다.
 
         첫 점검(상태 없음)은 기준선을 세우는 것으로 간주해 changed=False다.
+        fetch 실패(타임아웃·네트워크 오류)는 변경으로 간주하지 않는다 — 정부
+        사이트의 일시 차단이 매주 거짓 양성 이슈를 만드는 것을 막기 위함이다.
         """
-        content = self._fetcher(source.url)
+        try:
+            content = self._fetcher(source.url)
+        except (OSError, ValueError) as exc:  # URLError/TimeoutError 는 OSError 하위
+            return MonitorResult(
+                source_name=source.name,
+                changed=False,
+                previous_hash=self._state.get(source.name),
+                current_hash="",
+                checked_at=_now_iso(),
+                error=f"{type(exc).__name__}: {exc}",
+            )
         current_hash = compute_content_hash(content)
         with self._lock:
             previous_hash = self._state.get(source.name)
