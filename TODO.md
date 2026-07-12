@@ -1,6 +1,6 @@
 # TODO.md — KoAI-Verify 작업 추적
 
-> 현재 주차: **W25** (2026-06-17 기준, W24 완료, W23은 보류)
+> 현재 주차: **W25 완료** (2026-07-12 기준, Q2 마감 — W23은 보류 지속)
 > 업데이트 규칙: 완료 즉시 체크. 주차 시작 시 다음 주 항목 활성화.
 
 ---
@@ -176,7 +176,7 @@
 - [x] `docs/blog/tistory_w16_draft.md` — Tistory 포스팅 초안 (수동 게시 필요)
 - [x] `docs/blog/community_post_draft.md` — GeekNews / 디스콰이엇 초안 (수동 게시 필요)
 - [x] `docs/w16_blocked.md` — 수동 작업 5항목 명세 (PyPI 토큰, 블로그·커뮤니티 게시)
-- [ ] **[수동]** PyPI 배포 — PYPI_TOKEN secret 등록 후 `git tag v0.1.0 && git push origin v0.1.0`
+- [x] **[수동]** PyPI 배포 — 완료 확인 (2026-07-12): koai-verify v0.1.0이 PyPI에 실배포되어 있음
 - [ ] **[수동]** Tistory 기술 블로그 게시 (`docs/blog/tistory_w16_draft.md`)
 - [ ] **[수동]** GeekNews / 디스콰이엇 게시 (`docs/blog/community_post_draft.md`)
 
@@ -271,12 +271,22 @@
 
 ---
 
-## 대기 — W25 (2026.11.16–11.22) — 2분기 회고 (채택 지표 점검)
+## 완료 — W25 (2026.11.16–11.22) — 2분기 회고 (채택 지표 점검)
 
-> PLAN.md W26 원문: "2분기 회고 (채택 지표 점검)". GitHub ★, SDK 설치수
-> 등 PRD §5 성공 지표를 실측해 돌아보는 회고로, 실제 지표 확인과 평가
-> 방향(무엇을 잘했고 무엇을 바꿀지)에 사용자 판단이 필요해 착수 전 확인 후
-> 진행한다. 보류 중인 W23(통합 파트너 실연동)과 함께 사용자 의견을 받아 진행.
+> PLAN.md W26 원문: "2분기 회고 (채택 지표 점검)". 사용자 지시("자유롭게 진행
+> + main 머지 배포")에 따라 실측 기반으로 진행 (2026-07-12).
+
+- [x] `koai_verify/analysis/adoption_metrics.py` — PRD §5 지표 수집·평가 모듈 (AdoptionSnapshot·MetricStatus·evaluate_snapshot·evaluate_q2_gate, fetcher 주입 패턴)
+- [x] `scripts/collect_adoption_metrics.py` — 지표 실측 CLI (GitHub·PyPI·npm 공개 API)
+- [x] 실측 완료 — GitHub ★ 0 (W16 목표 50 미달), PyPI v0.1.0 게시 확인, npm 미게시, 외부 통합 0곳
+- [x] `docs/retrospective_q2.md` — Q2 회고 (게이트 판정: 미통과 1/3, Q3 방향 제안 포함)
+- [x] **버그 수정**: W24 규제 모니터 거짓 양성 — TTA 포털 fetch 타임아웃이 매주 "변경 감지" 이슈(#30–#32)를 생성하던 문제. fetch 실패를 `error`로 기록하고 변경으로 간주하지 않도록 수정, 워크플로는 exit 1일 때만 이슈 생성
+- [x] `CHANGELOG.md` 신설 + 버전 0.2.0 범프 (pyproject·__init__·sdk/package.json)
+- [x] 단위 테스트 45개 추가 / 전체 1400개 통과
+
+> Q2 게이트 실측 결과: 오픈 SDK 공개 ✅ / 외부 통합 ≥2 ❌ (0곳) / 호스팅 API
+> 가동 △ (산출물 완성, 상시 인프라 미가동). 채택 지표가 0인 핵심 원인은 W16
+> 수동 작업(블로그·커뮤니티 게시) 미이행 — 상세는 `docs/retrospective_q2.md` §4.
 
 ---
 
@@ -367,3 +377,4 @@
 - [x] **W21 사용량 기반 가격 가설 설계 완료** (2026-06-17) — `koai_verify/server/pricing.py`(PricingTier Free/Pro/Enterprise·classify_tier·compute_overage·estimate_monthly_cost·usage_to_pricing_recommendation), `GET /v0/pricing` 엔드포인트(가격 테이블 + 사용량 기반 추천 티어), `docs/pricing_hypothesis.md`(산정 근거·무료↔유료 경계·W24 재보정 계획), 단위 테스트 48개(W21) 추가 / 전체 1252개
 - [x] **W22 공유 가능한 배지/리포트 완료** (2026-06-17) — `koai_verify/report/badge.py`(shields.io 스타일 SVG 배지·verdict별 색상), `koai_verify/server/report_store.py`(공개 공유 리포트 인메모리 저장소), `POST /v0/verify`(share 옵션·report_id/share_url/badge_url), `GET /v0/share/{id}`·`GET /v0/badge/{id}.svg`(인증 불필요), `docs/badge_sharing.md`(바이럴 훅 설계·임베드 예시·프라이버시 결정), 단위 테스트 55개(W22) 추가 / 전체 1307개
 - [x] **W24 규제 변경 모니터링 자동화 완료** (2026-06-17, W23 통합 파트너 실연동은 보류) — `koai_verify/standards/regulation_monitor.py`(MONITORED_SOURCES 4종·RegulationMonitor·콘텐츠 해시 비교), `scripts/check_regulation_updates.py`(CLI 러너), `.github/workflows/regulation_monitor.yml`(매주 월요일 자동 실행·변경 시 이슈 생성·상태 커밋), `docs/regulation_monitoring.md`(설계 근거·한계), 단위 테스트 48개(W24) 추가 / 전체 1355개
+- [x] **W25 2분기 회고 완료** (2026-07-12) — `koai_verify/analysis/adoption_metrics.py`(PRD §5 지표 실측·평가·Q2 게이트), `scripts/collect_adoption_metrics.py`(수집 CLI), `docs/retrospective_q2.md`(실측 기반 회고·Q3 방향 제안), W24 모니터 거짓 양성 버그 수정(fetch 오류≠변경), `CHANGELOG.md` 신설, v0.2.0 범프, 단위 테스트 45개(W25) 추가 / 전체 1400개 통과

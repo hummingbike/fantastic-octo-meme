@@ -8,7 +8,7 @@
     python scripts/check_regulation_updates.py
 
 종료 코드:
-    0 — 변경 없음 (또는 최초 실행으로 기준선 수립)
+    0 — 변경 없음 (또는 최초 실행으로 기준선 수립, fetch 실패 소스는 건너뜀)
     1 — 하나 이상의 소스에서 변경 감지
 """
 
@@ -35,8 +35,14 @@ def main() -> int:
 
     changed = [r for r in results if r.changed]
     for r in results:
-        status = "CHANGED" if r.changed else "no change"
-        print(f"[{status}] {r.source_name} ({r.checked_at})")
+        if r.error:
+            status = "FETCH_ERROR"
+        elif r.changed:
+            status = "CHANGED"
+        else:
+            status = "no change"
+        detail = f" — {r.error}" if r.error else ""
+        print(f"[{status}] {r.source_name} ({r.checked_at}){detail}")
 
     if changed:
         print(f"\n{len(changed)}개 소스에서 변경 감지됨:")
