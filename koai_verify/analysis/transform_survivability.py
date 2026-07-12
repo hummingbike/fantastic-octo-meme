@@ -13,12 +13,12 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Optional
 
-from benchmarks.transform_spec import TRANSFORM_BATTERY, TransformSpec, apply_transform
 from koai_verify.analysis.tool_fingerprint import (
     MarkingPresence,
     ToolFingerprint,
     fingerprint_image,
 )
+from koai_verify.robustness.transform_spec import TRANSFORM_BATTERY, TransformSpec, apply_transform
 
 
 class SurvivalOutcome(str, Enum):

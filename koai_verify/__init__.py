@@ -1,6 +1,6 @@
 """KoAI-Verify: 한국 AI 기본법 제31조 표시 의무 검증 SDK."""
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 from koai_verify.api import verify
 from koai_verify.pipeline import (

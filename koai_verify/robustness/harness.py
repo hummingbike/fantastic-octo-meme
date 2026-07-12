@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from benchmarks.transform_spec import TRANSFORM_BATTERY, TransformSpec, apply_transform
 from koai_verify.detectors.base import DetectorBase
 from koai_verify.detectors.result import DetectionResult
+from koai_verify.robustness.transform_spec import TRANSFORM_BATTERY, TransformSpec, apply_transform
 
 
 def transform(image_bytes: bytes, spec: TransformSpec) -> bytes:

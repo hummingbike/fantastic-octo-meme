@@ -19,7 +19,7 @@ from typing import Optional
 
 PLACEHOLDER_SUFFIX = "_placeholder"
 
-# SNS 시뮬 변형 레이블 (benchmarks/transform_spec.py TransformType)
+# SNS 시뮬 변형 레이블 (koai_verify/robustness/transform_spec.py TransformType)
 SNS_TRANSFORM_LABELS = [
     "sns_instagram",
     "sns_twitter",
@@ -225,10 +225,10 @@ def _measure_sns_survival(image_path: Path) -> dict[str, float]:
     Returns:
         {sns_label: survival_rate (0.0 or 1.0, -1.0 if not measurable)}
     """
-    from benchmarks.transform_spec import TRANSFORM_BATTERY, apply_transform
     from koai_verify.detectors.c2pa_detector import C2PADetector
     from koai_verify.detectors.exif_detector import EXIFDetector
     from koai_verify.detectors.result import DetectionResult
+    from koai_verify.robustness.transform_spec import TRANSFORM_BATTERY, apply_transform
 
     image_bytes = image_path.read_bytes()
     exif_det = EXIFDetector()
